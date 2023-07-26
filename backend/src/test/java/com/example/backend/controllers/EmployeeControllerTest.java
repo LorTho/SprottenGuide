@@ -1,15 +1,10 @@
 package com.example.backend.controllers;
 
-import com.example.backend.model.Employee;
-import com.example.backend.model.WeekInitializer;
 import com.example.backend.service.EmployeeService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -23,13 +18,9 @@ class EmployeeControllerTest {
     MockMvc mockMvc;
     @Autowired
     EmployeeService employeeService;
-    @Autowired
-    private MongoTemplate mongoTemplate;
 
-    ObjectMapper objectMapper = new ObjectMapper();
     @Test
     void getNewEmployee() throws Exception {
-        Employee expectedEmployee = new Employee("noId", "test", "test", WeekInitializer.createWeek(0), WeekInitializer.createWeek(7));
         String expected = """
             {
                 "firstName":"test",

@@ -29,13 +29,4 @@ public class EmployeeService {
         employeeRepo.insert(newEmployee);
         return newEmployee;
     }
-
-    public Employee getEmployee(String id) {
-        Optional<Employee> employee = employeeRepo.findById(id);
-        if (employee.isPresent()) {
-            return employee.get();
-        } else {
-            throw new NoSuchElementException("employee not found!");
-        }
-    }
 }
