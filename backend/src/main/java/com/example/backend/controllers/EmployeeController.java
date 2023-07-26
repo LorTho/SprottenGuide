@@ -1,6 +1,6 @@
 package com.example.backend.controllers;
 
-import com.example.backend.model.DtoEmployee;
+import com.example.backend.model.EmployeeWithoutTimes;
 import com.example.backend.model.Employee;
 import com.example.backend.service.EmployeeService;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +15,7 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public Employee addEmployee(@RequestBody DtoEmployee newDtoEmployee) {
+    public Employee addEmployee(@RequestBody EmployeeWithoutTimes newDtoEmployee) {
         Employee newEmployee = new Employee("NoId", newDtoEmployee.getFirstName(), newDtoEmployee.getLastName(), null, null);
         return employeeService.addEmployee(newEmployee);
     }

@@ -1,4 +1,6 @@
-package com.example.backend.model;
+package com.example.backend.service;
+
+import com.example.backend.model.Time;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;

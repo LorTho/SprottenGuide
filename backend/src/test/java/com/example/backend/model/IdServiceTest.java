@@ -1,5 +1,6 @@
 package com.example.backend.model;
 
+import com.example.backend.service.IdService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

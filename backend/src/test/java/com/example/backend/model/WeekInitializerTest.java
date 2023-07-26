@@ -9,7 +9,7 @@ import java.time.LocalTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 
-import static com.example.backend.model.WeekInitializer.createWeek;
+import static com.example.backend.service.WeekInitializer.createWeek;
 
 class WeekInitializerTest {
     
