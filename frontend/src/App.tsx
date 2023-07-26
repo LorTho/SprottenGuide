@@ -1,35 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import axios from "axios";
+import {useEffect, useState} from "react";
+import {DtoUser, User} from "./model/User.tsx";
+import Employee from "./components/Employee.tsx";
+import Register from "./components/Register.tsx";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+    const [employee, setEmployee] = useState<User>()
+    const [codeNumber, setCodeNumber] = useState("1111")
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    useEffect(getEmployee, [codeNumber])
+    function handleRegister(newUser: DtoUser) {
+        axios.post("/api/employee", newUser)
+            .then(response => {
+                setEmployee(response.data);
+                setCodeNumber(newUser.id)
+            })
+    }
+
+    function getEmployee(){
+        axios.get("/api/employee/"+codeNumber)
+            .then(response => {
+                setEmployee(response.data);
+            })
+    }
+
+    if (!employee)
+        return (
+            <>
+                <img src="Logo.png" alt="logo"/>
+                <Register onRegister={handleRegister}/>
+            </>
+        )
+
+    return (
+        <>
+            <img src="Logo.png" alt="logo"/>
+            <Employee user={employee}/>
+        </>
+    )
 }
-
-export default App
