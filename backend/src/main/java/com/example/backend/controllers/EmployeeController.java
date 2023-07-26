@@ -1,16 +1,12 @@
 package com.example.backend.controllers;
 
-import com.example.backend.model.Time;
+import com.example.backend.model.DtoEmployee;
+import com.example.backend.model.Employee;
 import com.example.backend.service.EmployeeService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/employee")
 public class EmployeeController {
     private final EmployeeService employeeService;
 
@@ -18,8 +14,10 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    @GetMapping("/{id}/{week}")
-    public List<Time> getWeeklyTime(@PathVariable String id, @PathVariable String week) {
-        return employeeService.getWeeklyTime(id, week);
+    @PostMapping
+    public Employee addEmployee(@RequestBody DtoEmployee newDtoEmployee) {
+        Employee newEmployee = new Employee("NoId", newDtoEmployee.getFirstName(), newDtoEmployee.getLastName(), null);
+        return employeeService.addEmployee(newEmployee);
     }
+
 }

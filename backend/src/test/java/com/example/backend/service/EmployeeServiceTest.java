@@ -19,8 +19,8 @@ class EmployeeServiceTest {
     @Test
     void getListOfWeeklyTimes_whengetWeeklyTimeisCalled(){
         //Given
-        HashMap<String, List<Time>> weekly = new HashMap<>();
-        weekly.put("kw29",
+        HashMap<Integer, List<Time>> weekly = new HashMap<>();
+        weekly.put(29,
                 List.of(new Time("14.07", "10.00 Uhr"),
                         new Time("15.07", "11.00 Uhr"),
                         new Time("16.07", "12.00 Uhr"),
@@ -31,17 +31,17 @@ class EmployeeServiceTest {
 
         //When
         when(employeeRepo.findById("123")).thenReturn(Optional.of(emp1));
-        List<Time> actualList = employeeService.getWeeklyTime("123", "kw29");
+        Employee actual = employeeService.getEmployee("123");
 
         //Then
-        assertEquals(weekly.get("kw29"), actualList);
+        assertEquals(emp1, actual);
     }
     @Test
     void NoSuchElement_whengetWeeklyTimeisCalled(){
         //When
         when(employeeRepo.findById("123")).thenReturn(null);
         //Then
-        Assertions.assertThrows(NoSuchElementException.class, () -> employeeService.getWeeklyTime("0000", "kw30"));
+        Assertions.assertThrows(NoSuchElementException.class, () -> employeeService.getEmployee("0000"));
     }
 
 
