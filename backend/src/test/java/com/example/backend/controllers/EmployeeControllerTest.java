@@ -1,23 +1,20 @@
 package com.example.backend.controllers;
 
 import com.example.backend.model.Employee;
-import com.example.backend.model.Time;
+import com.example.backend.model.WeekInitializer;
 import com.example.backend.service.EmployeeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -31,22 +28,39 @@ class EmployeeControllerTest {
 
     ObjectMapper objectMapper = new ObjectMapper();
     @Test
-    void getWeeklyTime() throws Exception {
-        ArrayList<Map<Integer, List<Time>>> weekly1 = null;
-        HashMap<Integer, List<Time>> weekly2 = null;
-        weekly2.put(30,
-                List.of(
-                        new Time(LocalDate.of(2023, 7, 24), "10.00 Uhr"),
-                        new Time(LocalDate.of(2023, 7, 25), "10.00 Uhr"),
-                        new Time(LocalDate.of(2023, 7, 26), "10.00 Uhr"),
-                        new Time(LocalDate.of(2023, 7, 27), "10.00 Uhr")
-                        ));
-        weekly1.add(weekly2);
-        Employee emp1 = new Employee("123", "Lorenz", "Thoms", weekly1);
-        mongoTemplate.save(emp1);
-        String expected = objectMapper.writeValueAsString(emp1);
+    void getNewEmployee() throws Exception {
+        Employee expectedEmployee = new Employee("noId", "test", "test", WeekInitializer.createWeek(0), WeekInitializer.createWeek(7));
+        String expected = """
+            {
+                "firstName":"test",
+                "lastName":"test",
+                "thisWeek":
+                    {"30":
+                        [{"date":"2023-07-24","startTime":"00:00:00"},
+                        {"date":"2023-07-25","startTime":"00:00:00"},
+                        {"date":"2023-07-26","startTime":"00:00:00"},
+                        {"date":"2023-07-27","startTime":"00:00:00"},
+                        {"date":"2023-07-28","startTime":"00:00:00"},
+                        {"date":"2023-07-29","startTime":"00:00:00"},
+                        {"date":"2023-07-30","startTime":"00:00:00"}]},
+                "nextWeek":
+                    {"31":
+                        [{"date":"2023-07-31","startTime":"00:00:00"},
+                        {"date":"2023-08-01","startTime":"00:00:00"},
+                        {"date":"2023-08-02","startTime":"00:00:00"},
+                        {"date":"2023-08-03","startTime":"00:00:00"},
+                        {"date":"2023-08-04","startTime":"00:00:00"},
+                        {"date":"2023-08-05","startTime":"00:00:00"},
+                        {"date":"2023-08-06","startTime":"00:00:00"}]}}
+            """;
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/employee/123"))
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/employee")
+                        .contentType(MediaType.APPLICATION_JSON).content("""
+                                {
+                                    "firstName": "test",
+                                    "lastName": "test"
+                                }
+                                """))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(expected));
     }
