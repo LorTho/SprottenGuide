@@ -2,10 +2,16 @@ export type User = {
     id: string,
     firstName: string,
     lastName: string,
-    weeklyTime: [Map<number, time[]>],
+    thisWeek: Map<number, Time[]>,
+    nextWeek: Map<number, Time[]>,
 }
 
-export type time = {
+export type Time = {
     date: string,
     startTime: string,
+}
+
+export type DtoUser = {
+    firstName: string,
+    lastName: string,
 }

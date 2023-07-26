@@ -1,30 +1,32 @@
 import './App.css'
 import axios from "axios";
-import {useEffect, useState} from "react";
-import {User} from "./model/User.tsx";
+import {useState} from "react";
+import {DtoUser, User} from "./model/User.tsx";
 import Employee from "./components/Employee.tsx";
+import NewUser from "./components/NewUser.tsx";
 
 function App() {
-    const[employee,setEmployee] = useState<User>()
-    const employeeId:string = "123"
+    const [employee, setEmployee] = useState<User>()
 
-    useEffect(getEmployee, [])
-    function getEmployee(){
-        axios.get("/api/employee/" + employeeId)
-            .then(response =>{
-                setEmployee(() => response.data)
+    function handleRegister(newUser: DtoUser) {
+        axios.post("/api/employee", newUser)
+            .then(response => {
+                setEmployee(response.data);
             })
-            .catch(function(error){
-                console.error(error)
-            });
     }
 
-    if(!employee)
-        return <h1> ... loading</h1>
+    if (!employee)
+        return (
+            <>
+                <img src="Logo.png" alt="logo"/>
+                <NewUser onRegister={handleRegister}/>
+            </>
+        )
+
     return (
         <>
             <img src="Logo.png" alt="logo"/>
-            <Employee week={31} user={employee}/>
+            <Employee user={employee}/>
         </>
     )
 }
