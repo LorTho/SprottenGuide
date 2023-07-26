@@ -4,14 +4,13 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.TemporalAdjusters;
-import java.time.temporal.WeekFields;
 import java.util.*;
 
 public class WeekInitializer {
     private WeekInitializer() {
 
     }
-    public static Map<Integer, List<Time>> createWeek(int day){
+    public static List<Time> createWeek(int day){
         LocalDate today = LocalDate.now().plusDays(day);
         LocalDate firstDayOfWeek = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
 
@@ -22,8 +21,6 @@ public class WeekInitializer {
             days.add(date);
         }
 
-        Map<Integer, List<Time>> week = new HashMap<>();
-        week.put(today.get(WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear()), days);
-        return week;
+        return days;
     }
 }

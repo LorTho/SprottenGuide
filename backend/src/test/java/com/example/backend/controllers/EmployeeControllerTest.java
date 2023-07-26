@@ -25,24 +25,22 @@ class EmployeeControllerTest {
             {
                 "firstName":"test",
                 "lastName":"test",
-                "thisWeek":
-                    {"30":
-                        [{"date":"2023-07-24","startTime":"00:00:00"},
+                "thisWeek":[
+                        {"date":"2023-07-24","startTime":"00:00:00"},
                         {"date":"2023-07-25","startTime":"00:00:00"},
                         {"date":"2023-07-26","startTime":"00:00:00"},
                         {"date":"2023-07-27","startTime":"00:00:00"},
                         {"date":"2023-07-28","startTime":"00:00:00"},
                         {"date":"2023-07-29","startTime":"00:00:00"},
-                        {"date":"2023-07-30","startTime":"00:00:00"}]},
-                "nextWeek":
-                    {"31":
-                        [{"date":"2023-07-31","startTime":"00:00:00"},
+                        {"date":"2023-07-30","startTime":"00:00:00"}],
+                "nextWeek":[
+                        {"date":"2023-07-31","startTime":"00:00:00"},
                         {"date":"2023-08-01","startTime":"00:00:00"},
                         {"date":"2023-08-02","startTime":"00:00:00"},
                         {"date":"2023-08-03","startTime":"00:00:00"},
                         {"date":"2023-08-04","startTime":"00:00:00"},
                         {"date":"2023-08-05","startTime":"00:00:00"},
-                        {"date":"2023-08-06","startTime":"00:00:00"}]}}
+                        {"date":"2023-08-06","startTime":"00:00:00"}]}
             """;
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/employee")

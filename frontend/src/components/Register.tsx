@@ -5,7 +5,7 @@ import {DtoUser} from "../model/User.tsx";
 type Props = {
     onRegister: (data: DtoUser) => void;
 }
-export default function NewUser(props: Props) {
+export default function Register(props: Props) {
     const [inputValue, setInputValue] = useState<DtoUser>(
         {
             firstName: " ",
@@ -13,7 +13,6 @@ export default function NewUser(props: Props) {
         })
 
     function handleRegister() {
-
         props.onRegister(inputValue)
     }
 

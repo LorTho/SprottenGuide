@@ -18,8 +18,8 @@ public class EmployeeService {
     public Employee addEmployee(Employee newEmployee) {
         newEmployee.setId(IdService.uuid());
 
-        Map<Integer, List<Time>> actualWeek;
-        Map<Integer, List<Time>> nextWeek;
+        List<Time> actualWeek;
+        List<Time> nextWeek;
         actualWeek = WeekInitializer.createWeek(0);
         nextWeek = WeekInitializer.createWeek(7);
 

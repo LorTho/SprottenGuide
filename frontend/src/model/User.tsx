@@ -2,8 +2,8 @@ export type User = {
     id: string,
     firstName: string,
     lastName: string,
-    thisWeek: Map<number, Time[]>,
-    nextWeek: Map<number, Time[]>,
+    thisWeek: Time[],
+    nextWeek: Time[],
 }
 
 export type Time = {

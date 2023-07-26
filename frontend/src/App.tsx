@@ -3,9 +3,9 @@ import axios from "axios";
 import {useState} from "react";
 import {DtoUser, User} from "./model/User.tsx";
 import Employee from "./components/Employee.tsx";
-import NewUser from "./components/NewUser.tsx";
+import Register from "./components/Register.tsx";
 
-function App() {
+export default function App() {
     const [employee, setEmployee] = useState<User>()
 
     function handleRegister(newUser: DtoUser) {
@@ -19,7 +19,7 @@ function App() {
         return (
             <>
                 <img src="Logo.png" alt="logo"/>
-                <NewUser onRegister={handleRegister}/>
+                <Register onRegister={handleRegister}/>
             </>
         )
 
@@ -30,5 +30,3 @@ function App() {
         </>
     )
 }
-
-export default App
