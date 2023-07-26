@@ -8,8 +8,9 @@ type Props = {
 export default function Register(props: Props) {
     const [inputValue, setInputValue] = useState<DtoUser>(
         {
-            firstName: " ",
-            lastName: " "
+            id: "",
+            firstName: "",
+            lastName: ""
         })
 
     function handleRegister() {
@@ -21,6 +22,17 @@ export default function Register(props: Props) {
             <form onSubmit={handleRegister}>
                 <div className={"text-field"}>
                     <TextField
+                        onChange={e => setInputValue({...inputValue, id: e.target.value})}
+                        value={inputValue?.id}
+                        id="outlined-basic"
+                        color={"success"}
+                        label="Mitarbeiter-ID"
+                        variant="outlined"
+                        required
+                    />
+                </div>
+                <div className={"text-field"}>
+                    <TextField
                         onChange={e => setInputValue({...inputValue, firstName: e.target.value})}
                         value={inputValue?.firstName}
                         id="outlined-basic"
@@ -30,7 +42,7 @@ export default function Register(props: Props) {
                         required
                     />
                 </div>
-                <div>
+                <div className={"text-field"}>
                     <TextField
                         onChange={e => setInputValue({...inputValue, lastName: e.target.value})}
                         value={inputValue?.lastName}

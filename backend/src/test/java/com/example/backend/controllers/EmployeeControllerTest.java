@@ -1,15 +1,22 @@
 package com.example.backend.controllers;
 
+import com.example.backend.model.Employee;
 import com.example.backend.service.EmployeeService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.ArrayList;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -19,37 +26,33 @@ class EmployeeControllerTest {
     @Autowired
     EmployeeService employeeService;
 
+    ObjectMapper objectMapper = new ObjectMapper();
+
     @Test
+    @DirtiesContext
     void getNewEmployee() throws Exception {
-        String expected = """
-            {
-                "firstName":"test",
-                "lastName":"test",
-                "thisWeek":[
-                        {"date":"2023-07-24","startTime":"00:00:00"},
-                        {"date":"2023-07-25","startTime":"00:00:00"},
-                        {"date":"2023-07-26","startTime":"00:00:00"},
-                        {"date":"2023-07-27","startTime":"00:00:00"},
-                        {"date":"2023-07-28","startTime":"00:00:00"},
-                        {"date":"2023-07-29","startTime":"00:00:00"},
-                        {"date":"2023-07-30","startTime":"00:00:00"}],
-                "nextWeek":[
-                        {"date":"2023-07-31","startTime":"00:00:00"},
-                        {"date":"2023-08-01","startTime":"00:00:00"},
-                        {"date":"2023-08-02","startTime":"00:00:00"},
-                        {"date":"2023-08-03","startTime":"00:00:00"},
-                        {"date":"2023-08-04","startTime":"00:00:00"},
-                        {"date":"2023-08-05","startTime":"00:00:00"},
-                        {"date":"2023-08-06","startTime":"00:00:00"}]}
-            """;
+        Employee newEmployee = new Employee("1111", "test", "test",new ArrayList<>(), new ArrayList<>());
+        String expectedEmployee = objectMapper.writeValueAsString(newEmployee);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/employee")
                         .contentType(MediaType.APPLICATION_JSON).content("""
                                 {
+                                    "id": "1111",
                                     "firstName": "test",
                                     "lastName": "test"
                                 }
                                 """))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(expectedEmployee));
+    }
+
+    @Test
+    @DirtiesContext
+    void getEmployee() throws Exception {
+        Employee newEmployee = new Employee("1111", "test", "test",new ArrayList<>(), new ArrayList<>());
+        String expected = objectMapper.writeValueAsString(newEmployee);
+        employeeService.addEmployee(newEmployee);
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/employee/"+"1111"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(expected));
     }
