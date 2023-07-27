@@ -1,12 +1,14 @@
 import './App.css'
 import axios from "axios";
 import {useEffect, useState} from "react";
-import {DtoUser, User} from "./model/User.tsx";
+import {DtoUser, guest, User} from "./model/User.tsx";
 import Employee from "./components/Employee.tsx";
 import Register from "./components/Register.tsx";
+import {Route, Routes} from "react-router-dom";
+import LandingPage from "./components/LandingPage.tsx";
 
 export default function App() {
-    const [employee, setEmployee] = useState<User>()
+    const [employee, setEmployee] = useState<User>(guest)
     const [codeNumber, setCodeNumber] = useState("1111")
 
     useEffect(getEmployee, [codeNumber])
@@ -25,18 +27,13 @@ export default function App() {
             })
     }
 
-    if (!employee)
-        return (
-            <>
-                <img src="Logo.png" alt="logo"/>
-                <Register onRegister={handleRegister}/>
-            </>
-        )
-
     return (
         <>
-            <img src="Logo.png" alt="logo"/>
-            <Employee user={employee}/>
+            <Routes>
+                <Route path={"/"} element={<LandingPage/>}/>
+                <Route path={"/week"} element={<Employee user={employee}/>}/>
+                <Route path={"/register"} element={<Register onRegister={handleRegister}/>}/>
+            </Routes>
         </>
     )
 }

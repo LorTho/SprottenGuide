@@ -16,3 +16,11 @@ export type DtoUser = {
     firstName: string,
     lastName: string,
 }
+
+export const guest:User ={
+    "id": "0",
+    "firstName": "Guest",
+    "lastName": "Guest",
+    "thisWeek": [],
+    "nextWeek": [],
+}
