@@ -7,19 +7,15 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-
+import HeadElement from "./StyleElements.tsx";
 
 type Props = {
     user: User,
 }
 
-export default function Employee(props: Props) {
-
-
-    if (!props.user)
-        return <p> No User</p>
-
+export default function ActualWeek(props: Props) {
     return <>
+        <HeadElement title={"Zeiten"}/>
         <h2> {props.user.firstName}</h2>
         <TableContainer component={Paper}>
             <Table sx={{ width: '90%' }} aria-label="customized table">

@@ -7,6 +7,20 @@
 img {
   width: 100%;
 }
+.Header-Div{
+  height: 10%;
+  background-color: rgba(75, 15, 27, 0.38);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20%;
+
+}
+
+.logo-Header{
+  width: 100%;
+  height: 100%;
+}
+
 
 .shifts {
   margin: auto;
