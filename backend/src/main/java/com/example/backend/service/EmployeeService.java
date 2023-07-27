@@ -37,7 +37,7 @@ public class EmployeeService {
         if (employee.isPresent()) {
             List<Shifts> shiftList= new ArrayList<>();
             wishList.forEach(e ->{
-                Shifts time = new Shifts(e.getDay(), LocalTime.parse(e.getStartTime()));
+                Shifts time = new Shifts(e.day(), LocalTime.parse(e.startTime()));
                 shiftList.add(time);
             });
             employee.get().setNextWeek(shiftList);

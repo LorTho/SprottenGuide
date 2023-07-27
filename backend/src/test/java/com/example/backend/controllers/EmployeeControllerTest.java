@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+
 import java.util.ArrayList;
 
 @SpringBootTest
@@ -50,6 +51,46 @@ class EmployeeControllerTest {
         String expected = objectMapper.writeValueAsString(newEmployee);
         employeeService.addEmployee(newEmployee);
         mockMvc.perform(MockMvcRequestBuilders.get("/api/employee/"+"1111"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(expected));
+    }
+
+    @Test
+    @DirtiesContext
+    void getUpdatedEmployee_whenChangeWishShifts() throws Exception {
+        Employee newEmployee = new Employee("1111", "test", "test",new ArrayList<>(), new ArrayList<>());
+        employeeService.addEmployee(newEmployee);
+        String expected = """
+            {
+                "id": "1111",
+                "firstName": "test",
+                "lastName": "test",
+                "thisWeek": [],
+                "nextWeek": [
+                    {
+                        "day": "MONDAY",
+                        "startTime": "11:00:00"
+                    },
+                    {
+                        "day": "FRIDAY",
+                        "startTime": "17:00:00"
+                    }
+                ]
+            }
+        """;
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/employee/"+"1111")
+                .contentType(MediaType.APPLICATION_JSON).content("""
+                [
+                    {
+                        "day": "MONDAY",
+                        "startTime": "11:00"
+                    },
+                    {
+                        "day": "FRIDAY",
+                        "startTime": "17:00"
+                    }
+                ]
+                """))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(expected));
     }

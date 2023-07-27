@@ -4,8 +4,9 @@
   text-align: center;
 }
 
-img {
-  width: 100%;
+.logo-landing {
+  max-width: 100%;
+  max-height: 20%;
 }
 .Header-Div{
   height: 10%;
