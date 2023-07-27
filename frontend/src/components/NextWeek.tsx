@@ -17,13 +17,13 @@ type Props = {
 export default function NextWeek(props: Props) {
     const [wishTime, setWishTime] = useState<Time[]>(
         [
-            {date: "MONDAY", startTime: "00:00"},
-            {date: "TUESDAY", startTime: "00:00"},
-            {date: "WEDNESDAY", startTime: "00:00"},
-            {date: "THURSDAY", startTime: "00:00"},
-            {date: "FRIDAY", startTime: "00:00"},
-            {date: "SATURDAY", startTime: "00:00"},
-            {date: "SUNDAY", startTime: "00:00"},
+            {day: "MONDAY", startTime: "00:00"},
+            {day: "TUESDAY", startTime: "00:00"},
+            {day: "WEDNESDAY", startTime: "00:00"},
+            {day: "THURSDAY", startTime: "00:00"},
+            {day: "FRIDAY", startTime: "00:00"},
+            {day: "SATURDAY", startTime: "00:00"},
+            {day: "SUNDAY", startTime: "00:00"},
         ]
     )
 
@@ -47,23 +47,23 @@ export default function NextWeek(props: Props) {
                     <TableBody>
                         {wishTime.map(shift => (
                             <TableRow
-                                key={shift.date}
+                                key={shift.day}
                                 sx={{'&:last-child td, &:last-child th': {border: 0}}}
                             >
                                 <TableCell component="th" scope="row">
-                                    {shift.date}
+                                    {shift.day}
                                 </TableCell>
                                 <TableCell align="right">
                                     <Select
-                                        id={shift.date}
+                                        id={shift.day}
                                         value={shift.startTime}
                                         onChange={event => {
                                             setWishTime(
-                                                wishTime.map(day => {
-                                                    if (day.date === shift.date) {
-                                                        return {...day, startTime: event.target.value}
+                                                wishTime.map(wishDay => {
+                                                    if (wishDay.day === shift.day) {
+                                                        return {...wishDay, startTime: event.target.value}
                                                     }
-                                                    return day
+                                                    return wishDay
                                                 })
                                             )
                                         }}

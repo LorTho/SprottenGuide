@@ -7,7 +7,7 @@ export type User = {
 }
 
 export type Time = {
-    date: string,
+    day: string,
     startTime: string,
 }
 

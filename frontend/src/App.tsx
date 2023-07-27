@@ -28,11 +28,12 @@ export default function App() {
         navigate("/")
     }
     function handleWishTime(wishTime: Time[]){
-        axios.put("/api/employee" + codeNumber, wishTime)
+        axios.put("/api/employee/" + codeNumber, wishTime)
             .then(response=>{
                 setEmployee(response.data)
                 setCodeNumber(codeNumber)
             })
+        navigate("/")
     }
 
     function getEmployee() {
