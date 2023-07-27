@@ -31,7 +31,7 @@ export default function App() {
         axios.put("/api/employee/" + codeNumber, wishTime)
             .then(response=>{
                 setEmployee(response.data)
-                setCodeNumber(codeNumber)
+                setCodeNumber(employee.id)
             })
         navigate("/")
     }

@@ -30,7 +30,7 @@ export default function NextWeek(props: Props) {
     function initialiseWishTime() {
         setWishTime(
             wishTime.map(wishDay => {
-                props.user.nextWeek.map(shift => {
+                props.user.nextWeek.forEach(shift => {
                     if (shift.day === wishDay.day) {
                         wishDay = shift
                     }
