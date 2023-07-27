@@ -28,11 +28,11 @@ export default function ActualWeek(props: Props) {
                 <TableBody>
                     {props.user.thisWeek.map(shift => (
                         <TableRow
-                            key={shift.date}
+                            key={shift.day}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
                             <TableCell component="th" scope="row">
-                                {shift.date}
+                                {shift.day}
                             </TableCell>
                             <TableCell align="right">{shift.startTime}</TableCell>
                         </TableRow>

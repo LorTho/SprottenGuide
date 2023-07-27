@@ -7,28 +7,40 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {MenuItem, Select} from "@mui/material";
 
 type Props = {
     user: User,
-    onChangeTimes: (data: Time[])=>void;
+    onChangeTimes: (data: Time[]) => void;
 }
 export default function NextWeek(props: Props) {
-    const [wishTime, setWishTime] = useState<Time[]>(
-        [
-            {day: "MONDAY", startTime: "00:00"},
-            {day: "TUESDAY", startTime: "00:00"},
-            {day: "WEDNESDAY", startTime: "00:00"},
-            {day: "THURSDAY", startTime: "00:00"},
-            {day: "FRIDAY", startTime: "00:00"},
-            {day: "SATURDAY", startTime: "00:00"},
-            {day: "SUNDAY", startTime: "00:00"},
-        ]
-    )
+    const [wishTime, setWishTime] = useState<Time[]>([
+        {day: "MONDAY", startTime: "00:00:00"},
+        {day: "TUESDAY", startTime: "00:00:00"},
+        {day: "WEDNESDAY", startTime: "00:00:00"},
+        {day: "THURSDAY", startTime: "00:00:00"},
+        {day: "FRIDAY", startTime: "00:00:00"},
+        {day: "SATURDAY", startTime: "00:00:00"},
+        {day: "SUNDAY", startTime: "00:00:00"},
+    ])
 
-    function handleWishTime(){
-        const newTimes = wishTime.filter(value => value.startTime !== "00:00")
+    useEffect(initialiseWishTime,[])
+    function initialiseWishTime() {
+        setWishTime(
+            wishTime.map(wishDay => {
+                props.user.nextWeek.map(shift => {
+                    if (shift.day === wishDay.day) {
+                        wishDay = shift
+                    }
+                })
+                return wishDay
+            })
+        )
+    }
+
+    function handleWishTime() {
+        const newTimes = wishTime.filter(value => value.startTime !== "00:00:00")
         props.onChangeTimes(newTimes)
     }
 
@@ -68,10 +80,10 @@ export default function NextWeek(props: Props) {
                                             )
                                         }}
                                     >
-                                        <MenuItem value={"00:00"}><em>Frei</em></MenuItem>
-                                        <MenuItem value={"11:00"}>11</MenuItem>
-                                        <MenuItem value={"17:00"}>17</MenuItem>
-                                        <MenuItem value={"19:00"}>19</MenuItem>
+                                        <MenuItem value={"00:00:00"}><em>Frei</em></MenuItem>
+                                        <MenuItem value={"11:00:00"}>11</MenuItem>
+                                        <MenuItem value={"17:00:00"}>17</MenuItem>
+                                        <MenuItem value={"19:00:00"}>19</MenuItem>
                                     </Select>
                                 </TableCell>
                             </TableRow>
