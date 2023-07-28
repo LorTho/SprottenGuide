@@ -1,6 +1,7 @@
 import {TextField} from "@mui/material";
 import {useState} from "react";
 import {DtoUser} from "../model/User.tsx";
+import HeadElement from "./StyleElements.tsx";
 
 type Props = {
     onRegister: (data: DtoUser) => void;
@@ -19,6 +20,7 @@ export default function Register(props: Props) {
 
     return <>
         <div className={"register"}>
+            <HeadElement title={"Register"}/>
             <form onSubmit={handleRegister}>
                 <div className={"text-field"}>
                     <TextField
