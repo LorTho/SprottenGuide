@@ -1,6 +1,5 @@
 package com.example.backend.service;
 
-import com.example.backend.model.Employee;
 import com.example.backend.model.WorkSchedule;
 import com.example.backend.repository.ScheduleRepo;
 import org.junit.jupiter.api.Assertions;
@@ -9,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class ScheduleServiceTest {
