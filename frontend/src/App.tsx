@@ -22,9 +22,15 @@ export default function App() {
                 setEmployee(response.data)
                 setCodeNumber(newUser.id)
             })
+        navigate("/")
     }
     function handleLogin(code:string){
-        setCodeNumber(code)
+        setCodeNumber(() => code)
+        navigate("/")
+    }
+    function handleLogout(){
+        setCodeNumber(() => undefined)
+        setEmployee(guest)
         navigate("/")
     }
     function handleWishTime(wishTime: Time[]){
@@ -48,7 +54,7 @@ export default function App() {
     return (
         <>
             <Routes>
-                <Route path={"/"} element={<LandingPage user={employee}/>}/>
+                <Route path={"/"} element={<LandingPage onlogout={handleLogout} user={employee}/>}/>
                 <Route path={"/login"} element={<Login onLogin={handleLogin}/>}/>
                 <Route path={"/actualWeek"} element={<ActualWeek user={employee}/>}/>
                 <Route path={"/nextWeek"} element={<NextWeek user={employee} onChangeTimes={handleWishTime}/>}/>

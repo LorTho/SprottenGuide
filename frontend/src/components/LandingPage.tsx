@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 
 type Props = {
     user: User,
+    onlogout : () => void
 }
 export default function LandingPage(props: Props) {
 
@@ -23,7 +24,7 @@ export default function LandingPage(props: Props) {
             <main>
                 <img src={"Logo.png"} alt={"logo"} className={"logo-landing"}/>
                 <h2>{props.user.firstName}</h2>
-                <button>Logout</button>
+                <button onClick={props.onlogout}>Logout</button>
                 <Link to={"/actualWeek"}>
                     <button>Arbeitsschichten</button>
                 </Link>
