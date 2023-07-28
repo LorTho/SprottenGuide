@@ -9,6 +9,7 @@ import LandingPage from "./components/LandingPage.tsx";
 import Login from "./components/Login.tsx";
 import NextWeek from "./components/userSites/NextWeek.tsx";
 import UserPage from "./components/userSites/UserPage.tsx";
+import SchedulePage from "./components/scheduleSites/SchedulePage.tsx";
 
 export default function App() {
     const [employee, setEmployee] = useState<User>(guest)
@@ -61,6 +62,9 @@ export default function App() {
                 <Route path={"/user/actualWeek"} element={<ActualWeek user={employee}/>}/>
                 <Route path={"/user/nextWeek"} element={<NextWeek user={employee} onChangeTimes={handleWishTime}/>}/>
                 <Route path={"/register"} element={<Register onRegister={handleRegister}/>}/>
+                <Route path={"/schedule/scheduleSite"} element={<SchedulePage/>}/>
+                <Route path={"/schedule/actualWeek"} element={<ActualWeek user={employee}/>}/>
+                <Route path={"/schedule/nextWeek"} element={<NextWeek user={employee} onChangeTimes={handleWishTime}/>}/>
             </Routes>
         </>
     )
