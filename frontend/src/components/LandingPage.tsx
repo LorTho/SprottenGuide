@@ -25,10 +25,10 @@ export default function LandingPage(props: Props) {
                 <img src={"Logo.png"} alt={"logo"} className={"logo-landing"}/>
                 <h2>{props.user.firstName}</h2>
                 <button onClick={props.onlogout}>Logout</button>
-                <Link to={"/actualWeek"}>
+                <Link to={"/user/actualWeek"}>
                     <button>Arbeitsschichten</button>
                 </Link>
-                <Link to={"/nextWeek"}>
+                <Link to={"/user/nextWeek"}>
                     <button>Dienstplanwunsch</button>
                 </Link>
             </main>
