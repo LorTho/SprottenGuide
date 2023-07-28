@@ -8,6 +8,7 @@ import {Route, Routes, useNavigate} from "react-router-dom";
 import LandingPage from "./components/LandingPage.tsx";
 import Login from "./components/Login.tsx";
 import NextWeek from "./components/userSites/NextWeek.tsx";
+import UserPage from "./components/userSites/UserPage.tsx";
 
 export default function App() {
     const [employee, setEmployee] = useState<User>(guest)
@@ -54,8 +55,9 @@ export default function App() {
     return (
         <>
             <Routes>
-                <Route path={"/"} element={<LandingPage onlogout={handleLogout} user={employee}/>}/>
+                <Route path={"/"} element={<LandingPage/>}/>
                 <Route path={"/login"} element={<Login onLogin={handleLogin}/>}/>
+                <Route path={"/user/userSpace"} element={<UserPage user={employee} onLogout={handleLogout}/>}/>
                 <Route path={"/user/actualWeek"} element={<ActualWeek user={employee}/>}/>
                 <Route path={"/user/nextWeek"} element={<NextWeek user={employee} onChangeTimes={handleWishTime}/>}/>
                 <Route path={"/register"} element={<Register onRegister={handleRegister}/>}/>
