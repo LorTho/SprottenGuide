@@ -28,7 +28,7 @@ class EmployeeControllerTest {
 
     @Test
     @DirtiesContext
-    void getNewEmployee() throws Exception {
+    void putNewEmployee() throws Exception {
         Employee newEmployee = new Employee("1111", "test", "test",new ArrayList<>(), new ArrayList<>());
         String expectedEmployee = objectMapper.writeValueAsString(newEmployee);
 
