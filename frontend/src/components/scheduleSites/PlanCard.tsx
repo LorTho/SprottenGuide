@@ -13,7 +13,7 @@ type Props = {
 export default function PlanCard(props: Props) {
     return <>
         {props.shift.map(value => (
-            <TableContainer component={Paper} key={Math.floor(Math.random()*555555)}>
+            <TableContainer component={Paper} key={value.day}>
                 <Table sx={{width: '90%'}} aria-label="customized table">
                     <TableHead>
                         <TableRow>
@@ -22,9 +22,9 @@ export default function PlanCard(props: Props) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {value.shifts.map(shift => (
+                        {value.shifts.map((shift, index) => (
                             <TableRow
-                                key={Math.floor(Math.random()*555555)}
+                                key={index}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
                                 <TableCell component="th" scope="row">
