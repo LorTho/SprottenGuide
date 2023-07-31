@@ -2,17 +2,14 @@ package com.example.backend.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @AllArgsConstructor
 @Data
-@Document("workSchedule")
-public class WorkSchedule {
-    @Id
-    private String id;
+public class WorkScheduleExport {
     private String name;
     private List<ShiftSchedule> drivers;
     private List<ShiftSchedule> kitchen;

@@ -16,9 +16,9 @@ import {WorkSchedule} from "./model/WorkSchedule.tsx";
 
 export default function App() {
     const [employee, setEmployee] = useState<User>()
-    const [codeNumber, setCodeNumber] = useState<string>("0")
+    const [codeNumber, setCodeNumber] = useState<string>("0000")
 
-    const[schedules, setSchedules] = useState<WorkSchedule[]>([])
+    const[currentWeek, setCurrentWeek] = useState<WorkSchedule>()
 
     useEffect(getEmployee, [codeNumber])
     useEffect(getWorkSchedule, [])
@@ -58,14 +58,16 @@ export default function App() {
         }
     }
     function getWorkSchedule(){
-        axios.get("/api/schedule")
+        axios.get("/api/schedule/" +"current")
             .then(response =>{
-                setSchedules(response.data)
+                setCurrentWeek(response.data)
             })
     }
 
     if(employee === undefined)
         return <h1>Mitarbeiter wird geladen!</h1>
+    if(currentWeek === undefined)
+        return <h1>Arbeitsplan wird geladen!</h1>
     return (
         <>
             <Routes>
@@ -76,7 +78,7 @@ export default function App() {
                 <Route path={"/user/nextWeek"} element={<NextWeek user={employee} onChangeTimes={handleWishTime}/>}/>
                 <Route path={"/register"} element={<Register onRegister={handleRegister}/>}/>
                 <Route path={"/schedule/scheduleSite"} element={<SchedulePage/>}/>
-                <Route path={"/schedule/actualWeek"} element={<CurrentWeek schedule={schedules}/>}/>
+                <Route path={"/schedule/actualWeek"} element={<CurrentWeek schedule={currentWeek}/>}/>
                 <Route path={"/schedule/nextWeek"} element={<CreateSchedule/>}/>
             </Routes>
         </>

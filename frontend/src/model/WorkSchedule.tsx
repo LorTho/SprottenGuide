@@ -1,5 +1,5 @@
 export type WorkSchedule = {
-    id: string,
+    name: string,
     drivers: ShiftSchedule[],
     kitchen: ShiftSchedule[],
 }

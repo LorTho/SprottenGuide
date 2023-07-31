@@ -5,7 +5,7 @@ export default function SchedulePage(){
     return(
     <>
         <main>
-            <HeadElement title={"Dienstplan"}/>
+            <HeadElement title={"Plans"}/>
 
             <Link to={"/schedule/actualWeek"}>
                 <button>Aktueller Plan</button>

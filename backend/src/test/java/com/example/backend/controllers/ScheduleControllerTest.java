@@ -1,6 +1,7 @@
 package com.example.backend.controllers;
 
 import com.example.backend.model.WorkSchedule;
+import com.example.backend.model.WorkScheduleExport;
 import com.example.backend.service.ScheduleService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -24,11 +25,12 @@ class ScheduleControllerTest {
     ObjectMapper objectMapper= new ObjectMapper();
     @Test
     void getWorkSchedule() throws Exception {
-        WorkSchedule workSchedule = new WorkSchedule("kw 30", new ArrayList<>(), new ArrayList<>());
-        String expected = objectMapper.writeValueAsString(List.of(workSchedule));
+        WorkSchedule workSchedule = new WorkSchedule("SomeID", "SomeName", new ArrayList<>(), new ArrayList<>());
+        WorkScheduleExport expectedSchedule = new WorkScheduleExport("SomeName", new ArrayList<>(), new ArrayList<>());
+        String expected = objectMapper.writeValueAsString(expectedSchedule);
         scheduleService.addWorkSchedule(workSchedule);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/schedule"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/schedule/SomeName"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(expected));
     }
