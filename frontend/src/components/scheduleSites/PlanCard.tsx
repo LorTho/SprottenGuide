@@ -6,6 +6,7 @@ import TableContainer from '@mui/material/TableContainer';
 import {ShiftSchedule} from "../../model/WorkSchedule.tsx";
 import Paper from "@mui/material/Paper";
 import TableBody from "@mui/material/TableBody";
+import { nanoid } from 'nanoid'
 
 type Props = {
     shift: ShiftSchedule[],
@@ -22,9 +23,9 @@ export default function PlanCard(props: Props) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {value.shifts.map((shift, index) => (
+                        {value.shifts.map(shift => (
                             <TableRow
-                                key={index}
+                                key={nanoid()}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
                                 <TableCell component="th" scope="row">
