@@ -9,7 +9,7 @@
   max-height: 20%;
 }
 .Header-Div{
-  height: 10%;
+  max-height: 10%;
   background-color: rgba(75, 15, 27, 0.38);
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -39,3 +39,6 @@ button {
   border-radius: 5px;
   margin-top: 10%;
 }
+ .plan{
+   display: flex;
+ }

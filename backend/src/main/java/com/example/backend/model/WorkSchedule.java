@@ -13,6 +13,6 @@ import java.util.List;
 public class WorkSchedule {
     @Id
     private String id;
-    private List<ShiftSchedule> thisWeek;
-    private List<ShiftSchedule> nextWeek;
+    private List<ShiftSchedule> drivers;
+    private List<ShiftSchedule> kitchen;
 }

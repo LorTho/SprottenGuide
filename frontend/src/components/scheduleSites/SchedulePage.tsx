@@ -8,10 +8,10 @@ export default function SchedulePage(){
             <HeadElement title={"Dienstplan"}/>
 
             <Link to={"/schedule/actualWeek"}>
-                <button>Arbeitsschichten</button>
+                <button>Aktueller Plan</button>
             </Link>
             <Link to={"/schedule/nextWeek"}>
-                <button>Dienstplanwunsch</button>
+                <button>neuer Plan</button>
             </Link>
         </main>
     </>

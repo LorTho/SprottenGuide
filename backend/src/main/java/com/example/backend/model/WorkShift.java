@@ -3,11 +3,9 @@ package com.example.backend.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
-public class ShiftSchedule {
-    private String day;
-    private List<WorkShift> shifts;
+public class WorkShift {
+    private String employeeId;
+    private int startTime;
 }

@@ -9,7 +9,7 @@ export default function HeadElement(props: Props) {
             <div className={"Header-Div"}>
                 <div>
                     <Link to={"/"}>
-                        <img src={"/public/Logo.png"} alt={"logo"} className={"logo-Header"}/>
+                        <img src={"/Logo.png"} alt={"logo"} className={"logo-Header"}/>
                     </Link>
                 </div>
                 <div>
