@@ -47,7 +47,14 @@ class ScheduleServiceTest {
                 new ArrayList<>(List.of(
                         new ShiftSchedule("MONDAY", List.of(
                                 new WorkShift("0000", 1100))))));
-        List<WorkSchedule> workScheduleList = new ArrayList<>(List.of(workSchedule));
+        WorkSchedule workSchedule2 = new WorkSchedule("SomeOtherId", "SomeOtherName",
+                new ArrayList<>(List.of(
+                        new ShiftSchedule("MONDAY", List.of(
+                                new WorkShift("0000", 1100))))),
+                new ArrayList<>(List.of(
+                        new ShiftSchedule("MONDAY", List.of(
+                                new WorkShift("0000", 1100))))));
+        List<WorkSchedule> workScheduleList = new ArrayList<>(List.of(workSchedule, workSchedule2));
         Employee employee = new Employee("0000", "Test", "Test", new ArrayList<>(), new ArrayList<>());
         //When
         when(scheduleRepo.findAll()).thenReturn(workScheduleList);
