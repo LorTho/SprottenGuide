@@ -1,34 +1,17 @@
-import {User} from "../model/User.tsx";
 import {Link} from "react-router-dom";
+import HeadElement from "./StyleElements.tsx";
 
-type Props = {
-    user: User,
-}
-export default function LandingPage(props: Props) {
+export default function LandingPage() {
 
-    if (props.user.id === "0")
-        return (
-            <>
-                <img src={"Logo.png"} alt={"logo"} className={"logo-landing"}/>
-                <Link to={"/login"}>
-                    <button>Login</button>
-                </Link>
-                <Link to={"/register"} relative={"path"}>
-                    <button>Register</button>
-                </Link>
-            </>
-        )
     return (
         <>
             <main>
-                <img src={"Logo.png"} alt={"logo"} className={"logo-landing"}/>
-                <h2>{props.user.firstName}</h2>
-                <button>Logout</button>
-                <Link to={"/actualWeek"}>
-                    <button>Arbeitsschichten</button>
+                <HeadElement title={"Welcome"}/>
+                <Link to={"/user/userSpace"}>
+                    <button>UserSide</button>
                 </Link>
-                <Link to={"/nextWeek"}>
-                    <button>Dienstplanwunsch</button>
+                <Link to={"/schedule/scheduleSite"}>
+                    <button>Arbeitsplan</button>
                 </Link>
             </main>
         </>

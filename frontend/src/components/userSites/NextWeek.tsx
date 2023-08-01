@@ -1,5 +1,5 @@
-import HeadElement from "./StyleElements.tsx";
-import {Time, User} from "../model/User.tsx";
+import HeadElement from "../StyleElements.tsx";
+import {Time, User} from "../../model/User.tsx";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";

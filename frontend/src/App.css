@@ -1,5 +1,4 @@
 #root {
-  max-width: 1280px;
   margin: 0 auto;
   text-align: center;
 }
@@ -9,7 +8,7 @@
   max-height: 20%;
 }
 .Header-Div{
-  height: 10%;
+  max-height: 10%;
   background-color: rgba(75, 15, 27, 0.38);
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -37,5 +36,8 @@ button {
   width: 100%;
   height: 40px;
   border-radius: 5px;
-  margin-top: 10%;
+  margin-top: 5px;
 }
+ .plan{
+   display: flex;
+ }

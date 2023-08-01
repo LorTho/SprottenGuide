@@ -1,4 +1,4 @@
-import {User} from "../model/User.tsx";
+import {User} from "../../model/User.tsx";
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -7,7 +7,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import HeadElement from "./StyleElements.tsx";
+import HeadElement from "../StyleElements.tsx";
+
 
 type Props = {
     user: User,
