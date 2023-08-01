@@ -9,7 +9,7 @@ export default function CurrentWeek(props: Props) {
     return <>
         <HeadElement title={"Zeiten"}/>
         <div className={"plan"}>
-        <PlanCard key={1} shift={props.schedule.drivers}/>))
+        <PlanCard key={1} shift={props.schedule.drivers}/>
         </div>
         <hr/>
         <div className={"plan"}>

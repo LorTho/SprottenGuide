@@ -19,7 +19,7 @@ export default function PlanCard(props: Props) {
                     <TableHead>
                         <TableRow>
                             <TableCell>{value.day}</TableCell>
-                            <TableCell>{new Date().getDate()}</TableCell>
+                            <TableCell>  </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
