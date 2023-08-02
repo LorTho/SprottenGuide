@@ -13,14 +13,12 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20%;
-
 }
 
 .logo-Header{
   width: 100%;
   height: 100%;
 }
-
 
 .shifts {
   margin: auto;
@@ -41,3 +39,15 @@ button {
  .plan{
    display: flex;
  }
+
+ .table-Selection{
+   width: min-content;
+   display: grid;
+   grid-template-columns: 1fr 1fr 1fr;
+   grid-template-rows: auto;
+ }
+.table-Selection-Button{
+  height: min-content;
+  width: min-content;
+  background-color: rgba(98, 152, 52, 0.4);
+}
