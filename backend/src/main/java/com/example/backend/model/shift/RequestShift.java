@@ -1,4 +1,4 @@
-package com.example.backend.model;
+package com.example.backend.model.shift;
 
 public record RequestShift(
     String day,

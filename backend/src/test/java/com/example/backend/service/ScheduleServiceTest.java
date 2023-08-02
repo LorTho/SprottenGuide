@@ -1,6 +1,10 @@
 package com.example.backend.service;
 
-import com.example.backend.model.*;
+import com.example.backend.model.employee.Employee;
+import com.example.backend.model.schedule.ShiftSchedule;
+import com.example.backend.model.schedule.WorkSchedule;
+import com.example.backend.model.schedule.WorkScheduleNoId;
+import com.example.backend.model.shift.WorkShift;
 import com.example.backend.repository.EmployeeRepo;
 import com.example.backend.repository.ScheduleRepo;
 import org.junit.jupiter.api.Assertions;
@@ -32,7 +36,7 @@ class ScheduleServiceTest {
     @Test
     void getSchedule_whenGetWorkSchedule() {
         //Given
-        WorkScheduleExport expected = new WorkScheduleExport();
+        WorkScheduleNoId expected = new WorkScheduleNoId();
         expected.setName("SomeName");
         expected.setDrivers(new ArrayList<>(List.of(
                 new ShiftSchedule("MONDAY", List.of(
@@ -59,7 +63,7 @@ class ScheduleServiceTest {
         //When
         when(scheduleRepo.findAll()).thenReturn(workScheduleList);
         when(employeeRepo.findById("0000")).thenReturn(Optional.of(employee));
-        WorkScheduleExport actualWorkSchedule = scheduleService.getWorkSchedule("SomeName");
+        WorkScheduleNoId actualWorkSchedule = scheduleService.getWorkSchedule("SomeName");
         //Then
         verify(scheduleRepo).findAll();
         Assertions.assertEquals(expected, actualWorkSchedule);

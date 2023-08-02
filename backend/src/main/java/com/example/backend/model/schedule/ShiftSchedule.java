@@ -1,5 +1,6 @@
-package com.example.backend.model;
+package com.example.backend.model.schedule;
 
+import com.example.backend.model.shift.WorkShift;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

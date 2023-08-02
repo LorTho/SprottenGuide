@@ -1,6 +1,10 @@
 package com.example.backend.service;
 
-import com.example.backend.model.*;
+import com.example.backend.model.employee.Employee;
+import com.example.backend.model.schedule.ShiftSchedule;
+import com.example.backend.model.schedule.WorkSchedule;
+import com.example.backend.model.schedule.WorkScheduleNoId;
+import com.example.backend.model.shift.WorkShift;
 import com.example.backend.repository.ScheduleRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,8 +19,8 @@ public class ScheduleService {
     private final ScheduleRepo scheduleRepo;
     private final EmployeeService employeeService;
 
-    public WorkScheduleExport getWorkSchedule(String name) {
-        WorkScheduleExport getSchedule = new WorkScheduleExport();
+    public WorkScheduleNoId getWorkSchedule(String name) {
+        WorkScheduleNoId getSchedule = new WorkScheduleNoId();
         getSchedule.setName(name);
         List<WorkSchedule> list = scheduleRepo.findAll();
         for (WorkSchedule listB : list) {
@@ -53,4 +57,5 @@ public class ScheduleService {
         scheduleRepo.insert(newSchedule);
         return newSchedule;
     }
+
 }

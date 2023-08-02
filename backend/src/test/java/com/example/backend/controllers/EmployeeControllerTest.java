@@ -1,6 +1,6 @@
 package com.example.backend.controllers;
 
-import com.example.backend.model.Employee;
+import com.example.backend.model.employee.Employee;
 import com.example.backend.service.EmployeeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;

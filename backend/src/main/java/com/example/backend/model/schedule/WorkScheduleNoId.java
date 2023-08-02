@@ -1,4 +1,4 @@
-package com.example.backend.model;
+package com.example.backend.model.schedule;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Data
-public class WorkScheduleExport {
+public class WorkScheduleNoId {
     private String name;
     private List<ShiftSchedule> drivers;
     private List<ShiftSchedule> kitchen;

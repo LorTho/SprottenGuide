@@ -1,8 +1,8 @@
 package com.example.backend.service;
 
-import com.example.backend.model.Employee;
-import com.example.backend.model.RequestShift;
-import com.example.backend.model.Shifts;
+import com.example.backend.model.employee.Employee;
+import com.example.backend.model.shift.RequestShift;
+import com.example.backend.model.shift.Shifts;
 import com.example.backend.repository.EmployeeRepo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
