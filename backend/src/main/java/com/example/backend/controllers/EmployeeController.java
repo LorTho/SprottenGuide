@@ -18,6 +18,10 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
+    @GetMapping
+    public List<EmployeeWithoutShifts> getEmployeeList(){
+        return employeeService.getEmployeeList();
+    }
     @GetMapping({"/{id}"})
     public Employee getEmployee(@PathVariable String id){
         return employeeService.getEmployee(id);

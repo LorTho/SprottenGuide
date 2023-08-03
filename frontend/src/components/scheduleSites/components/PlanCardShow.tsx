@@ -15,11 +15,10 @@ export default function PlanCardShow(props: Props) {
     return <>
         {props.shift.map(value => (
             <TableContainer component={Paper} key={value.day}>
-                <Table sx={{width: '90%'}} aria-label="customized table">
+                <Table sx={{width: '14%'}} aria-label="customized table">
                     <TableHead>
                         <TableRow>
                             <TableCell size={"small"}>{value.day}</TableCell>
-                            <TableCell size={"small"}>  </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -28,10 +27,10 @@ export default function PlanCardShow(props: Props) {
                                 key={nanoid()}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
-                                <TableCell size={"small"} component="th" scope="row">
+                                <TableCell size={"small"} align="left" component="th" scope="row">
                                     {shift.startTime}
                                 </TableCell>
-                                <TableCell size={"small"} align="right">{shift.employeeId}</TableCell>
+                                <TableCell size={"small"} align="left">{shift.employeeId}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

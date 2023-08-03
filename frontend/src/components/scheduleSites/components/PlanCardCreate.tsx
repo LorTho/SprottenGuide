@@ -9,28 +9,52 @@ import SelectButton from "./SelectButton.tsx";
 import TableContainer from "@mui/material/TableContainer";
 import {useState} from "react";
 import {ShiftSchedule} from "../../../model/WorkSchedule.tsx";
+import {DtoUser} from "../../../model/User.tsx";
 
 type Props = {
     day: ShiftSchedule,
+    userList: DtoUser[],
     onUpdate: (nextWeekShift: ShiftSchedule) => void;
 }
 export default function PlanCardCreate(props: Props) {
     const [targetDay, setTargetDay] = useState<ShiftSchedule>(props.day)
-    const names = ["Lorenz", "Arnold", "Rüdiger", "Denise"]
+    const userNames = getUserAtributes()
+
+    function getUserAtributes(): string[] {
+        const getUserNames: string[] = []
+        props.userList.forEach(user => {
+            getUserNames.push(user.firstName)
+        })
+        return getUserNames
+    }
 
     function setEmployee(name: string, shiftNumber: number) {
+        const userId = getUserId(name)
         const newTargetDay = {
-                ...targetDay,
-                shifts: targetDay.shifts.map((value, index) => {
-                    if (index === shiftNumber) {
-                        return {employeeId: name, startTime: value.startTime}
-                    } else {
-                        return value
-                    }
-                })
-            }
+            ...targetDay,
+            shifts: targetDay.shifts.map((value, index) => {
+                if (index === shiftNumber) {
+                    return {employeeId: userId, startTime: value.startTime}
+                } else {
+                    return value
+                }
+            })
+        }
         setTargetDay(newTargetDay)
         props.onUpdate(newTargetDay)
+    }
+
+    function getUserId(name: string) {
+        const getUser = props.userList.find(user => user.firstName === name)
+        if(getUser === undefined)
+            return "--"
+        return getUser.id
+    }
+    function getUserName(id: string) {
+        const getUser = props.userList.find(user => user.id === id)
+        if(getUser === undefined)
+            return "--"
+        return getUser.firstName
     }
 
     return <TableContainer component={Paper} key={321}>
@@ -51,10 +75,11 @@ export default function PlanCardCreate(props: Props) {
                             sx={{'&:last-child td, &:last-child th': {border: 0}}}
                         >
                             <TableCell size={"small"} component="th" scope="row"> {value.startTime} </TableCell>
-                            <TableCell size={"small"}> {value.employeeId} </TableCell>
+                            <TableCell size={"small"}> {getUserName(value.employeeId)} </TableCell>
                             <TableCell size={"small"} align="right">
                                 <div className={"table-Selection"}>
-                                    <SelectButton names={names} name={(nameToChange) => setEmployee(nameToChange, index)}/>
+                                    <SelectButton names={userNames}
+                                                  name={(nameToChange) => setEmployee(nameToChange, index)}/>
                                 </div>
                             </TableCell>
                         </TableRow>

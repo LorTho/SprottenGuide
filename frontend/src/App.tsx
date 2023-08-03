@@ -18,10 +18,12 @@ export default function App() {
     const [employee, setEmployee] = useState<User>()
     const [codeNumber, setCodeNumber] = useState<string>("0000")
 
-    const[currentWeek, setCurrentWeek] = useState<WorkSchedule>()
+    const [userList, setUserList] = useState<DtoUser[]>([])
+    const [currentWeek, setCurrentWeek] = useState<WorkSchedule>()
 
     useEffect(getEmployee, [codeNumber])
     useEffect(getWorkSchedule, [])
+    useEffect(getUserList, [])
 
     const navigate = useNavigate()
 
@@ -33,17 +35,20 @@ export default function App() {
             })
         navigate("/")
     }
-    function handleLogin(code:string){
+
+    function handleLogin(code: string) {
         setCodeNumber(() => code)
         navigate("/")
     }
-    function handleLogout(){
+
+    function handleLogout() {
         setCodeNumber(() => "0")
         navigate("/")
     }
-    function handleWishTime(wishTime: Time[]){
+
+    function handleWishTime(wishTime: Time[]) {
         axios.put("/api/employee/" + codeNumber, wishTime)
-            .then(response=>{
+            .then(response => {
                 setEmployee(response.data)
             })
         navigate("/")
@@ -57,16 +62,24 @@ export default function App() {
                 })
         }
     }
-    function getWorkSchedule(){
-        axios.get("/api/schedule/" +"current")
-            .then(response =>{
+
+    function getUserList() {
+        axios.get("/api/employee")
+            .then(response => {
+                setUserList(response.data)
+            })
+    }
+
+    function getWorkSchedule() {
+        axios.get("/api/schedule/" + "current")
+            .then(response => {
                 setCurrentWeek(response.data)
             })
     }
 
-    if(employee === undefined)
+    if (employee === undefined)
         return <h1>Mitarbeiter wird geladen!</h1>
-    if(currentWeek === undefined)
+    if (currentWeek === undefined)
         return <h1>Arbeitsplan wird geladen!</h1>
     return (
         <>
@@ -79,7 +92,7 @@ export default function App() {
                 <Route path={"/register"} element={<Register onRegister={handleRegister}/>}/>
                 <Route path={"/schedule/scheduleSite"} element={<SchedulePage/>}/>
                 <Route path={"/schedule/actualWeek"} element={<CurrentWeek schedule={currentWeek}/>}/>
-                <Route path={"/schedule/nextWeek"} element={<CreateSchedule/>}/>
+                <Route path={"/schedule/nextWeek"} element={<CreateSchedule userlist={userList}/>}/>
             </Routes>
         </>
     )

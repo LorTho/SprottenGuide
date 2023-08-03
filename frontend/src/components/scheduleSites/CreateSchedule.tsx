@@ -3,8 +3,12 @@ import PlanCardCreate from "./components/PlanCardCreate.tsx";
 import {useState} from "react";
 import {exampleWorkShift, ShiftSchedule, WorkSchedule} from "../../model/WorkSchedule.tsx";
 import {nanoid} from "nanoid";
+import {DtoUser} from "../../model/User.tsx";
 
-export default function CreateSchedule() {
+type Props ={
+    userlist: DtoUser[],
+}
+export default function CreateSchedule(props: Props) {
     const [workSchedule, setWorkSchedule] = useState<WorkSchedule>(exampleWorkShift)
 
     function handleUpdateShift(kind: string, nextWeekShift: ShiftSchedule) {
@@ -41,7 +45,7 @@ export default function CreateSchedule() {
         <h3>Driver</h3>
         <div className={"plan"}>
             {workSchedule.drivers.map(shift => {
-                return <PlanCardCreate key={nanoid()} day={shift}
+                return <PlanCardCreate key={nanoid()} day={shift} userList={props.userlist}
                                        onUpdate={(nextWeekShift) => handleUpdateShift("drivers", nextWeekShift)}/>
             })}
         </div>
@@ -49,10 +53,10 @@ export default function CreateSchedule() {
         <h3>Kitchen</h3>
         <div className={"plan"}>
             {workSchedule.kitchen.map(shift => {
-                return <PlanCardCreate key={nanoid()} day={shift}
+                return <PlanCardCreate key={nanoid()} day={shift} userList={props.userlist}
                                        onUpdate={(nextWeekShift) => handleUpdateShift("kitchen", nextWeekShift)}/>
             })}
         </div>
-        <button onSubmit={handelSubmit}></button>
+        <button onSubmit={handelSubmit}> Submit </button>
     </>
 }
