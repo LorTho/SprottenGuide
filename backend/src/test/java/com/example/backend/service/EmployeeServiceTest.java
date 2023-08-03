@@ -1,6 +1,7 @@
 package com.example.backend.service;
 
 import com.example.backend.model.employee.Employee;
+import com.example.backend.model.employee.EmployeeWithoutShifts;
 import com.example.backend.model.shift.RequestShift;
 import com.example.backend.model.shift.Shifts;
 import com.example.backend.repository.EmployeeRepo;
@@ -68,5 +69,22 @@ class EmployeeServiceTest {
                 new RequestShift("MONDAY", "11:00:00")
         ));
         Assertions.assertThrows(NoSuchElementException.class, () -> employeeService.changeWishTime("wrongId", wishList));
+    }
+    @Test
+    void getEmployeeListWithoutShifts_WhenGetAllEmployees(){
+        Employee newEmployee = new Employee("1111", "test", "test", null, List.of(
+                new Shifts("MONDAY", LocalTime.parse("11:00:00"))
+        ));
+        EmployeeWithoutShifts employeeWithoutShifts= new EmployeeWithoutShifts();
+        employeeWithoutShifts.setId(newEmployee.getId());
+        employeeWithoutShifts.setFirstName(newEmployee.getFirstName());
+        employeeWithoutShifts.setLastName(newEmployee.getLastName());
+        List<EmployeeWithoutShifts> expectedList = new ArrayList<>(List.of(employeeWithoutShifts));
+
+        when(employeeRepo.findAll()).thenReturn(List.of(newEmployee));
+        List<EmployeeWithoutShifts> actualEmployeeList = employeeService.getEmployeeList();
+
+        verify(employeeRepo).findAll();
+        Assertions.assertEquals(expectedList, actualEmployeeList);
     }
 }
