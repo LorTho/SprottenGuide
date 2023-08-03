@@ -1,5 +1,5 @@
 import HeadElement from "../StyleElements.tsx";
-import PlanCard from "./components/PlanCard.tsx";
+import PlanCardShow from "./components/PlanCardShow.tsx";
 import {WorkSchedule} from "../../model/WorkSchedule.tsx";
 
 type Props = {
@@ -9,11 +9,11 @@ export default function CurrentWeek(props: Props) {
     return <>
         <HeadElement title={"Zeiten"}/>
         <div className={"plan"}>
-            <PlanCard key={1} shift={props.schedule.drivers}/>
+            <PlanCardShow key={1} shift={props.schedule.drivers}/>
         </div>
         <hr/>
         <div className={"plan"}>
-            <PlanCard key={2} shift={props.schedule.kitchen}/>
+            <PlanCardShow key={2} shift={props.schedule.kitchen}/>
         </div>
     </>
 }

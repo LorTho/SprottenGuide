@@ -17,7 +17,7 @@ type Props={
 
 export default function SelectButton(props:Props) {
     const [open, setOpen] = useState(false);
-    const [selectedValue, setSelectedValue] = useState("");
+    const [selectedValue, setSelectedValue] = useState("Auswählen");
 
     nameString = props.names
 

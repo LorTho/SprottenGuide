@@ -11,7 +11,7 @@ import { nanoid } from 'nanoid'
 type Props = {
     shift: ShiftSchedule[],
 }
-export default function PlanCard(props: Props) {
+export default function PlanCardShow(props: Props) {
     return <>
         {props.shift.map(value => (
             <TableContainer component={Paper} key={value.day}>

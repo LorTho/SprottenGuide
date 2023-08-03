@@ -1,57 +1,49 @@
 import HeadElement from "../StyleElements.tsx";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
-import TableBody from "@mui/material/TableBody";
-import {nanoid} from "nanoid";
-import TableContainer from "@mui/material/TableContainer";
+import PlanCardCreate from "./components/PlanCardCreate.tsx";
 import {useState} from "react";
-import SelectButton from "./components/SelectButton.tsx";
+import {exampleWorkShift, ShiftSchedule, WorkSchedule} from "../../model/WorkSchedule.tsx";
+import {nanoid} from "nanoid";
 
 export default function CreateSchedule() {
-    const times = ["11:00", "11:00", "17:00", "17:00", "19:00"]
-    const names = ["Lorenz", "Arnold", "Rüdiger", "Denise"]
-    const [active, setActive] = useState("Auswählen")
+    const [workSchedule, setWorkSchedule] = useState<WorkSchedule>(exampleWorkShift)
 
-    function setEmployee(name: string) {
-        setActive(name)
+    function handleUpdateShift(kind: string, nextWeekShift: ShiftSchedule) {
+        let newWorkSchedule = workSchedule
+        if (kind === "drivers") {
+            newWorkSchedule={
+                ...workSchedule,
+                drivers: workSchedule.drivers.map(shifts => {
+                    if (shifts.day === nextWeekShift.day)
+                        return nextWeekShift
+                    return shifts
+                })
+            }
+        }
+        if (kind === "kitchen") {
+            newWorkSchedule={
+                ...workSchedule,
+                kitchen: workSchedule.kitchen.map(shifts => {
+                    if (shifts.day === nextWeekShift.day)
+                        return nextWeekShift
+                    return shifts
+                })
+            }
+        }
+        setWorkSchedule(newWorkSchedule)
+        console.log(newWorkSchedule)
     }
 
+    function handelSubmit(){
 
+    }
     return <>
         <HeadElement title={"Erstellen"}/>
-
-        <TableContainer component={Paper} key={321}>
-            <Table sx={{width: '95%'}} aria-label="customized table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell> StartZeit</TableCell>
-                        <TableCell> Name </TableCell>
-                        <TableCell> </TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-
-                    {times.map(value => {
-                        return (
-                            <TableRow
-                                key={nanoid()}
-                                sx={{'&:last-child td, &:last-child th': {border: 0}}}
-                            >
-                                <TableCell component="th" scope="row"> {value} </TableCell>
-                                <TableCell> {active} </TableCell>
-                                <TableCell align="right">
-                                    <div className={"table-Selection"}>
-                                        <SelectButton names={names} name={setEmployee}/>
-                                    </div>
-                                </TableCell>
-                            </TableRow>
-                        )
-                    })}
-                </TableBody>
-            </Table>
-        </TableContainer>
+        {workSchedule.drivers.map(shift => {
+            return <div key={nanoid()}>
+                    <h3>{shift.day}</h3>
+                    <PlanCardCreate day={shift} onUpdate={(nextWeekShift)=>handleUpdateShift("drivers", nextWeekShift)}/>
+                </div>
+        })})
+        <button onSubmit={handelSubmit}></button>
     </>
 }
