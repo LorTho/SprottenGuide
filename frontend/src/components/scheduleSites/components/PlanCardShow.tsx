@@ -18,8 +18,8 @@ export default function PlanCardShow(props: Props) {
                 <Table sx={{width: '90%'}} aria-label="customized table">
                     <TableHead>
                         <TableRow>
-                            <TableCell>{value.day}</TableCell>
-                            <TableCell>  </TableCell>
+                            <TableCell size={"small"}>{value.day}</TableCell>
+                            <TableCell size={"small"}>  </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -28,10 +28,10 @@ export default function PlanCardShow(props: Props) {
                                 key={nanoid()}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
-                                <TableCell component="th" scope="row">
+                                <TableCell size={"small"} component="th" scope="row">
                                     {shift.startTime}
                                 </TableCell>
-                                <TableCell align="right">{shift.employeeId}</TableCell>
+                                <TableCell size={"small"} align="right">{shift.employeeId}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

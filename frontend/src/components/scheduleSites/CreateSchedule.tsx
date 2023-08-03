@@ -10,7 +10,7 @@ export default function CreateSchedule() {
     function handleUpdateShift(kind: string, nextWeekShift: ShiftSchedule) {
         let newWorkSchedule = workSchedule
         if (kind === "drivers") {
-            newWorkSchedule={
+            newWorkSchedule = {
                 ...workSchedule,
                 drivers: workSchedule.drivers.map(shifts => {
                     if (shifts.day === nextWeekShift.day)
@@ -20,7 +20,7 @@ export default function CreateSchedule() {
             }
         }
         if (kind === "kitchen") {
-            newWorkSchedule={
+            newWorkSchedule = {
                 ...workSchedule,
                 kitchen: workSchedule.kitchen.map(shifts => {
                     if (shifts.day === nextWeekShift.day)
@@ -30,20 +30,29 @@ export default function CreateSchedule() {
             }
         }
         setWorkSchedule(newWorkSchedule)
-        console.log(newWorkSchedule)
     }
 
-    function handelSubmit(){
+    function handelSubmit() {
 
     }
+
     return <>
         <HeadElement title={"Erstellen"}/>
-        {workSchedule.drivers.map(shift => {
-            return <div key={nanoid()}>
-                    <h3>{shift.day}</h3>
-                    <PlanCardCreate day={shift} onUpdate={(nextWeekShift)=>handleUpdateShift("drivers", nextWeekShift)}/>
-                </div>
-        })})
+        <h3>Driver</h3>
+        <div className={"plan"}>
+            {workSchedule.drivers.map(shift => {
+                return <PlanCardCreate key={nanoid()} day={shift}
+                                       onUpdate={(nextWeekShift) => handleUpdateShift("drivers", nextWeekShift)}/>
+            })}
+        </div>
+        <hr/>
+        <h3>Kitchen</h3>
+        <div className={"plan"}>
+            {workSchedule.kitchen.map(shift => {
+                return <PlanCardCreate key={nanoid()} day={shift}
+                                       onUpdate={(nextWeekShift) => handleUpdateShift("kitchen", nextWeekShift)}/>
+            })}
+        </div>
         <button onSubmit={handelSubmit}></button>
     </>
 }

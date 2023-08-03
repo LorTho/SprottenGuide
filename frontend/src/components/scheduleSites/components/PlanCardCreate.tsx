@@ -37,9 +37,9 @@ export default function PlanCardCreate(props: Props) {
         <Table sx={{width: '95%'}} aria-label="customized table">
             <TableHead>
                 <TableRow>
-                    <TableCell> StartZeit</TableCell>
-                    <TableCell> Name </TableCell>
-                    <TableCell> </TableCell>
+                    <TableCell size={"small"}> StartZeit</TableCell>
+                    <TableCell size={"small"}> Name </TableCell>
+                    <TableCell size={"small"}> {targetDay.day}</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
@@ -50,9 +50,9 @@ export default function PlanCardCreate(props: Props) {
                             key={nanoid()}
                             sx={{'&:last-child td, &:last-child th': {border: 0}}}
                         >
-                            <TableCell component="th" scope="row"> {value.startTime} </TableCell>
-                            <TableCell> {value.employeeId} </TableCell>
-                            <TableCell align="right">
+                            <TableCell size={"small"} component="th" scope="row"> {value.startTime} </TableCell>
+                            <TableCell size={"small"}> {value.employeeId} </TableCell>
+                            <TableCell size={"small"} align="right">
                                 <div className={"table-Selection"}>
                                     <SelectButton names={names} name={(nameToChange) => setEmployee(nameToChange, index)}/>
                                 </div>

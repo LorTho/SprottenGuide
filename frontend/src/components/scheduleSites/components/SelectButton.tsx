@@ -33,7 +33,7 @@ export default function SelectButton(props:Props) {
 
     return (
         <div>
-            <Button variant="outlined" onClick={handleClickOpen}>
+            <Button size="small" variant="outlined" onClick={handleClickOpen}>
                 Auswahl
             </Button>
             <SimpleDialog
