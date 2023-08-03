@@ -26,11 +26,7 @@ public class EmployeeService {
 
     public Employee getEmployee(String id) {
         Optional<Employee> employee = employeeRepo.findById(id);
-        if (employee.isPresent()) {
-            return employee.get();
-        } else {
-            return new Employee("0","--","--", new ArrayList<>(),new ArrayList<>());
-        }
+        return employee.orElseGet(() -> new Employee("0", "--", "--", new ArrayList<>(), new ArrayList<>()));
     }
     public List<EmployeeWithoutShifts> getEmployeeList() {
         List<Employee> allEmployee = employeeRepo.findAll();
