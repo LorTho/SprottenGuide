@@ -20,9 +20,11 @@ export default function App() {
 
     const [userList, setUserList] = useState<DtoUser[]>([])
     const [currentWeek, setCurrentWeek] = useState<WorkSchedule>()
+    const [nextWeek, setNextWeek] = useState<WorkSchedule>()
 
     useEffect(getEmployee, [codeNumber])
-    useEffect(getWorkSchedule, [])
+    useEffect(getCurrentWeekSchedule, [])
+    useEffect(getNextWeekSchedule, [])
     useEffect(getUserList, [])
 
     const navigate = useNavigate()
@@ -53,6 +55,13 @@ export default function App() {
             })
         navigate("/")
     }
+    function handleSaveCreateSchedule(workSchedule: WorkSchedule){
+        axios.put("/api/schedule", workSchedule)
+            .then(response=>{
+                setNextWeek(response.data)
+            })
+        navigate("/")
+    }
 
     function getEmployee() {
         if (codeNumber !== undefined) {
@@ -70,10 +79,16 @@ export default function App() {
             })
     }
 
-    function getWorkSchedule() {
+    function getCurrentWeekSchedule() {
         axios.get("/api/schedule/" + "current")
             .then(response => {
                 setCurrentWeek(response.data)
+            })
+    }
+    function getNextWeekSchedule(){
+        axios.get("/api/schedule/" + "next")
+            .then(response => {
+                setNextWeek(response.data)
             })
     }
 
@@ -81,6 +96,8 @@ export default function App() {
         return <h1>Mitarbeiter wird geladen!</h1>
     if (currentWeek === undefined)
         return <h1>Arbeitsplan wird geladen!</h1>
+    if (nextWeek === undefined)
+        return <h1>Wunschplan wird geladen!</h1>
     return (
         <>
             <Routes>
@@ -92,7 +109,7 @@ export default function App() {
                 <Route path={"/register"} element={<Register onRegister={handleRegister}/>}/>
                 <Route path={"/schedule/scheduleSite"} element={<SchedulePage/>}/>
                 <Route path={"/schedule/actualWeek"} element={<CurrentWeek schedule={currentWeek}/>}/>
-                <Route path={"/schedule/nextWeek"} element={<CreateSchedule userlist={userList}/>}/>
+                <Route path={"/schedule/nextWeek"} element={<CreateSchedule nextWeek={nextWeek} userList={userList} onSubmit={handleSaveCreateSchedule}/>}/>
             </Routes>
         </>
     )

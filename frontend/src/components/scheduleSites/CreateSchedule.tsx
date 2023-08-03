@@ -6,7 +6,9 @@ import {nanoid} from "nanoid";
 import {DtoUser} from "../../model/User.tsx";
 
 type Props ={
-    userlist: DtoUser[],
+    nextWeek: WorkSchedule,
+    userList: DtoUser[],
+    onSubmit: (workSchedule: WorkSchedule)=>void,
 }
 export default function CreateSchedule(props: Props) {
     const [workSchedule, setWorkSchedule] = useState<WorkSchedule>(exampleWorkShift)
@@ -37,7 +39,7 @@ export default function CreateSchedule(props: Props) {
     }
 
     function handelSubmit() {
-
+        props.onSubmit(workSchedule)
     }
 
     return <>
@@ -45,7 +47,7 @@ export default function CreateSchedule(props: Props) {
         <h3>Driver</h3>
         <div className={"plan"}>
             {workSchedule.drivers.map(shift => {
-                return <PlanCardCreate key={nanoid()} day={shift} userList={props.userlist}
+                return <PlanCardCreate key={nanoid()} day={shift} userList={props.userList}
                                        onUpdate={(nextWeekShift) => handleUpdateShift("drivers", nextWeekShift)}/>
             })}
         </div>
@@ -53,10 +55,10 @@ export default function CreateSchedule(props: Props) {
         <h3>Kitchen</h3>
         <div className={"plan"}>
             {workSchedule.kitchen.map(shift => {
-                return <PlanCardCreate key={nanoid()} day={shift} userList={props.userlist}
+                return <PlanCardCreate key={nanoid()} day={shift} userList={props.userList}
                                        onUpdate={(nextWeekShift) => handleUpdateShift("kitchen", nextWeekShift)}/>
             })}
         </div>
-        <button onSubmit={handelSubmit}> Submit </button>
+        <button onClick={handelSubmit}> Submit </button>
     </>
 }

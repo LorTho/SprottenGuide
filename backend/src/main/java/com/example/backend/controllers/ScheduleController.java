@@ -19,7 +19,7 @@ public class ScheduleController {
         return scheduleService.getWorkSchedule(name);
     }
 
-    @PostMapping
+    @PutMapping
     public WorkSchedule saveWorkSchedule(@RequestBody WorkScheduleNoId newWorkScheduleNoId){
         WorkSchedule newWorkSchedule = new WorkSchedule(IdService.uuid(), newWorkScheduleNoId.getName(),newWorkScheduleNoId.getDrivers(),newWorkScheduleNoId.getKitchen());
         return scheduleService.addWorkSchedule(newWorkSchedule);

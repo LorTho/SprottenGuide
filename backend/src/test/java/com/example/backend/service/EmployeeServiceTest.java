@@ -41,8 +41,10 @@ class EmployeeServiceTest {
         Assertions.assertEquals(newEmployee, actualEmployee);
     }
     @Test
-    void getNoSuchElementException_WhenGetByWrongId(){
-        Assertions.assertThrows(NoSuchElementException.class, () -> employeeService.getEmployee("wrongId"));
+    void getDummyEmployee_WhenGetByWrongId(){
+        Employee employee = new Employee("0", "--", "--", new ArrayList<>(), new ArrayList<>());
+
+        Assertions.assertEquals(employee, employeeService.getEmployee("wrongId"));
     }
 
     @Test

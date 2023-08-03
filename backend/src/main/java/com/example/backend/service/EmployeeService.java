@@ -29,7 +29,7 @@ public class EmployeeService {
         if (employee.isPresent()) {
             return employee.get();
         } else {
-            throw new NoSuchElementException("employee not found!");
+            return new Employee("0","--","--", new ArrayList<>(),new ArrayList<>());
         }
     }
     public List<EmployeeWithoutShifts> getEmployeeList() {

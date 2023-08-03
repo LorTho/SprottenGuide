@@ -49,7 +49,7 @@ class ScheduleControllerTest {
         String expectedSchedule = objectMapper.writeValueAsString(expected);
 
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/schedule")
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/schedule")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
                     {
