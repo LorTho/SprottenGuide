@@ -4,7 +4,6 @@ import com.example.backend.model.schedule.ShiftSchedule;
 import com.example.backend.model.schedule.WorkSchedule;
 import com.example.backend.model.schedule.WorkScheduleNoId;
 import com.example.backend.model.shift.WorkShift;
-import com.example.backend.repository.EmployeeRepo;
 import com.example.backend.repository.ScheduleRepo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
