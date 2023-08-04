@@ -18,10 +18,14 @@ export default function App() {
     const [employee, setEmployee] = useState<User>()
     const [codeNumber, setCodeNumber] = useState<string>("0000")
 
-    const[currentWeek, setCurrentWeek] = useState<WorkSchedule>()
+    const [userList, setUserList] = useState<DtoUser[]>([])
+    const [currentWeek, setCurrentWeek] = useState<WorkSchedule>()
+    const [nextWeek, setNextWeek] = useState<WorkSchedule>()
 
     useEffect(getEmployee, [codeNumber])
-    useEffect(getWorkSchedule, [])
+    useEffect(getCurrentWeekSchedule, [])
+    useEffect(getNextWeekSchedule, [])
+    useEffect(getUserList, [])
 
     const navigate = useNavigate()
 
@@ -33,18 +37,28 @@ export default function App() {
             })
         navigate("/")
     }
-    function handleLogin(code:string){
+
+    function handleLogin(code: string) {
         setCodeNumber(() => code)
         navigate("/")
     }
-    function handleLogout(){
+
+    function handleLogout() {
         setCodeNumber(() => "0")
         navigate("/")
     }
-    function handleWishTime(wishTime: Time[]){
+
+    function handleWishTime(wishTime: Time[]) {
         axios.put("/api/employee/" + codeNumber, wishTime)
-            .then(response=>{
+            .then(response => {
                 setEmployee(response.data)
+            })
+        navigate("/")
+    }
+    function handleSaveCreateSchedule(workSchedule: WorkSchedule){
+        axios.put("/api/schedule", workSchedule)
+            .then(response=>{
+                setNextWeek(response.data)
             })
         navigate("/")
     }
@@ -57,17 +71,33 @@ export default function App() {
                 })
         }
     }
-    function getWorkSchedule(){
-        axios.get("/api/schedule/" +"current")
-            .then(response =>{
-                setCurrentWeek(response.data)
+
+    function getUserList() {
+        axios.get("/api/employee")
+            .then(response => {
+                setUserList(response.data)
             })
     }
 
-    if(employee === undefined)
+    function getCurrentWeekSchedule() {
+        axios.get("/api/schedule/" + "current")
+            .then(response => {
+                setCurrentWeek(response.data)
+            })
+    }
+    function getNextWeekSchedule(){
+        axios.get("/api/schedule/" + "next")
+            .then(response => {
+                setNextWeek(response.data)
+            })
+    }
+
+    if (employee === undefined)
         return <h1>Mitarbeiter wird geladen!</h1>
-    if(currentWeek === undefined)
+    if (currentWeek === undefined)
         return <h1>Arbeitsplan wird geladen!</h1>
+    if (nextWeek === undefined)
+        return <h1>Wunschplan wird geladen!</h1>
     return (
         <>
             <Routes>
@@ -78,8 +108,8 @@ export default function App() {
                 <Route path={"/user/nextWeek"} element={<NextWeek user={employee} onChangeTimes={handleWishTime}/>}/>
                 <Route path={"/register"} element={<Register onRegister={handleRegister}/>}/>
                 <Route path={"/schedule/scheduleSite"} element={<SchedulePage/>}/>
-                <Route path={"/schedule/actualWeek"} element={<CurrentWeek schedule={currentWeek}/>}/>
-                <Route path={"/schedule/nextWeek"} element={<CreateSchedule/>}/>
+                <Route path={"/schedule/actualWeek"} element={<CurrentWeek schedule={currentWeek} userList={userList}/>}/>
+                <Route path={"/schedule/nextWeek"} element={<CreateSchedule nextWeek={nextWeek} userList={userList} onSubmit={handleSaveCreateSchedule}/>}/>
             </Routes>
         </>
     )

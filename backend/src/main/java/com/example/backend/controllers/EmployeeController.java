@@ -1,9 +1,9 @@
 package com.example.backend.controllers;
 
-import com.example.backend.model.EmployeeWithoutShifts;
-import com.example.backend.model.Employee;
+import com.example.backend.model.employee.EmployeeWithoutShifts;
+import com.example.backend.model.employee.Employee;
 
-import com.example.backend.model.RequestShift;
+import com.example.backend.model.shift.RequestShift;
 import com.example.backend.service.EmployeeService;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +18,10 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
+    @GetMapping
+    public List<EmployeeWithoutShifts> getEmployeeList(){
+        return employeeService.getEmployeeList();
+    }
     @GetMapping({"/{id}"})
     public Employee getEmployee(@PathVariable String id){
         return employeeService.getEmployee(id);

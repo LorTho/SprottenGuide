@@ -7,20 +7,27 @@
   max-width: 100%;
   max-height: 20%;
 }
+
 .Header-Div{
-  max-height: 10%;
+  max-height: min-content;
   background-color: rgba(75, 15, 27, 0.38);
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20%;
+  justify-self: stretch;
+  grid-template-columns: 1fr 3fr;
 
+}
+.Header-Div > div{
+  max-height: 100%;
+  justify-content: center;
+}
+.Header-Div > div >h1 {
+  height: 30px;
 }
 
 .logo-Header{
   width: 100%;
   height: 100%;
 }
-
 
 .shifts {
   margin: auto;
@@ -41,3 +48,15 @@ button {
  .plan{
    display: flex;
  }
+
+ .table-Selection{
+   width: min-content;
+   display: grid;
+   grid-template-columns: 1fr 1fr 1fr;
+   grid-template-rows: auto;
+ }
+.table-Selection-Button{
+  height: min-content;
+  width: min-content;
+  background-color: rgba(98, 152, 52, 0.4);
+}
