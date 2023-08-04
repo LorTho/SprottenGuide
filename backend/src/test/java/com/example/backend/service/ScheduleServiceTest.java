@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
@@ -101,5 +102,9 @@ class ScheduleServiceTest {
         verify(scheduleRepo).findAll();
         verify(scheduleRepo).findById("1234567890");
         Assertions.assertEquals(expected, actual);
+    }
+    @Test
+    void getException_whenUnknownNameAndDefaultNotFound(){
+        Assertions.assertThrows(NoSuchElementException.class, () -> scheduleService.getWorkSchedule("WrongName"));
     }
 }

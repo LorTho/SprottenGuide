@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -34,7 +35,7 @@ public class ScheduleService {
                 getSchedule.setName(defaultSchedule.getName());
                 getSchedule.setDrivers(defaultSchedule.getDrivers());
                 getSchedule.setKitchen(defaultSchedule.getKitchen());
-            }
+            }else throw new NoSuchElementException("No defaultSchedule existing! please contact your admin");
         }
         return getSchedule;
     }
