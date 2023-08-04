@@ -22,11 +22,23 @@ class ScheduleServiceTest {
     void getWorkSchedule_whenAddNewSchedule() {
         //Given
         WorkSchedule newWorkSchedule = new WorkSchedule("SomeId", "SomeName", new ArrayList<>(), new ArrayList<>());
-
         //When
         WorkSchedule actualWorkSchedule = scheduleService.addWorkSchedule(newWorkSchedule);
         //Then
         Assertions.assertEquals(newWorkSchedule, actualWorkSchedule);
+    }
+    @Test
+    void saveWorkSchedule_whenAddNewSchedule() {
+        //Given
+        WorkSchedule newWorkSchedule = new WorkSchedule("SomeId", "SomeName", new ArrayList<>(), new ArrayList<>());
+        WorkSchedule existingSchedule = new WorkSchedule("SomeOtherId", "SomeName", new ArrayList<>(), new ArrayList<>());
+        List<WorkSchedule> existingSchedules = new ArrayList<>();
+        existingSchedules.add(existingSchedule);
+        //When
+        when(scheduleRepo.findAll()).thenReturn(existingSchedules);
+        WorkSchedule actualWorkSchedule = scheduleService.addWorkSchedule(newWorkSchedule);
+        //Then
+        Assertions.assertEquals(existingSchedule, actualWorkSchedule);
     }
 
     @Test
