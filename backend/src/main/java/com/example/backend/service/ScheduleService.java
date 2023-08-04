@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,13 +28,11 @@ public class ScheduleService {
             }
         }
         if(!findSuccess) {
-            Optional<WorkSchedule> schedule = scheduleRepo.findById("1234567890");
-            if(schedule.isPresent()) {
-                WorkSchedule defaultSchedule = schedule.get();
+            WorkSchedule defaultSchedule = scheduleRepo.findById("1234567890")
+                    .orElseThrow(()-> new NoSuchElementException("No defaultSchedule existing! please contact your admin"));
                 getSchedule.setName(defaultSchedule.getName());
                 getSchedule.setDrivers(defaultSchedule.getDrivers());
                 getSchedule.setKitchen(defaultSchedule.getKitchen());
-            }else throw new NoSuchElementException("No defaultSchedule existing! please contact your admin");
         }
         return getSchedule;
     }
