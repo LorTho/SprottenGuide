@@ -1,4 +1,4 @@
-import Button from '@mui/material/Button';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -7,6 +7,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import {useState} from "react";
 import { nanoid } from 'nanoid'
+import {IconButton} from "@mui/material";
 
 let nameString: string[];
 
@@ -33,9 +34,9 @@ export default function SelectButton(props:Props) {
 
     return (
         <div>
-            <Button size="small" variant="outlined" onClick={handleClickOpen}>
-                Auswahl
-            </Button>
+            <IconButton color={"primary"} onClick={handleClickOpen}>
+                <PersonAddIcon />
+            </IconButton>
             <SimpleDialog
                 selectedValue={selectedValue}
                 open={open}
