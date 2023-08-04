@@ -108,7 +108,7 @@ export default function App() {
                 <Route path={"/user/nextWeek"} element={<NextWeek user={employee} onChangeTimes={handleWishTime}/>}/>
                 <Route path={"/register"} element={<Register onRegister={handleRegister}/>}/>
                 <Route path={"/schedule/scheduleSite"} element={<SchedulePage/>}/>
-                <Route path={"/schedule/actualWeek"} element={<CurrentWeek schedule={currentWeek}/>}/>
+                <Route path={"/schedule/actualWeek"} element={<CurrentWeek schedule={currentWeek} userList={userList}/>}/>
                 <Route path={"/schedule/nextWeek"} element={<CreateSchedule nextWeek={nextWeek} userList={userList} onSubmit={handleSaveCreateSchedule}/>}/>
             </Routes>
         </>

@@ -7,11 +7,20 @@ import {ShiftSchedule} from "../../../model/WorkSchedule.tsx";
 import Paper from "@mui/material/Paper";
 import TableBody from "@mui/material/TableBody";
 import { nanoid } from 'nanoid'
+import {DtoUser} from "../../../model/User.tsx";
 
 type Props = {
     shift: ShiftSchedule[],
+    userList: DtoUser[],
 }
 export default function PlanCardShow(props: Props) {
+    function getUserName(id: string) {
+        const getUser = props.userList.find(user => user.id === id)
+        if(getUser === undefined)
+            return "--"
+        return getUser.firstName
+    }
+
     return <>
         {props.shift.map(value => (
             <TableContainer component={Paper} key={value.day}>
@@ -30,7 +39,7 @@ export default function PlanCardShow(props: Props) {
                                 <TableCell size={"small"} align="left" component="th" scope="row">
                                     {shift.startTime}
                                 </TableCell>
-                                <TableCell size={"small"} align="left">{shift.employeeId}</TableCell>
+                                <TableCell size={"small"} align="left">{getUserName(shift.employeeId)}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
