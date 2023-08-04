@@ -1,6 +1,5 @@
 package com.example.backend.service;
 
-import com.example.backend.model.employee.Employee;
 import com.example.backend.model.schedule.ShiftSchedule;
 import com.example.backend.model.schedule.WorkSchedule;
 import com.example.backend.model.schedule.WorkScheduleNoId;
@@ -18,7 +17,6 @@ import static org.mockito.Mockito.*;
 
 class ScheduleServiceTest {
     ScheduleRepo scheduleRepo = mock(ScheduleRepo.class);
-    EmployeeRepo employeeRepo = mock(EmployeeRepo.class);
     ScheduleService scheduleService = new ScheduleService(scheduleRepo);
 
     @Test
