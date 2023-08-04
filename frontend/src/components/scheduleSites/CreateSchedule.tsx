@@ -1,7 +1,7 @@
 import HeadElement from "../StyleElements.tsx";
 import PlanCardCreate from "./components/PlanCardCreate.tsx";
 import {useState} from "react";
-import {exampleWorkShift, ShiftSchedule, WorkSchedule} from "../../model/WorkSchedule.tsx";
+import {ShiftSchedule, WorkSchedule} from "../../model/WorkSchedule.tsx";
 import {nanoid} from "nanoid";
 import {DtoUser} from "../../model/User.tsx";
 
@@ -11,7 +11,7 @@ type Props ={
     onSubmit: (workSchedule: WorkSchedule)=>void,
 }
 export default function CreateSchedule(props: Props) {
-    const [workSchedule, setWorkSchedule] = useState<WorkSchedule>(exampleWorkShift)
+    const [workSchedule, setWorkSchedule] = useState<WorkSchedule>(props.nextWeek)
 
     function handleUpdateShift(kind: string, nextWeekShift: ShiftSchedule) {
         let newWorkSchedule = workSchedule
