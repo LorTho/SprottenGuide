@@ -1,6 +1,8 @@
 package com.example.backend.service;
+
 import com.example.backend.entities.WorkSchedule;
 import com.example.backend.model.schedule.ShiftSchedule;
+import com.example.backend.model.schedule.WishSchedule;
 import com.example.backend.model.schedule.WorkScheduleNoId;
 import com.example.backend.model.shift.Shifts;
 import com.example.backend.model.shift.WorkShift;
@@ -9,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -31,12 +34,12 @@ public class ScheduleService {
                 getSchedule.setKitchen(listB.getKitchen());
             }
         }
-        if(!findSuccess) {
+        if (!findSuccess) {
             WorkSchedule defaultSchedule = scheduleRepo.findById("1234567890")
-                    .orElseThrow(()-> new NoSuchElementException("No defaultSchedule existing! please contact your admin"));
-                getSchedule.setName(defaultSchedule.getName());
-                getSchedule.setDrivers(defaultSchedule.getDrivers());
-                getSchedule.setKitchen(defaultSchedule.getKitchen());
+                    .orElseThrow(() -> new NoSuchElementException("No defaultSchedule existing! please contact your admin"));
+            getSchedule.setName(defaultSchedule.getName());
+            getSchedule.setDrivers(defaultSchedule.getDrivers());
+            getSchedule.setKitchen(defaultSchedule.getKitchen());
         }
         return getSchedule;
     }
@@ -55,20 +58,46 @@ public class ScheduleService {
     public List<Shifts> getEmployeeShifts(String employeeId, String name) {
         List<Shifts> getList = new ArrayList<>();
         WorkSchedule schedule = scheduleRepo.findByName(name);
-        for(ShiftSchedule shiftSchedule: schedule.getDrivers()){
-            for(WorkShift workShift: shiftSchedule.getShifts()){
-                if(workShift.getEmployeeId().equals(employeeId)){
+        for (ShiftSchedule shiftSchedule : schedule.getDrivers()) {
+            for (WorkShift workShift : shiftSchedule.getShifts()) {
+                if (workShift.getEmployeeId().equals(employeeId)) {
                     getList.add(new Shifts(shiftSchedule.getDay(), workShift.getStartTime()));
                 }
             }
         }
-        for(ShiftSchedule shiftSchedule: schedule.getKitchen()){
-            for(WorkShift workShift: shiftSchedule.getShifts()){
-                if(workShift.getEmployeeId().equals(employeeId)){
+        for (ShiftSchedule shiftSchedule : schedule.getKitchen()) {
+            for (WorkShift workShift : shiftSchedule.getShifts()) {
+                if (workShift.getEmployeeId().equals(employeeId)) {
                     getList.add(new Shifts(shiftSchedule.getDay(), workShift.getStartTime()));
                 }
             }
         }
         return getList;
+    }
+    public List<Shifts> getEmployeeWishes(String employeeId, String name) {
+        WorkSchedule schedule = scheduleRepo.findByName(name);
+        for (WishSchedule wish : schedule.getWishes()) {
+            if (wish.getEmoloyeeId().equals(employeeId)) {
+                return wish.getShifts();
+            }
+        }
+        return Collections.emptyList();
+    }
+
+    public List<Shifts> saveEmployeeWishes(String employeeId, String name, List<Shifts> newList) {
+        WorkSchedule schedule = scheduleRepo.findByName(name);
+        boolean match = false;
+        for (WishSchedule wish : schedule.getWishes()) {
+            if (wish.getEmoloyeeId().equals(employeeId)) {
+                match = true;
+                wish.setShifts(newList);
+            }
+        }
+        if(!match){
+            WishSchedule newWishSchedule = new WishSchedule(employeeId, newList);
+            schedule.getWishes().add(newWishSchedule);
+        }
+        scheduleRepo.save(schedule);
+        return newList;
     }
 }

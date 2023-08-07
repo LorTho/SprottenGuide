@@ -8,6 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import HeadElement from "../StyleElements.tsx";
+import {nanoid} from "nanoid";
 
 
 type Props = {
@@ -28,7 +29,7 @@ export default function ActualWeek(props: Props) {
                 <TableBody>
                     {props.shifts.map(shift => (
                         <TableRow
-                            key={shift.day}
+                            key={nanoid()}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
                             <TableCell component="th" scope="row">
