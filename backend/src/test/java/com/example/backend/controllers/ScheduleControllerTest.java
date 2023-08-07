@@ -32,8 +32,8 @@ class ScheduleControllerTest {
     ObjectMapper objectMapper= new ObjectMapper();
     @Test
     void getWorkSchedule() throws Exception {
-        WorkSchedule workSchedule = new WorkSchedule("SomeID", "SomeName", new ArrayList<>(), new ArrayList<>());
-        WorkScheduleNoId expectedSchedule = new WorkScheduleNoId("SomeName", new ArrayList<>(), new ArrayList<>());
+        WorkSchedule workSchedule = new WorkSchedule("SomeID", "SomeName", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        WorkScheduleNoId expectedSchedule = new WorkScheduleNoId("SomeName", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         String expected = objectMapper.writeValueAsString(expectedSchedule);
         scheduleService.addWorkSchedule(workSchedule);
 
@@ -53,7 +53,8 @@ class ScheduleControllerTest {
                         new WorkShift("0000", LocalTime.of(11,0))
                 ))), List.of(new ShiftSchedule("MONDAY", List.of(
                 new WorkShift("0000", LocalTime.of(11,0))
-        ))));
+        ))),
+                new ArrayList<>());
         String expectedSchedule = objectMapper.writeValueAsString(expected);
 
 
