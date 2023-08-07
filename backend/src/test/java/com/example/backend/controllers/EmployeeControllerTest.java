@@ -109,11 +109,11 @@ class EmployeeControllerTest {
                 [
                     {
                         "day": "MONDAY",
-                        "startTime": "11:00"
+                        "startTime": "11:00:00"
                     },
                     {
                         "day": "FRIDAY",
-                        "startTime": "17:00"
+                        "startTime": "17:00:00"
                     }
                 ]
                 """))

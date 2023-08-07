@@ -7,6 +7,7 @@ import com.example.backend.model.shift.WorkShift;
 import com.example.backend.service.ScheduleService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,8 +16,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.mockito.Mockito.mockStatic;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -39,12 +43,16 @@ class ScheduleControllerTest {
     }
 
     @Test
-    void saveWorkScheduule() throws Exception {
+    void saveWorkSchedule() throws Exception {
+        MockedStatic<LocalTime> mock = mockStatic(LocalTime.class);
+        var time = LocalTime.of(11,0);
+        mock.when(()->LocalTime.of(11,0)).thenReturn(time);
+
         WorkScheduleNoId expected = new WorkScheduleNoId("next", List.of(
                 new ShiftSchedule("MONDAY", List.of(
-                        new WorkShift("0000", 1100)
+                        new WorkShift("0000", LocalTime.of(11,0))
                 ))), List.of(new ShiftSchedule("MONDAY", List.of(
-                new WorkShift("0000", 1100)
+                new WorkShift("0000", LocalTime.of(11,0))
         ))));
         String expectedSchedule = objectMapper.writeValueAsString(expected);
 
@@ -57,11 +65,11 @@ class ScheduleControllerTest {
                         "drivers": [
                         {
                             "day": "MONDAY",
-                            "shifts": [{"employeeId": "0000", "startTime":  1100}]
+                            "shifts": [{"employeeId": "0000", "startTime":  "11:00:00"}]
                         }],
                         "kitchen": [{
                             "day": "MONDAY",
-                            "shifts": [{"employeeId": "0000", "startTime":  1100}]
+                            "shifts": [{"employeeId": "0000", "startTime":  "11:00:00"}]
                         }]
                     }
                 """))

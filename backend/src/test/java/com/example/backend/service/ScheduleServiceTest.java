@@ -7,8 +7,6 @@ import com.example.backend.model.shift.WorkShift;
 import com.example.backend.repository.ScheduleRepo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.sql.Time;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,24 +49,24 @@ class ScheduleServiceTest {
         expected.setName("SomeName");
         expected.setDrivers(new ArrayList<>(List.of(
                 new ShiftSchedule("MONDAY", List.of(
-                        new WorkShift("0000", new LocalTime(11,0))))));
+                        new WorkShift("0000", LocalTime.of(11,0)))))));
         expected.setKitchen(new ArrayList<>(List.of(
                 new ShiftSchedule("MONDAY", List.of(
-                        new WorkShift("0000", 1100))))));
+                        new WorkShift("0000", LocalTime.of(11,0)))))));
         WorkSchedule workSchedule = new WorkSchedule("SomeId", "SomeName",
                 new ArrayList<>(List.of(
                         new ShiftSchedule("MONDAY", List.of(
-                                new WorkShift("0000", 1100))))),
+                                new WorkShift("0000", LocalTime.of(11,0)))))),
                 new ArrayList<>(List.of(
                         new ShiftSchedule("MONDAY", List.of(
-                                new WorkShift("0000", 1100))))));
+                                new WorkShift("0000", LocalTime.of(11,0)))))));
         WorkSchedule workSchedule2 = new WorkSchedule("SomeOtherId", "SomeOtherName",
                 new ArrayList<>(List.of(
                         new ShiftSchedule("MONDAY", List.of(
-                                new WorkShift("0000", 1100))))),
+                                new WorkShift("0000", LocalTime.of(11,0)))))),
                 new ArrayList<>(List.of(
                         new ShiftSchedule("MONDAY", List.of(
-                                new WorkShift("0000", 1100))))));
+                                new WorkShift("0000", LocalTime.of(11,0)))))));
         List<WorkSchedule> workScheduleList = new ArrayList<>(List.of(workSchedule, workSchedule2));
         //When
         when(scheduleRepo.findAll()).thenReturn(workScheduleList);
@@ -83,18 +81,18 @@ class ScheduleServiceTest {
         expected.setName("defaultSchedule");
         expected.setDrivers(new ArrayList<>(List.of(
                 new ShiftSchedule("MONDAY", List.of(
-                        new WorkShift("0000", 1100))))));
+                        new WorkShift("0000", LocalTime.of(11,0)))))));
         expected.setKitchen(new ArrayList<>(List.of(
                 new ShiftSchedule("MONDAY", List.of(
-                        new WorkShift("0000", 1100))))));
+                        new WorkShift("0000", LocalTime.of(11,0)))))));
 
         WorkSchedule defaultSchedule = new WorkSchedule("1234567890", "defaultSchedule",
                 new ArrayList<>(List.of(
                         new ShiftSchedule("MONDAY", List.of(
-                                new WorkShift("0000", 1100))))),
+                                new WorkShift("0000", LocalTime.of(11,0)))))),
                 new ArrayList<>(List.of(
                         new ShiftSchedule("MONDAY", List.of(
-                                new WorkShift("0000", 1100))))));
+                                new WorkShift("0000", LocalTime.of(11,0)))))));
 
         //When
         when(scheduleRepo.findAll()).thenReturn(List.of());
