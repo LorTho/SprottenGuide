@@ -18,6 +18,5 @@ public class Employee {
     private String id;
     private String firstName;
     private String lastName;
-    private List<Shifts> thisWeek;
     private List<Shifts> nextWeek;
 }

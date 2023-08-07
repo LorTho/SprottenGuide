@@ -1,10 +1,14 @@
 package com.example.backend.service;
 import com.example.backend.entities.WorkSchedule;
+import com.example.backend.model.schedule.ShiftSchedule;
 import com.example.backend.model.schedule.WorkScheduleNoId;
+import com.example.backend.model.shift.Shifts;
+import com.example.backend.model.shift.WorkShift;
 import com.example.backend.repository.ScheduleRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -46,5 +50,25 @@ public class ScheduleService {
         }
         scheduleRepo.save(newSchedule);
         return newSchedule;
+    }
+
+    public List<Shifts> getEmployeeShifts(String employeeId, String name) {
+        List<Shifts> getList = new ArrayList<>();
+        WorkSchedule schedule = scheduleRepo.findByName(name);
+        for(ShiftSchedule shiftSchedule: schedule.getDrivers()){
+            for(WorkShift workShift: shiftSchedule.getShifts()){
+                if(workShift.getEmployeeId().equals(employeeId)){
+                    getList.add(new Shifts(shiftSchedule.getDay(), workShift.getStartTime()));
+                }
+            }
+        }
+        for(ShiftSchedule shiftSchedule: schedule.getKitchen()){
+            for(WorkShift workShift: shiftSchedule.getShifts()){
+                if(workShift.getEmployeeId().equals(employeeId)){
+                    getList.add(new Shifts(shiftSchedule.getDay(), workShift.getStartTime()));
+                }
+            }
+        }
+        return getList;
     }
 }

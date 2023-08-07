@@ -17,7 +17,6 @@ public class EmployeeService {
     private final EmployeeRepo employeeRepo;
 
     public Employee addEmployee(Employee newEmployee) {
-        newEmployee.setThisWeek(new ArrayList<>());
         newEmployee.setNextWeek(new ArrayList<>());
 
         employeeRepo.insert(newEmployee);
@@ -26,7 +25,7 @@ public class EmployeeService {
 
     public Employee getEmployee(String id) {
         Optional<Employee> employee = employeeRepo.findById(id);
-        return employee.orElseGet(() -> new Employee("0", "--", "--", new ArrayList<>(), new ArrayList<>()));
+        return employee.orElseGet(() -> new Employee("0", "--", "--", new ArrayList<>()));
     }
     public List<EmployeeWithoutShifts> getEmployeeList() {
         List<Employee> allEmployee = employeeRepo.findAll();

@@ -28,7 +28,7 @@ public class EmployeeController {
     }
     @PostMapping
     public Employee addEmployee(@RequestBody EmployeeWithoutShifts newEmployee) {
-        Employee employee = new Employee(newEmployee.getId(), newEmployee.getFirstName(), newEmployee.getLastName(), new ArrayList<>(), new ArrayList<>());
+        Employee employee = new Employee(newEmployee.getId(), newEmployee.getFirstName(), newEmployee.getLastName(), new ArrayList<>());
         return employeeService.addEmployee(employee);
     }
     @PutMapping("/{id}")

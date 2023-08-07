@@ -3,6 +3,7 @@ package com.example.backend.service;
 import com.example.backend.model.schedule.ShiftSchedule;
 import com.example.backend.entities.WorkSchedule;
 import com.example.backend.model.schedule.WorkScheduleNoId;
+import com.example.backend.model.shift.Shifts;
 import com.example.backend.model.shift.WorkShift;
 import com.example.backend.repository.ScheduleRepo;
 import org.junit.jupiter.api.Assertions;
@@ -76,7 +77,7 @@ class ScheduleServiceTest {
         Assertions.assertEquals(expected, actualWorkSchedule);
     }
     @Test
-    void getDefaultSchedule_whenUnknowendName(){
+    void getDefaultSchedule_whenUnknownName(){
         WorkScheduleNoId expected = new WorkScheduleNoId();
         expected.setName("defaultSchedule");
         expected.setDrivers(new ArrayList<>(List.of(
@@ -106,5 +107,33 @@ class ScheduleServiceTest {
     @Test
     void getException_whenUnknownNameAndDefaultNotFound(){
         Assertions.assertThrows(NoSuchElementException.class, () -> scheduleService.getWorkSchedule("WrongName"));
+    }
+
+    @Test
+    void getEmployeeShifts() {
+        WorkSchedule defaultSchedule = new WorkSchedule("ID", "defaultSchedule",
+                new ArrayList<>(List.of(
+                        new ShiftSchedule("MONDAY", List.of(
+                                new WorkShift("0000", LocalTime.of(11,0)),
+                                new WorkShift("1234", LocalTime.of(17,0)))),
+                        new ShiftSchedule("WEDNESDAY", List.of(
+                                new WorkShift("0000", LocalTime.of(11,0)),
+                                new WorkShift("1234", LocalTime.of(17,0)))))),
+                new ArrayList<>(List.of(
+                        new ShiftSchedule("FRIDAY", List.of(
+                                new WorkShift("0000", LocalTime.of(11,0)))))));
+
+        List<Shifts> expectedList = new ArrayList<>(List.of(
+                new Shifts("MONDAY", LocalTime.of(11,0)),
+                new Shifts("WEDNESDAY", LocalTime.of(11,0)),
+                new Shifts("FRIDAY", LocalTime.of(11,0))
+        ));
+
+        //When
+        when(scheduleRepo.findById("ID")).thenReturn(Optional.of(defaultSchedule));
+        List<Shifts> actual = scheduleService.getEmployeeShifts("0000", "ID");
+
+        verify(scheduleRepo).findById("ID");
+        Assertions.assertEquals(expectedList, actual);
     }
 }
