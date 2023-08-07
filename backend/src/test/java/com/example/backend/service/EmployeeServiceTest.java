@@ -1,14 +1,12 @@
 package com.example.backend.service;
 
 import com.example.backend.entities.Employee;
-import com.example.backend.model.shift.RequestShift;
 import com.example.backend.repository.EmployeeRepo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
