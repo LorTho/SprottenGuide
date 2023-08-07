@@ -1,13 +1,15 @@
 package com.example.backend.service;
 
 import com.example.backend.model.schedule.ShiftSchedule;
-import com.example.backend.model.schedule.WorkSchedule;
+import com.example.backend.entities.WorkSchedule;
 import com.example.backend.model.schedule.WorkScheduleNoId;
 import com.example.backend.model.shift.WorkShift;
 import com.example.backend.repository.ScheduleRepo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -49,7 +51,7 @@ class ScheduleServiceTest {
         expected.setName("SomeName");
         expected.setDrivers(new ArrayList<>(List.of(
                 new ShiftSchedule("MONDAY", List.of(
-                        new WorkShift("0000", 1100))))));
+                        new WorkShift("0000", new LocalTime(11,0))))));
         expected.setKitchen(new ArrayList<>(List.of(
                 new ShiftSchedule("MONDAY", List.of(
                         new WorkShift("0000", 1100))))));

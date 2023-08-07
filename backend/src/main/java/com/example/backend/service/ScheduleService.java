@@ -1,5 +1,5 @@
 package com.example.backend.service;
-import com.example.backend.model.schedule.WorkSchedule;
+import com.example.backend.entities.WorkSchedule;
 import com.example.backend.model.schedule.WorkScheduleNoId;
 import com.example.backend.repository.ScheduleRepo;
 import lombok.RequiredArgsConstructor;

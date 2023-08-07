@@ -1,6 +1,6 @@
 package com.example.backend.controllers;
 
-import com.example.backend.model.employee.Employee;
+import com.example.backend.entities.Employee;
 import com.example.backend.model.employee.EmployeeWithoutShifts;
 import com.example.backend.service.EmployeeService;
 import com.fasterxml.jackson.databind.ObjectMapper;

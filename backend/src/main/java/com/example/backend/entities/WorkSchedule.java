@@ -1,5 +1,6 @@
-package com.example.backend.model.schedule;
+package com.example.backend.entities;
 
+import com.example.backend.model.schedule.ShiftSchedule;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.annotation.Id;

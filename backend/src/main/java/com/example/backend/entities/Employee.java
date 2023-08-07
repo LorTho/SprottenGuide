@@ -1,4 +1,4 @@
-package com.example.backend.model.employee;
+package com.example.backend.entities;
 
 import com.example.backend.model.shift.Shifts;
 import lombok.AllArgsConstructor;
