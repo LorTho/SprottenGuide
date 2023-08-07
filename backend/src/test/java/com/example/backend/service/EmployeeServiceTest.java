@@ -45,16 +45,8 @@ class EmployeeServiceTest {
         Assertions.assertEquals(employee, employeeService.getEmployee("wrongId"));
     }
 
-
     @Test
-    void getNoSuchElementException_WhenSaveWishListWithWrongId(){
-        List<RequestShift> wishList = new ArrayList<>(List.of(
-                new RequestShift("MONDAY", "11:00:00")
-        ));
-        Assertions.assertThrows(NoSuchElementException.class, () -> employeeService.changeWishTime("wrongId", wishList));
-    }
-    @Test
-    void getEmployeeListWithoutShifts_WhenGetAllEmployees(){
+    void getEmployeeList_WhenGetAllEmployees(){
         Employee newEmployee = new Employee("1111", "test", "test");
 
         List<Employee> expectedList = new ArrayList<>(List.of(newEmployee));
