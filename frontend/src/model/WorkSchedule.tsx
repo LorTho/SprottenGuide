@@ -9,5 +9,5 @@ export type ShiftSchedule = {
 }
 export type WorkShift ={
     employeeId: string,
-    startTime: number,
+    startTime: string,
 }
