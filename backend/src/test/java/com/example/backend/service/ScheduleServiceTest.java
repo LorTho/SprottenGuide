@@ -23,7 +23,7 @@ class ScheduleServiceTest {
     @Test
     void getWorkSchedule_whenAddNewSchedule() {
         //Given
-        WorkSchedule newWorkSchedule = new WorkSchedule("SomeId", "SomeName", new ArrayList<>(), new ArrayList<>());
+        WorkSchedule newWorkSchedule = new WorkSchedule("SomeId", "SomeName", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         //When
         WorkSchedule actualWorkSchedule = scheduleService.addWorkSchedule(newWorkSchedule);
         //Then
@@ -32,8 +32,8 @@ class ScheduleServiceTest {
     @Test
     void saveWorkSchedule_whenAddNewSchedule() {
         //Given
-        WorkSchedule newWorkSchedule = new WorkSchedule("SomeId", "SomeName", new ArrayList<>(), new ArrayList<>());
-        WorkSchedule existingSchedule = new WorkSchedule("SomeOtherId", "SomeName", new ArrayList<>(), new ArrayList<>());
+        WorkSchedule newWorkSchedule = new WorkSchedule("SomeId", "SomeName", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        WorkSchedule existingSchedule = new WorkSchedule("SomeOtherId", "SomeName", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         List<WorkSchedule> existingSchedules = new ArrayList<>();
         existingSchedules.add(existingSchedule);
         //When
@@ -60,14 +60,16 @@ class ScheduleServiceTest {
                                 new WorkShift("0000", LocalTime.of(11,0)))))),
                 new ArrayList<>(List.of(
                         new ShiftSchedule("MONDAY", List.of(
-                                new WorkShift("0000", LocalTime.of(11,0)))))));
+                                new WorkShift("0000", LocalTime.of(11,0)))))),
+                new ArrayList<>());
         WorkSchedule workSchedule2 = new WorkSchedule("SomeOtherId", "SomeOtherName",
                 new ArrayList<>(List.of(
                         new ShiftSchedule("MONDAY", List.of(
                                 new WorkShift("0000", LocalTime.of(11,0)))))),
                 new ArrayList<>(List.of(
                         new ShiftSchedule("MONDAY", List.of(
-                                new WorkShift("0000", LocalTime.of(11,0)))))));
+                                new WorkShift("0000", LocalTime.of(11,0)))))),
+                new ArrayList<>());
         List<WorkSchedule> workScheduleList = new ArrayList<>(List.of(workSchedule, workSchedule2));
         //When
         when(scheduleRepo.findAll()).thenReturn(workScheduleList);
@@ -93,7 +95,8 @@ class ScheduleServiceTest {
                                 new WorkShift("0000", LocalTime.of(11,0)))))),
                 new ArrayList<>(List.of(
                         new ShiftSchedule("MONDAY", List.of(
-                                new WorkShift("0000", LocalTime.of(11,0)))))));
+                                new WorkShift("0000", LocalTime.of(11,0)))))),
+                new ArrayList<>());
 
         //When
         when(scheduleRepo.findAll()).thenReturn(List.of());
@@ -121,7 +124,8 @@ class ScheduleServiceTest {
                                 new WorkShift("1234", LocalTime.of(17,0)))))),
                 new ArrayList<>(List.of(
                         new ShiftSchedule("FRIDAY", List.of(
-                                new WorkShift("0000", LocalTime.of(11,0)))))));
+                                new WorkShift("0000", LocalTime.of(11,0)))))),
+                new ArrayList<>());
 
         List<Shifts> expectedList = new ArrayList<>(List.of(
                 new Shifts("MONDAY", LocalTime.of(11,0)),

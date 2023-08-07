@@ -26,7 +26,7 @@ export default function NextWeek(props: Props) {
         {day: "SUNDAY", startTime: "00:00:00"},
     ])
 
-    useEffect(initialiseWishTime, [])
+    useEffect(initialiseWishTime, [props.wishes])
 
     function initialiseWishTime() {
         setWishTime(
