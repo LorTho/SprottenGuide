@@ -43,8 +43,8 @@ export default function CreateSchedule(props: Props) {
     }
     function userWishes(day: string){
         const userWishesDaily: WorkShift[] = []
-        wishList.map(employee =>{
-            employee.shifts.map(daywish =>{
+        wishList.forEach(employee =>{
+            employee.shifts.forEach(daywish =>{
                 if(daywish.day === day)
                     userWishesDaily.push({employeeId: employee.employeeId, startTime: daywish.startTime})
             })

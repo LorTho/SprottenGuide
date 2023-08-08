@@ -63,7 +63,7 @@ export default function PlanCardCreate(props: Props) {
             name: string,
             startTime: string,
         }[] = []
-        props.wishList.map(employee=>{
+        props.wishList.forEach(employee=>{
             returnList.push({name: getUserName(employee.employeeId), startTime: employee.startTime})
         })
         return returnList
