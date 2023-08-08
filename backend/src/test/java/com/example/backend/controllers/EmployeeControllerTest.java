@@ -29,14 +29,14 @@ class EmployeeControllerTest {
 
     @Test
     @DirtiesContext
-    void putNewEmployee() throws Exception {
+    void postNewEmployee() throws Exception {
         Employee newEmployee = new Employee("1111", "test", "test");
         String expectedEmployee = objectMapper.writeValueAsString(newEmployee);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/employee")
                         .contentType(MediaType.APPLICATION_JSON).content("""
                                 {
-                                    "id": "1111",
+                                    "memberCode": "1111",
                                     "firstName": "test",
                                     "lastName": "test"
                                 }
@@ -68,46 +68,6 @@ class EmployeeControllerTest {
         String expected = objectMapper.writeValueAsString(expectedList);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/employee"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(expected));
-    }
-
-    @Test
-    @DirtiesContext
-    void getUpdatedEmployee_whenChangeWishShifts() throws Exception {
-        Employee newEmployee = new Employee("1111", "test", "test");
-        employeeService.addEmployee(newEmployee);
-        String expected = """
-            {
-                "id": "1111",
-                "firstName": "test",
-                "lastName": "test",
-                "thisWeek": [],
-                "nextWeek": [
-                    {
-                        "day": "MONDAY",
-                        "startTime": "11:00:00"
-                    },
-                    {
-                        "day": "FRIDAY",
-                        "startTime": "17:00:00"
-                    }
-                ]
-            }
-        """;
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/employee/"+"1111")
-                .contentType(MediaType.APPLICATION_JSON).content("""
-                [
-                    {
-                        "day": "MONDAY",
-                        "startTime": "11:00:00"
-                    },
-                    {
-                        "day": "FRIDAY",
-                        "startTime": "17:00:00"
-                    }
-                ]
-                """))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(expected));
     }

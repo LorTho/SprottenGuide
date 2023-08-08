@@ -18,7 +18,7 @@ public class ScheduleController {
     }
 
     @GetMapping("/{name}")
-    public WorkScheduleNoId getWorkSchedule (@PathVariable String name) {
+    public WorkSchedule getWorkSchedule (@PathVariable String name) {
         return scheduleService.getWorkSchedule(name);
     }
     @GetMapping("/{employeeId}/{name}")

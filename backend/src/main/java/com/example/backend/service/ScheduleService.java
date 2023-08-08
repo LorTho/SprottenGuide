@@ -3,45 +3,23 @@ package com.example.backend.service;
 import com.example.backend.entities.WorkSchedule;
 import com.example.backend.model.schedule.ShiftSchedule;
 import com.example.backend.model.schedule.WishSchedule;
-import com.example.backend.model.schedule.WorkScheduleNoId;
 import com.example.backend.model.shift.Shifts;
 import com.example.backend.model.shift.WorkShift;
 import com.example.backend.repository.ScheduleRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class ScheduleService {
     private final ScheduleRepo scheduleRepo;
 
-    public WorkScheduleNoId getWorkSchedule(String nameToFind) {
-        WorkScheduleNoId getSchedule = new WorkScheduleNoId();
-        boolean findSuccess = false;
-
-        List<WorkSchedule> list = scheduleRepo.findAll();
-        for (WorkSchedule listB : list) {
-            if (Objects.equals(listB.getName(), nameToFind)) {
-                findSuccess = true;
-                getSchedule.setName(nameToFind);
-                getSchedule.setDrivers(listB.getDrivers());
-                getSchedule.setKitchen(listB.getKitchen());
-            }
-        }
-        if (!findSuccess) {
-            WorkSchedule defaultSchedule = scheduleRepo.findById("1234567890")
-                    .orElseThrow(() -> new NoSuchElementException("No defaultSchedule existing! please contact your admin"));
-            getSchedule.setName(defaultSchedule.getName());
-            getSchedule.setDrivers(defaultSchedule.getDrivers());
-            getSchedule.setKitchen(defaultSchedule.getKitchen());
-        }
-        return getSchedule;
+    public WorkSchedule getWorkSchedule(String nameToFind) {
+       Optional<WorkSchedule> getWorkschedule = scheduleRepo.findByName(nameToFind);
+        return getWorkschedule.orElseGet(() -> scheduleRepo.findByName("defaultSchedule")
+                .orElseThrow(() -> new NoSuchElementException("No defaultSchedule existing! please contact your admin")));
     }
 
     public WorkSchedule addWorkSchedule(WorkSchedule newSchedule) {
@@ -57,7 +35,8 @@ public class ScheduleService {
 
     public List<Shifts> getEmployeeShifts(String employeeId, String name) {
         List<Shifts> getList = new ArrayList<>();
-        WorkSchedule schedule = scheduleRepo.findByName(name);
+        WorkSchedule schedule = scheduleRepo.findByName(name)
+                .orElseThrow(()->new NoSuchElementException("WorkSchedule for Employees not found!"));
         for (ShiftSchedule shiftSchedule : schedule.getDrivers()) {
             for (WorkShift workShift : shiftSchedule.getShifts()) {
                 if (workShift.getEmployeeId().equals(employeeId)) {
@@ -75,7 +54,8 @@ public class ScheduleService {
         return getList;
     }
     public List<Shifts> getEmployeeWishes(String employeeId, String name) {
-        WorkSchedule schedule = scheduleRepo.findByName(name);
+        WorkSchedule schedule = scheduleRepo.findByName(name)
+                .orElseThrow(()->new NoSuchElementException("WorkSchedule for Wishes not found!"));
         for (WishSchedule wish : schedule.getWishes()) {
             if (wish.getEmoloyeeId().equals(employeeId)) {
                 return wish.getShifts();
@@ -85,7 +65,8 @@ public class ScheduleService {
     }
 
     public List<Shifts> saveEmployeeWishes(String employeeId, String name, List<Shifts> newList) {
-        WorkSchedule schedule = scheduleRepo.findByName(name);
+        WorkSchedule schedule = scheduleRepo.findByName(name)
+                .orElseThrow(()->new NoSuchElementException("WorkSchedule not found!"));
         boolean match = false;
         for (WishSchedule wish : schedule.getWishes()) {
             if (wish.getEmoloyeeId().equals(employeeId)) {
