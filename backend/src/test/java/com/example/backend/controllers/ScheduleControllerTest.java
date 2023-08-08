@@ -7,7 +7,6 @@ import com.example.backend.model.schedule.WorkScheduleNoId;
 import com.example.backend.model.shift.Shifts;
 import com.example.backend.model.shift.WorkShift;
 import com.example.backend.service.ScheduleService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
