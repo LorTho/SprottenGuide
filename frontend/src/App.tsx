@@ -55,7 +55,7 @@ export default function App() {
     function handleWishTime(wishTime: Time[]) {
         axios.put("/api/schedule/" + employeeCode+ "/next", wishTime)
             .then(response => {
-                setEmployee(response.data)
+                setEmployeeWish(response.data)
             })
         navigate("/")
     }
