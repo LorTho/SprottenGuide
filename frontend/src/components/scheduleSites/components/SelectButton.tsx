@@ -10,9 +10,17 @@ import { nanoid } from 'nanoid'
 import {IconButton} from "@mui/material";
 
 let nameString: string[];
+let wishList: {
+    name: string,
+    startTime: string,
+}[];
 
 type Props={
     names: string[],
+    userWishList: {
+        name: string,
+        startTime: string,
+    }[],
     name: (name: string)=>void,
 }
 
@@ -21,6 +29,7 @@ export default function SelectButton(props:Props) {
     const [selectedValue, setSelectedValue] = useState("Auswählen");
 
     nameString = props.names
+    wishList = props.userWishList
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -67,6 +76,13 @@ function SimpleDialog(simpleProps: SimpleDialogProps) {
         <Dialog onClose={handleClose} open={open}>
             <DialogTitle>Wähle Mitarbeiter</DialogTitle>
             <List key={nanoid()} sx={{pt: 0}}>
+                {wishList.map((name) => (
+                    <ListItem key={nanoid()} disableGutters>
+                        <ListItemButton onClick={() => handleListItemClick(name.name)} key={name.startTime}>
+                            <ListItemText primary={name.name} secondary={name.startTime}/>
+                        </ListItemButton>
+                    </ListItem>
+                ))}
                 {nameString.map((name) => (
                     <ListItem key={nanoid()} disableGutters>
                         <ListItemButton onClick={() => handleListItemClick(name)} key={name}>
