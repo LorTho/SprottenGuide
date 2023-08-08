@@ -105,7 +105,8 @@ class ScheduleServiceTest {
                                 new WorkShift("1234", LocalTime.of(17, 0)))))),
                 new ArrayList<>(List.of(
                         new ShiftSchedule("FRIDAY", List.of(
-                                new WorkShift("0000", LocalTime.of(11, 0)))))),
+                                new WorkShift("0000", LocalTime.of(11, 0)),
+                                new WorkShift("1234", LocalTime.of(17, 0)))))),
                 new ArrayList<>());
 
         List<Shifts> expectedList = new ArrayList<>(List.of(
@@ -129,9 +130,9 @@ class ScheduleServiceTest {
                 new ArrayList<>(),
                 new ArrayList<>(List.of(
                         new WishSchedule("0000", List.of(
-                                new Shifts("MONDAY", LocalTime.of(11,0)),
-                                new Shifts("FRIDAY", LocalTime.of(11,0))
-                )))));
+                                new Shifts("MONDAY", LocalTime.of(11, 0)),
+                                new Shifts("FRIDAY", LocalTime.of(11, 0))
+                        )))));
 
         List<Shifts> expectedList = new ArrayList<>(List.of(
                 new Shifts("MONDAY", LocalTime.of(11, 0)),
@@ -145,6 +146,7 @@ class ScheduleServiceTest {
         verify(scheduleRepo).findByName("defaultSchedule");
         Assertions.assertEquals(expectedList, actual);
     }
+
     @Test
     void getEmployeeWishes_whenNoWishesExist() {
         WorkSchedule defaultSchedule = new WorkSchedule("ID", "defaultSchedule",
@@ -152,8 +154,8 @@ class ScheduleServiceTest {
                 new ArrayList<>(),
                 new ArrayList<>(List.of(
                         new WishSchedule("1111", List.of(
-                                new Shifts("MONDAY", LocalTime.of(11,0)),
-                                new Shifts("FRIDAY", LocalTime.of(11,0))
+                                new Shifts("MONDAY", LocalTime.of(11, 0)),
+                                new Shifts("FRIDAY", LocalTime.of(11, 0))
                         )))));
 
         List<Shifts> expectedList = new ArrayList<>();
@@ -165,10 +167,12 @@ class ScheduleServiceTest {
         verify(scheduleRepo).findByName("defaultSchedule");
         Assertions.assertEquals(expectedList, actual);
     }
+
     @Test
     void getException_whenUnknownSchedule() {
         Assertions.assertThrows(NoSuchElementException.class, () -> scheduleService.getEmployeeWishes("0000", "WrongName"));
     }
+
     @Test
     void saveEmployeeWishes_whenWishesExist() {
         WorkSchedule defaultSchedule = new WorkSchedule("ID", "defaultSchedule",
@@ -176,8 +180,8 @@ class ScheduleServiceTest {
                 new ArrayList<>(),
                 new ArrayList<>(List.of(
                         new WishSchedule("0000", List.of(
-                                new Shifts("MONDAY", LocalTime.of(11,0)),
-                                new Shifts("TUESDAY", LocalTime.of(11,0))
+                                new Shifts("MONDAY", LocalTime.of(11, 0)),
+                                new Shifts("TUESDAY", LocalTime.of(11, 0))
                         )))));
 
         List<Shifts> expectedList = new ArrayList<>(List.of(
@@ -195,6 +199,7 @@ class ScheduleServiceTest {
         verify(scheduleRepo).findByName("defaultSchedule");
         Assertions.assertEquals(expectedList, actual);
     }
+
     @Test
     void saveEmployeeWishes_whenNoWishesExist() {
         WorkSchedule defaultSchedule = new WorkSchedule("ID", "defaultSchedule",
@@ -202,8 +207,8 @@ class ScheduleServiceTest {
                 new ArrayList<>(),
                 new ArrayList<>(List.of(
                         new WishSchedule("1111", List.of(
-                                new Shifts("MONDAY", LocalTime.of(11,0)),
-                                new Shifts("FRIDAY", LocalTime.of(11,0))
+                                new Shifts("MONDAY", LocalTime.of(11, 0)),
+                                new Shifts("FRIDAY", LocalTime.of(11, 0))
                         )))));
 
         List<Shifts> expectedList = new ArrayList<>(List.of(
@@ -221,6 +226,7 @@ class ScheduleServiceTest {
         verify(scheduleRepo).findByName("defaultSchedule");
         Assertions.assertEquals(expectedList, actual);
     }
+
     @Test
     void getException_whenUnknownSaveSchedule() {
         Assertions.assertThrows(NoSuchElementException.class, () -> scheduleService.saveEmployeeWishes("0000", "WrongName", null));
