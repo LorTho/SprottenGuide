@@ -57,7 +57,7 @@ public class ScheduleService {
         WorkSchedule schedule = scheduleRepo.findByName(name)
                 .orElseThrow(()->new NoSuchElementException("WorkSchedule for Wishes not found!"));
         for (WishSchedule wish : schedule.getWishes()) {
-            if (wish.getEmoloyeeId().equals(employeeId)) {
+            if (wish.getEmployeeId().equals(employeeId)) {
                 return wish.getShifts();
             }
         }
@@ -69,7 +69,7 @@ public class ScheduleService {
                 .orElseThrow(()->new NoSuchElementException("WorkSchedule not found!"));
         boolean match = false;
         for (WishSchedule wish : schedule.getWishes()) {
-            if (wish.getEmoloyeeId().equals(employeeId)) {
+            if (wish.getEmployeeId().equals(employeeId)) {
                 match = true;
                 wish.setShifts(newList);
             }

@@ -2,7 +2,7 @@ package com.example.backend.service;
 
 import com.example.backend.model.schedule.ShiftSchedule;
 import com.example.backend.entities.WorkSchedule;
-import com.example.backend.model.schedule.WorkScheduleNoId;
+import com.example.backend.model.schedule.WishSchedule;
 import com.example.backend.model.shift.Shifts;
 import com.example.backend.model.shift.WorkShift;
 import com.example.backend.repository.ScheduleRepo;
@@ -120,5 +120,109 @@ class ScheduleServiceTest {
 
         verify(scheduleRepo).findByName("defaultSchedule");
         Assertions.assertEquals(expectedList, actual);
+    }
+
+    @Test
+    void getEmployeeWishes_whenWishesExist() {
+        WorkSchedule defaultSchedule = new WorkSchedule("ID", "defaultSchedule",
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>(List.of(
+                        new WishSchedule("0000", List.of(
+                                new Shifts("MONDAY", LocalTime.of(11,0)),
+                                new Shifts("FRIDAY", LocalTime.of(11,0))
+                )))));
+
+        List<Shifts> expectedList = new ArrayList<>(List.of(
+                new Shifts("MONDAY", LocalTime.of(11, 0)),
+                new Shifts("FRIDAY", LocalTime.of(11, 0))
+        ));
+
+        //When
+        when(scheduleRepo.findByName("defaultSchedule")).thenReturn(Optional.of(defaultSchedule));
+        List<Shifts> actual = scheduleService.getEmployeeWishes("0000", "defaultSchedule");
+
+        verify(scheduleRepo).findByName("defaultSchedule");
+        Assertions.assertEquals(expectedList, actual);
+    }
+    @Test
+    void getEmployeeWishes_whenNoWishesExist() {
+        WorkSchedule defaultSchedule = new WorkSchedule("ID", "defaultSchedule",
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>(List.of(
+                        new WishSchedule("1111", List.of(
+                                new Shifts("MONDAY", LocalTime.of(11,0)),
+                                new Shifts("FRIDAY", LocalTime.of(11,0))
+                        )))));
+
+        List<Shifts> expectedList = new ArrayList<>();
+
+        //When
+        when(scheduleRepo.findByName("defaultSchedule")).thenReturn(Optional.of(defaultSchedule));
+        List<Shifts> actual = scheduleService.getEmployeeWishes("0000", "defaultSchedule");
+
+        verify(scheduleRepo).findByName("defaultSchedule");
+        Assertions.assertEquals(expectedList, actual);
+    }
+    @Test
+    void getException_whenUnknownSchedule() {
+        Assertions.assertThrows(NoSuchElementException.class, () -> scheduleService.getEmployeeWishes("0000", "WrongName"));
+    }
+    @Test
+    void saveEmployeeWishes_whenWishesExist() {
+        WorkSchedule defaultSchedule = new WorkSchedule("ID", "defaultSchedule",
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>(List.of(
+                        new WishSchedule("0000", List.of(
+                                new Shifts("MONDAY", LocalTime.of(11,0)),
+                                new Shifts("TUESDAY", LocalTime.of(11,0))
+                        )))));
+
+        List<Shifts> expectedList = new ArrayList<>(List.of(
+                new Shifts("MONDAY", LocalTime.of(11, 0)),
+                new Shifts("FRIDAY", LocalTime.of(11, 0))
+        ));
+
+        //When
+        when(scheduleRepo.findByName("defaultSchedule")).thenReturn(Optional.of(defaultSchedule));
+        List<Shifts> actual = scheduleService.saveEmployeeWishes("0000", "defaultSchedule", List.of(
+                new Shifts("MONDAY", LocalTime.of(11, 0)),
+                new Shifts("FRIDAY", LocalTime.of(11, 0))
+        ));
+
+        verify(scheduleRepo).findByName("defaultSchedule");
+        Assertions.assertEquals(expectedList, actual);
+    }
+    @Test
+    void saveEmployeeWishes_whenNoWishesExist() {
+        WorkSchedule defaultSchedule = new WorkSchedule("ID", "defaultSchedule",
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>(List.of(
+                        new WishSchedule("1111", List.of(
+                                new Shifts("MONDAY", LocalTime.of(11,0)),
+                                new Shifts("FRIDAY", LocalTime.of(11,0))
+                        )))));
+
+        List<Shifts> expectedList = new ArrayList<>(List.of(
+                new Shifts("MONDAY", LocalTime.of(11, 0)),
+                new Shifts("FRIDAY", LocalTime.of(11, 0))
+        ));
+
+        //When
+        when(scheduleRepo.findByName("defaultSchedule")).thenReturn(Optional.of(defaultSchedule));
+        List<Shifts> actual = scheduleService.saveEmployeeWishes("0000", "defaultSchedule", List.of(
+                new Shifts("MONDAY", LocalTime.of(11, 0)),
+                new Shifts("FRIDAY", LocalTime.of(11, 0))
+        ));
+
+        verify(scheduleRepo).findByName("defaultSchedule");
+        Assertions.assertEquals(expectedList, actual);
+    }
+    @Test
+    void getException_whenUnknownSaveSchedule() {
+        Assertions.assertThrows(NoSuchElementException.class, () -> scheduleService.saveEmployeeWishes("0000", "WrongName", null));
     }
 }

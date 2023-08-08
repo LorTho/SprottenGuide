@@ -9,6 +9,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class WishSchedule {
-    private String emoloyeeId;
+    private String employeeId;
     private List<Shifts> shifts;
 }
