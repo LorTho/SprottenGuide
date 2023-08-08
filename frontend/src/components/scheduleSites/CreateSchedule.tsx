@@ -42,7 +42,6 @@ export default function CreateSchedule(props: Props) {
         props.onSubmit(workSchedule)
     }
     function userWishes(day: string){
-        console.log(wishList)
         const userWishesDaily: WorkShift[] = []
         wishList.map(employee =>{
             employee.shifts.map(daywish =>{
@@ -50,7 +49,6 @@ export default function CreateSchedule(props: Props) {
                     userWishesDaily.push({employeeId: employee.employeeId, startTime: daywish.startTime})
             })
         })
-        console.log(userWishesDaily)
         return userWishesDaily
     }
 
