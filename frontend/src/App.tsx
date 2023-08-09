@@ -26,7 +26,6 @@ export default function App() {
 
     const current = getCurrentWeekNumber()
     const next= current + 1
-    console.log(current)
 
     useEffect(getCurrentWeekSchedule, [])
     useEffect(getNextWeekSchedule, [])

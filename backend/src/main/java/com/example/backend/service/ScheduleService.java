@@ -4,13 +4,16 @@ import com.example.backend.entities.WorkSchedule;
 import com.example.backend.model.schedule.ShiftSchedule;
 import com.example.backend.model.schedule.WishSchedule;
 import com.example.backend.model.shift.Shifts;
+import com.example.backend.model.shift.ShiftsWithDayString;
 import com.example.backend.model.shift.WorkShift;
 import com.example.backend.repository.ScheduleRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAdjusters;
 import java.time.temporal.WeekFields;
 import java.util.*;
 
@@ -54,11 +57,13 @@ public class ScheduleService {
         scheduleRepo.save(workSchedule);
         return workSchedule;
     }
+
     public static LocalDate getFirstDayOfWeek(int year, int weekNumber) {
-        return LocalDate.ofYearDay(year, 1) // Erster Tag des Jahres
-                .plus((weekNumber), ChronoUnit.WEEKS) // Füge die Kalenderwochen hinzu
-                .with(WeekFields.ISO.dayOfWeek(), 1); // Setze auf Montag
+        return LocalDate.ofYearDay(year, 1)
+                .plus((weekNumber), ChronoUnit.WEEKS)
+                .with(WeekFields.ISO.dayOfWeek(), 1);
     }
+
     public WorkSchedule addWorkSchedule(WorkSchedule newSchedule) {
         List<WorkSchedule> allWorkSchedules = scheduleRepo.findAll();
         for (WorkSchedule findWorkSchedule : allWorkSchedules) {
@@ -91,20 +96,35 @@ public class ScheduleService {
         return getList;
     }
 
-    public List<Shifts> getEmployeeWishes(String employeeId, int name) {
+    public List<ShiftsWithDayString> getEmployeeWishes(String employeeId, int name) {
         WorkSchedule schedule = scheduleRepo.findByName(name)
                 .orElseThrow(() -> new NoSuchElementException("WorkSchedule for Wishes not found!"));
         for (WishSchedule wish : schedule.getWishes()) {
             if (wish.getEmployeeId().equals(employeeId)) {
-                return wish.getShifts();
+                List<ShiftsWithDayString> listToReturn = new ArrayList<>();
+                for (Shifts shift : wish.getShifts()) {
+                    listToReturn.add(new ShiftsWithDayString(shift.getDay().getDayOfWeek().toString(), shift.getStartTime()));
+                }
+                return listToReturn;
             }
         }
         return Collections.emptyList();
     }
 
-    public List<Shifts> saveEmployeeWishes(String employeeId, int name, List<Shifts> newList) {
+    public List<Shifts> saveEmployeeWishes(String employeeId, int name, List<ShiftsWithDayString> newWishList) {
         WorkSchedule schedule = scheduleRepo.findByName(name)
                 .orElseThrow(() -> new NoSuchElementException("WorkSchedule not found!"));
+        List<Shifts> newList = new ArrayList<>();
+
+        LocalDate monday = getFirstDayOfWeek(2023, name);
+        for (ShiftsWithDayString shift : newWishList) {
+            DayOfWeek setDay = DayOfWeek.valueOf(shift.getDay());
+            if (!setDay.equals(DayOfWeek.MONDAY))
+                newList.add(new Shifts(monday.with(TemporalAdjusters.next(setDay)), shift.getStartTime()));
+            else
+                newList.add(new Shifts(monday, shift.getStartTime()));
+        }
+
         boolean match = false;
         for (WishSchedule wish : schedule.getWishes()) {
             if (wish.getEmployeeId().equals(employeeId)) {

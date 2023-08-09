@@ -3,6 +3,7 @@ package com.example.backend.controllers;
 import com.example.backend.entities.WorkSchedule;
 import com.example.backend.model.schedule.WorkScheduleNoId;
 import com.example.backend.model.shift.Shifts;
+import com.example.backend.model.shift.ShiftsWithDayString;
 import com.example.backend.service.IdService;
 import com.example.backend.service.ScheduleService;
 import org.springframework.web.bind.annotation.*;
@@ -26,11 +27,11 @@ public class ScheduleController {
         return scheduleService.getEmployeeShifts(employeeId, weekNumber);
     }
     @GetMapping("/{employeeId}/{weekNumber}/wish")
-    public List<Shifts> getEmployeeWish(@PathVariable String employeeId, @PathVariable int weekNumber){
+    public List<ShiftsWithDayString> getEmployeeWish(@PathVariable String employeeId, @PathVariable int weekNumber){
         return scheduleService.getEmployeeWishes(employeeId, weekNumber);
     }
     @PutMapping("/{employeeId}/{weekNumber}")
-    public List<Shifts> saveEmployeeWishes(@PathVariable String employeeId, @PathVariable int weekNumber, @RequestBody List<Shifts> newList){
+    public List<Shifts> saveEmployeeWishes(@PathVariable String employeeId, @PathVariable int weekNumber, @RequestBody List<ShiftsWithDayString> newList){
         return scheduleService.saveEmployeeWishes(employeeId, weekNumber, newList);
     }
 
