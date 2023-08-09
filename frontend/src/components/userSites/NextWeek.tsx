@@ -12,6 +12,7 @@ import {MenuItem, Select} from "@mui/material";
 
 type Props = {
     user: User,
+    wishes: Time[],
     onChangeTimes: (data: Time[]) => void;
 }
 export default function NextWeek(props: Props) {
@@ -25,12 +26,12 @@ export default function NextWeek(props: Props) {
         {day: "SUNDAY", startTime: "00:00:00"},
     ])
 
-    useEffect(initialiseWishTime, [])
+    useEffect(initialiseWishTime, [props.wishes])
 
     function initialiseWishTime() {
         setWishTime(
             wishTime.map(wishDay => {
-                props.user.nextWeek.forEach(shift => {
+                props.wishes.forEach(shift => {
                     if (shift.day === wishDay.day) {
                         wishDay = shift
                     }
@@ -67,25 +68,49 @@ export default function NextWeek(props: Props) {
                                     {shift.day}
                                 </TableCell>
                                 <TableCell align="right">
-                                    <Select
-                                        id={shift.day}
-                                        value={shift.startTime}
-                                        onChange={event => {
-                                            setWishTime(
-                                                wishTime.map(wishDay => {
-                                                    if (wishDay.day === shift.day) {
-                                                        return {...wishDay, startTime: event.target.value}
-                                                    }
-                                                    return wishDay
-                                                })
-                                            )
-                                        }}
-                                    >
-                                        <MenuItem value={"00:00:00"}><em>Frei</em></MenuItem>
-                                        <MenuItem value={"11:00:00"}>11</MenuItem>
-                                        <MenuItem value={"17:00:00"}>17</MenuItem>
-                                        <MenuItem value={"19:00:00"}>19</MenuItem>
-                                    </Select>
+                                        {shift.day !== "SATURDAY" && shift.day !== "SUNDAY"
+                                            ?
+                                            <Select
+                                                id={shift.day}
+                                                value={shift.startTime}
+                                                onChange={event => {
+                                                    setWishTime(
+                                                        wishTime.map(wishDay => {
+                                                            if (wishDay.day === shift.day) {
+                                                                return {...wishDay, startTime: event.target.value}
+                                                            }
+                                                            return wishDay
+                                                        })
+                                                    )
+                                                }}
+                                            >
+
+                                                <MenuItem value={"00:00:00"}><em>Frei</em></MenuItem>
+                                                <MenuItem value={"11:00:00"}>11</MenuItem>
+                                                <MenuItem value={"17:00:00"}>17</MenuItem>
+                                                <MenuItem value={"19:00:00"}>19</MenuItem>
+                                            </Select>
+                                            :
+                                            <Select
+                                                id={shift.day}
+                                                value={shift.startTime}
+                                                onChange={event => {
+                                                    setWishTime(
+                                                        wishTime.map(wishDay => {
+                                                            if (wishDay.day === shift.day) {
+                                                                return {...wishDay, startTime: event.target.value}
+                                                            }
+                                                            return wishDay
+                                                        })
+                                                    )
+                                                }}
+                                            >
+                                                <MenuItem value={"00:00:00"}><em>Frei</em></MenuItem>
+                                                <MenuItem value={"12:00:00"}>12</MenuItem>
+                                                <MenuItem value={"17:00:00"}>17</MenuItem>
+                                                <MenuItem value={"18:00:00"}>18</MenuItem>
+                                            </Select>
+                                        }
                                 </TableCell>
                             </TableRow>
                         ))}

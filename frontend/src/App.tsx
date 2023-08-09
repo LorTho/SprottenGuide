@@ -16,13 +16,17 @@ import {WorkSchedule} from "./model/WorkSchedule.tsx";
 
 export default function App() {
     const [employee, setEmployee] = useState<User>()
-    const [codeNumber, setCodeNumber] = useState<string>("0000")
+    const [employeeShifts, setEmployeeShifts] = useState<Time[]>()
+    const[employeeWish, setEmployeeWish]= useState<Time[]>()
+    const [employeeCode, setEmployeeCode] = useState<string>("0000")
 
     const [userList, setUserList] = useState<DtoUser[]>([])
     const [currentWeek, setCurrentWeek] = useState<WorkSchedule>()
     const [nextWeek, setNextWeek] = useState<WorkSchedule>()
 
-    useEffect(getEmployee, [codeNumber])
+    useEffect(getEmployee, [employeeCode])
+    useEffect(getEmployeeShifts, [employeeCode])
+    useEffect(getEmployeeWish, [employeeCode])
     useEffect(getCurrentWeekSchedule, [])
     useEffect(getNextWeekSchedule, [])
     useEffect(getUserList, [])
@@ -33,43 +37,55 @@ export default function App() {
         axios.post("/api/employee", newUser)
             .then(response => {
                 setEmployee(response.data)
-                setCodeNumber(newUser.id)
+                setEmployeeCode(newUser.id)
             })
         navigate("/")
     }
 
     function handleLogin(code: string) {
-        setCodeNumber(() => code)
+        setEmployeeCode(() => code)
         navigate("/")
     }
 
     function handleLogout() {
-        setCodeNumber(() => "0")
+        setEmployeeCode(() => "0")
         navigate("/")
     }
 
     function handleWishTime(wishTime: Time[]) {
-        axios.put("/api/employee/" + codeNumber, wishTime)
+        axios.put("/api/schedule/" + employeeCode+ "/next", wishTime)
             .then(response => {
-                setEmployee(response.data)
+                setEmployeeWish(response.data)
             })
         navigate("/")
     }
-    function handleSaveCreateSchedule(workSchedule: WorkSchedule){
+
+    function handleSaveCreateSchedule(workSchedule: WorkSchedule) {
         axios.put("/api/schedule", workSchedule)
-            .then(response=>{
+            .then(response => {
                 setNextWeek(response.data)
             })
         navigate("/")
     }
 
     function getEmployee() {
-        if (codeNumber !== undefined) {
-            axios.get("/api/employee/" + codeNumber)
-                .then(response => {
-                    setEmployee(response.data)
-                })
-        }
+        axios.get("/api/employee/" + employeeCode)
+            .then(response => {
+                setEmployee(response.data)
+            })
+    }
+
+    function getEmployeeShifts() {
+        axios.get("/api/schedule/" + employeeCode + "/current")
+            .then(response => {
+                setEmployeeShifts(response.data)
+            })
+    }
+    function getEmployeeWish() {
+        axios.get("/api/schedule/" + employeeCode + "/next/wish")
+            .then(response => {
+                setEmployeeWish(response.data)
+            })
     }
 
     function getUserList() {
@@ -85,7 +101,8 @@ export default function App() {
                 setCurrentWeek(response.data)
             })
     }
-    function getNextWeekSchedule(){
+
+    function getNextWeekSchedule() {
         axios.get("/api/schedule/" + "next")
             .then(response => {
                 setNextWeek(response.data)
@@ -94,22 +111,29 @@ export default function App() {
 
     if (employee === undefined)
         return <h1>Mitarbeiter wird geladen!</h1>
+    if (employeeShifts === undefined)
+        return <h1>Arbeitszeiten werden geladen!</h1>
+    if (employeeWish === undefined)
+        return <h1>Wunschliste wird geladen!</h1>
     if (currentWeek === undefined)
         return <h1>Arbeitsplan wird geladen!</h1>
     if (nextWeek === undefined)
         return <h1>Wunschplan wird geladen!</h1>
+
     return (
         <>
             <Routes>
                 <Route path={"/"} element={<LandingPage/>}/>
                 <Route path={"/login"} element={<Login onLogin={handleLogin}/>}/>
                 <Route path={"/user/userSpace"} element={<UserPage user={employee} onLogout={handleLogout}/>}/>
-                <Route path={"/user/actualWeek"} element={<ActualWeek user={employee}/>}/>
-                <Route path={"/user/nextWeek"} element={<NextWeek user={employee} onChangeTimes={handleWishTime}/>}/>
+                <Route path={"/user/actualWeek"} element={<ActualWeek shifts={employeeShifts}/>}/>
+                <Route path={"/user/nextWeek"} element={<NextWeek user={employee} wishes={employeeWish} onChangeTimes={handleWishTime}/>}/>
                 <Route path={"/register"} element={<Register onRegister={handleRegister}/>}/>
                 <Route path={"/schedule/scheduleSite"} element={<SchedulePage/>}/>
-                <Route path={"/schedule/actualWeek"} element={<CurrentWeek schedule={currentWeek} userList={userList}/>}/>
-                <Route path={"/schedule/nextWeek"} element={<CreateSchedule nextWeek={nextWeek} userList={userList} onSubmit={handleSaveCreateSchedule}/>}/>
+                <Route path={"/schedule/actualWeek"}
+                       element={<CurrentWeek schedule={currentWeek} userList={userList}/>}/>
+                <Route path={"/schedule/nextWeek"} element={<CreateSchedule nextWeek={nextWeek} userList={userList}
+                                                                            onSubmit={handleSaveCreateSchedule}/>}/>
             </Routes>
         </>
     )

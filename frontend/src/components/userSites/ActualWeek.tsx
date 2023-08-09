@@ -1,4 +1,4 @@
-import {User} from "../../model/User.tsx";
+import {Time} from "../../model/User.tsx";
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -8,16 +8,16 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import HeadElement from "../StyleElements.tsx";
+import {nanoid} from "nanoid";
 
 
 type Props = {
-    user: User,
+    shifts: Time[],
 }
 
 export default function ActualWeek(props: Props) {
     return <>
         <HeadElement title={"Zeiten"}/>
-        <h2> {props.user.firstName}</h2>
         <TableContainer component={Paper}>
             <Table sx={{ width: '90%' }} aria-label="customized table">
                 <TableHead>
@@ -27,9 +27,9 @@ export default function ActualWeek(props: Props) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {props.user.thisWeek.map(shift => (
+                    {props.shifts.map(shift => (
                         <TableRow
-                            key={shift.day}
+                            key={nanoid()}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
                             <TableCell component="th" scope="row">

@@ -1,13 +1,10 @@
 package com.example.backend.controllers;
 
-import com.example.backend.model.employee.EmployeeWithoutShifts;
-import com.example.backend.model.employee.Employee;
-
-import com.example.backend.model.shift.RequestShift;
+import com.example.backend.entities.Employee;
+import com.example.backend.model.employee.EmployeeDTO;
 import com.example.backend.service.EmployeeService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -19,7 +16,7 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<EmployeeWithoutShifts> getEmployeeList(){
+    public List<Employee> getEmployeeList(){
         return employeeService.getEmployeeList();
     }
     @GetMapping({"/{id}"})
@@ -27,12 +24,8 @@ public class EmployeeController {
         return employeeService.getEmployee(id);
     }
     @PostMapping
-    public Employee addEmployee(@RequestBody EmployeeWithoutShifts newEmployee) {
-        Employee employee = new Employee(newEmployee.getId(), newEmployee.getFirstName(), newEmployee.getLastName(), new ArrayList<>(), new ArrayList<>());
+    public Employee addEmployee(@RequestBody EmployeeDTO newEmployee) {
+        Employee employee = new Employee(newEmployee.getMemberCode(), newEmployee.getFirstName(), newEmployee.getLastName());
         return employeeService.addEmployee(employee);
-    }
-    @PutMapping("/{id}")
-    public Employee changeWishTime(@PathVariable String id, @RequestBody List<RequestShift> wishList) {
-        return employeeService.changeWishTime(id, wishList);
     }
 }

@@ -1,5 +1,7 @@
-package com.example.backend.model.schedule;
+package com.example.backend.entities;
 
+import com.example.backend.model.schedule.ShiftSchedule;
+import com.example.backend.model.schedule.WishSchedule;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -16,4 +18,5 @@ public class WorkSchedule {
     private String name;
     private List<ShiftSchedule> drivers;
     private List<ShiftSchedule> kitchen;
+    private List<WishSchedule> wishes;
 }

@@ -13,4 +13,5 @@ public class WorkScheduleNoId {
     private String name;
     private List<ShiftSchedule> drivers;
     private List<ShiftSchedule> kitchen;
+    private List<WishSchedule> wishes;
 }

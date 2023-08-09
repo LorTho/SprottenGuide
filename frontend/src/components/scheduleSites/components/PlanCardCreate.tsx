@@ -8,17 +8,19 @@ import {nanoid} from "nanoid";
 import SelectButton from "./SelectButton.tsx";
 import TableContainer from "@mui/material/TableContainer";
 import {useState} from "react";
-import {ShiftSchedule} from "../../../model/WorkSchedule.tsx";
+import {ShiftSchedule, WorkShift} from "../../../model/WorkSchedule.tsx";
 import {DtoUser} from "../../../model/User.tsx";
 
 type Props = {
     day: ShiftSchedule,
+    wishList: WorkShift[],
     userList: DtoUser[],
     onUpdate: (nextWeekShift: ShiftSchedule) => void;
 }
 export default function PlanCardCreate(props: Props) {
     const [targetDay, setTargetDay] = useState<ShiftSchedule>(props.day)
     const userNames = getUserAtributes()
+    const wishList = getWishList()
 
     function getUserAtributes(): string[] {
         const getUserNames: string[] = []
@@ -56,6 +58,16 @@ export default function PlanCardCreate(props: Props) {
             return "--"
         return getUser.firstName
     }
+    function getWishList(){
+        const returnList: {
+            name: string,
+            startTime: string,
+        }[] = []
+        props.wishList.forEach(employee=>{
+            returnList.push({name: getUserName(employee.employeeId), startTime: employee.startTime})
+        })
+        return returnList
+    }
 
     return <TableContainer component={Paper} key={321}>
         <Table sx={{width: '95%'}} aria-label="customized table">
@@ -78,7 +90,7 @@ export default function PlanCardCreate(props: Props) {
                             <TableCell padding={"none"} size={"small"}> {getUserName(value.employeeId)} </TableCell>
                             <TableCell padding={"none"} size={"small"} align="right">
                                 <div className={"table-Selection"}>
-                                    <SelectButton names={userNames}
+                                    <SelectButton names={userNames} userWishList={wishList}
                                                   name={(nameToChange) => setEmployee(nameToChange, index)}/>
                                 </div>
                             </TableCell>
