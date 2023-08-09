@@ -17,8 +17,8 @@ public class ScheduleService {
     private final ScheduleRepo scheduleRepo;
 
     public WorkSchedule getWorkSchedule(String nameToFind) {
-       Optional<WorkSchedule> getWorkschedule = scheduleRepo.findByName(nameToFind);
-        return getWorkschedule.orElseGet(() -> scheduleRepo.findByName("defaultSchedule")
+       Optional<WorkSchedule> getWorkSchedule = scheduleRepo.findByName(nameToFind);
+        return getWorkSchedule.orElseGet(() -> scheduleRepo.findByName("defaultSchedule")
                 .orElseThrow(() -> new NoSuchElementException("No defaultSchedule existing! please contact your admin")));
     }
 
