@@ -26,8 +26,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Mockito.mockStatic;
-
 @SpringBootTest
 @AutoConfigureMockMvc
 class ScheduleControllerTest {

@@ -248,6 +248,7 @@ class ScheduleServiceTest {
 
     @Test
     void getException_whenUnknownSaveSchedule() {
-        Assertions.assertThrows(NoSuchElementException.class, () -> scheduleService.saveEmployeeWishes("0000", 99, null));
+        List<ShiftsWithDayString> list = new ArrayList<>();
+        Assertions.assertThrows(NoSuchElementException.class, () -> scheduleService.saveEmployeeWishes("0000", 99, list));
     }
 }
