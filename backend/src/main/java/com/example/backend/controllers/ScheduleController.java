@@ -17,21 +17,21 @@ public class ScheduleController {
         this.scheduleService=scheduleService;
     }
 
-    @GetMapping("/{name}")
-    public WorkSchedule getWorkSchedule (@PathVariable String name) {
-        return scheduleService.getWorkSchedule(name);
+    @GetMapping("/{weekNumber}")
+    public WorkSchedule getWorkSchedule (@PathVariable int weekNumber) {
+        return scheduleService.getWorkSchedule(weekNumber);
     }
-    @GetMapping("/{employeeId}/{name}")
-    public List<Shifts> getEmployeeShifts(@PathVariable String employeeId, @PathVariable String name){
-        return scheduleService.getEmployeeShifts(employeeId, name);
+    @GetMapping("/{employeeId}/{weekNumber}")
+    public List<Shifts> getEmployeeShifts(@PathVariable String employeeId, @PathVariable int weekNumber){
+        return scheduleService.getEmployeeShifts(employeeId, weekNumber);
     }
-    @GetMapping("/{employeeId}/{name}/wish")
-    public List<Shifts> getEmployeeWish(@PathVariable String employeeId, @PathVariable String name){
-        return scheduleService.getEmployeeWishes(employeeId, name);
+    @GetMapping("/{employeeId}/{weekNumber}/wish")
+    public List<Shifts> getEmployeeWish(@PathVariable String employeeId, @PathVariable int weekNumber){
+        return scheduleService.getEmployeeWishes(employeeId, weekNumber);
     }
-    @PutMapping("/{employeeId}/{name}")
-    public List<Shifts> saveEmployeeWishes(@PathVariable String employeeId, @PathVariable String name, @RequestBody List<Shifts> newList){
-        return scheduleService.saveEmployeeWishes(employeeId, name, newList);
+    @PutMapping("/{employeeId}/{weekNumber}")
+    public List<Shifts> saveEmployeeWishes(@PathVariable String employeeId, @PathVariable int weekNumber, @RequestBody List<Shifts> newList){
+        return scheduleService.saveEmployeeWishes(employeeId, weekNumber, newList);
     }
 
     @PutMapping

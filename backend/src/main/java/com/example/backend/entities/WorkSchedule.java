@@ -15,7 +15,7 @@ import java.util.List;
 public class WorkSchedule {
     @Id
     private String id;
-    private String name;
+    private int name;
     private List<ShiftSchedule> drivers;
     private List<ShiftSchedule> kitchen;
     private List<WishSchedule> wishes;
