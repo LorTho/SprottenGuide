@@ -17,21 +17,50 @@ import {WorkSchedule} from "./model/WorkSchedule.tsx";
 export default function App() {
     const [employee, setEmployee] = useState<User>()
     const [employeeShifts, setEmployeeShifts] = useState<Time[]>()
-    const[employeeWish, setEmployeeWish]= useState<Time[]>()
+    const [employeeWish, setEmployeeWish]= useState<Time[]>()
     const [employeeCode, setEmployeeCode] = useState<string>("0000")
 
     const [userList, setUserList] = useState<DtoUser[]>([])
     const [currentWeek, setCurrentWeek] = useState<WorkSchedule>()
     const [nextWeek, setNextWeek] = useState<WorkSchedule>()
 
+    const current = getCurrentWeekNumber()
+    const next= current + 1
+
+    useEffect(getCurrentWeekSchedule, [])
+    useEffect(getNextWeekSchedule, [])
     useEffect(getEmployee, [employeeCode])
     useEffect(getEmployeeShifts, [employeeCode])
     useEffect(getEmployeeWish, [employeeCode])
-    useEffect(getCurrentWeekSchedule, [])
-    useEffect(getNextWeekSchedule, [])
     useEffect(getUserList, [])
 
     const navigate = useNavigate()
+
+    function getCurrentWeekNumber() {
+        const now = new Date();
+        const startOfYear = new Date(now.getFullYear(), 0, 1);
+        const startOfWeek = new Date(
+            startOfYear.setDate(startOfYear.getDate() - startOfYear.getDay())
+        );
+
+        const diffInTime = now.getTime() - startOfWeek.getTime();
+        const diffInWeeks = Math.floor(diffInTime / (1000 * 3600 * 24 * 7));
+
+        return diffInWeeks + 1; // Add 1 to account for the first week
+    }
+    function getCurrentWeekSchedule() {
+        axios.get("/api/schedule/" + current)
+            .then(response => {
+                setCurrentWeek(response.data)
+            })
+    }
+
+    function getNextWeekSchedule() {
+        axios.get("/api/schedule/" + next)
+            .then(response => {
+                setNextWeek(response.data)
+            })
+    }
 
     function handleRegister(newUser: DtoUser) {
         axios.post("/api/employee", newUser)
@@ -53,7 +82,7 @@ export default function App() {
     }
 
     function handleWishTime(wishTime: Time[]) {
-        axios.put("/api/schedule/" + employeeCode+ "/next", wishTime)
+        axios.put("/api/schedule/" + employeeCode+ "/" + next, wishTime)
             .then(response => {
                 setEmployeeWish(response.data)
             })
@@ -76,13 +105,13 @@ export default function App() {
     }
 
     function getEmployeeShifts() {
-        axios.get("/api/schedule/" + employeeCode + "/current")
+        axios.get("/api/schedule/" + employeeCode + "/"+current)
             .then(response => {
                 setEmployeeShifts(response.data)
             })
     }
     function getEmployeeWish() {
-        axios.get("/api/schedule/" + employeeCode + "/next/wish")
+        axios.get("/api/schedule/" + employeeCode + "/"+next+"/wish")
             .then(response => {
                 setEmployeeWish(response.data)
             })
@@ -92,20 +121,6 @@ export default function App() {
         axios.get("/api/employee")
             .then(response => {
                 setUserList(response.data)
-            })
-    }
-
-    function getCurrentWeekSchedule() {
-        axios.get("/api/schedule/" + "current")
-            .then(response => {
-                setCurrentWeek(response.data)
-            })
-    }
-
-    function getNextWeekSchedule() {
-        axios.get("/api/schedule/" + "next")
-            .then(response => {
-                setNextWeek(response.data)
             })
     }
 
