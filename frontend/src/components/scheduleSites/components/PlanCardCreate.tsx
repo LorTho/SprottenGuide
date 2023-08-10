@@ -75,7 +75,7 @@ export default function PlanCardCreate(props: Props) {
                 <TableRow>
                     <TableCell padding={"none"} size={"small"}> Zeit </TableCell>
                     <TableCell padding={"none"} size={"small"}> Name </TableCell>
-                    <TableCell padding={"none"} size={"small"} align={"right"}> {targetDay.day.substring(0,3)}</TableCell>
+                    <TableCell padding={"none"} size={"small"} align={"right"}> {targetDay.day.substring(8,10)}</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
@@ -86,7 +86,7 @@ export default function PlanCardCreate(props: Props) {
                             key={nanoid()}
                             sx={{'&:last-child td, &:last-child th': {border: 0}}}
                         >
-                            <TableCell padding={"none"} size={"small"} component="th" scope="row"> {value.startTime} </TableCell>
+                            <TableCell padding={"none"} size={"small"} component="th" scope="row"> {value.startTime.substring(0,5)} </TableCell>
                             <TableCell padding={"none"} size={"small"}> {getUserName(value.employeeId)} </TableCell>
                             <TableCell padding={"none"} size={"small"} align="right">
                                 <div className={"table-Selection"}>
