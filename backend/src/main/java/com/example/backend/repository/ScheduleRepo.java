@@ -6,5 +6,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.Optional;
 
 public interface ScheduleRepo extends MongoRepository<WorkSchedule, String> {
-    Optional<WorkSchedule> findByName(String name);
+    Optional<WorkSchedule> findByName(int name);
 }

@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 public class WorkScheduleNoId {
-    private String name;
+    private int name;
     private List<ShiftSchedule> drivers;
     private List<ShiftSchedule> kitchen;
     private List<WishSchedule> wishes;
