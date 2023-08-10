@@ -1,58 +1,85 @@
 package com.example.backend.service;
 
 import com.example.backend.entities.MonthlyPlan;
+import com.example.backend.entities.WorkSchedule;
 import com.example.backend.model.monthly.Daily;
 import com.example.backend.model.monthly.DailyPlan;
+import com.example.backend.model.schedule.ShiftSchedule;
+import com.example.backend.model.shift.WorkShift;
 import com.example.backend.repository.MonthlyRepo;
-import com.example.backend.repository.ScheduleRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.Month;
-import java.time.format.DateTimeFormatter;
+import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
-
-import static java.util.spi.ToolProvider.findFirst;
 
 @Service
 @RequiredArgsConstructor
 public class MonthlyService {
     private final MonthlyRepo monthlyRepo;
-    public void getToday(){
-        Optional<MonthlyPlan> actualMonth = monthlyRepo.findByName(LocalDate.from(LocalDate.now().getMonth()));
+    private final ScheduleService scheduleService;
+
+    public Daily getToday(){
+        //Choose actual Month from Database else create actual Month
+        LocalDate dateToday = LocalDate.now();
+        Optional<MonthlyPlan> actualMonth = monthlyRepo.findByName(LocalDate.from(dateToday.getMonth()));
         MonthlyPlan month = new MonthlyPlan();
         if(actualMonth.isEmpty()) {
-            monthlyRepo.insert(new MonthlyPlan(IdService.uuid(), Month.from(LocalDate.now().getMonth()), new ArrayList<>()));
+            monthlyRepo.insert(new MonthlyPlan(IdService.uuid(), Month.from(dateToday.getMonth()), new ArrayList<>()));
             getToday();
         }else{
             month = actualMonth.get();
         }
+
+        //Search for today else create today
         List<Daily> dailys = month.getDays();
-        Optional<List<DailyPlan>> dailyPlan = Optional.empty();
+        Daily today = new Daily();
+        today.setDay(dateToday);
+        boolean match = false;
         for (Daily findDay : dailys) {
-            if(findDay.equals(LocalDate.now())){
-                dailyPlan = Optional.ofNullable(findDay.getDailyPlanList());
+            if(findDay.getDay().equals(dateToday)){
+                today.setDailyPlanList(findDay.getDailyPlanList());
+                match = true;
             }
         }
-        if(dailyPlan.isEmpty()){
-
+        if(!match){
+            today.setDailyPlanList(getDailyPlan());
+            dailys.add(today);
+            month.setDays(dailys);
+            monthlyRepo.save(month);
         }
-
-    }
-    public static void testLocalTime() {
-        System.out.println(LocalTime.now().format(DateTimeFormatter.ofPattern("hh:mm")));
-        System.out.println(LocalTime.now().getHour() + " " + LocalTime.now().getMinute() + " " + LocalTime.now().getSecond());
-        System.out.println(LocalDate.now());
-        System.out.println(LocalDate.now().getMonth());
-        System.out.println(Month.from(LocalDate.now().getMonth()));
+        return today;
     }
 
-    public static void main(String[] args) {
-        MonthlyService.testLocalTime();
+    public List<DailyPlan> getDailyPlan(){
+        List<DailyPlan> returnList = new ArrayList<>();
+        LocalDate dateToday = LocalDate.now();
+        int weekOfYear = dateToday.get(WeekFields.of(Locale.getDefault()).weekOfYear());
+        WorkSchedule weekList = scheduleService.getWorkSchedule(weekOfYear);
+        for (ShiftSchedule shift : weekList.getDrivers()) {
+            if(shift.getDay().equals(dateToday)){
+                for (WorkShift workShift : shift.getShifts()) {
+                    DailyPlan plan = new DailyPlan();
+                    plan.setEmployeeId(workShift.getEmployeeId());
+                    returnList.add(plan);
+                }
+            }
+        }
+        for (ShiftSchedule shift : weekList.getKitchen()) {
+            if(shift.getDay().equals(dateToday)){
+                for (WorkShift workShift : shift.getShifts()) {
+                    DailyPlan plan = new DailyPlan();
+                    plan.setEmployeeId(workShift.getEmployeeId());
+                    returnList.add(plan);
+                }
+            }
+        }
+        return returnList;
     }
 }
 

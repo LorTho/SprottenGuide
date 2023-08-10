@@ -1,5 +1,6 @@
 package com.example.backend.model.monthly;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
