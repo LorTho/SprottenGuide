@@ -68,9 +68,8 @@ class MonthlyServiceTest {
         Daily actual = monthlyService.getToday();
         Assertions.assertEquals(expected, actual);
     }
-
     @Test
-    void getToday_whenNonExists() {
+    void getToday_whenNonDailyExists() {
         Daily expected = new Daily(LocalDate.now(), List.of(
                 new DailyPlan("0000", null, null, null),
                 new DailyPlan("1234", null, null, null)
@@ -94,6 +93,28 @@ class MonthlyServiceTest {
         ));
         //When
         when(monthlyRepo.findByMonth(monat)).thenReturn(Optional.of(month));
+        when(scheduleService.getWorkSchedule(weekNumber)).thenReturn(workSchedule);
+        Daily actual = monthlyService.getToday();
+        Assertions.assertEquals(expected, actual);
+    }
+    @Test
+    void getToday_whenNonMonthExists() {
+        Daily expected = new Daily(LocalDate.now(), List.of(
+                new DailyPlan("0000", null, null, null),
+                new DailyPlan("1234", null, null, null)
+        ));
+        int weekNumber = LocalDate.now().get(WeekFields.of(Locale.getDefault()).weekOfYear());
+        WorkSchedule workSchedule = new WorkSchedule("SomeId", weekNumber,
+                List.of(new ShiftSchedule(LocalDate.now(), List.of(
+                                new WorkShift("0000", LocalTime.of(11, 0))
+                        ))
+                ), List.of(new ShiftSchedule(LocalDate.now(), List.of(
+                        new WorkShift("1234", LocalTime.of(11, 0))
+                ))
+        ), new ArrayList<>());
+        Month monat = LocalDate.now().getMonth();
+        //When
+        when(monthlyRepo.findByMonth(monat)).thenReturn(Optional.empty());
         when(scheduleService.getWorkSchedule(weekNumber)).thenReturn(workSchedule);
         Daily actual = monthlyService.getToday();
         Assertions.assertEquals(expected, actual);

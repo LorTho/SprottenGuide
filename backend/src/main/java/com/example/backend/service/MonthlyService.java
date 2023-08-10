@@ -31,17 +31,17 @@ public class MonthlyService {
         //Choose actual Month from Database else create actual Month
         LocalDate dateToday = LocalDate.now();
         Optional<MonthlyPlan> actualMonth = monthlyRepo.findByMonth(dateToday.getMonth());
-        MonthlyPlan month = new MonthlyPlan();
+        MonthlyPlan month;
         if(actualMonth.isEmpty()) {
-            add(new MonthlyPlan(IdService.uuid(), Month.from(dateToday.getMonth()), new ArrayList<>()));
-            getToday();
+            MonthlyPlan monthlyPlan = new MonthlyPlan(IdService.uuid(), Month.from(dateToday.getMonth()), new ArrayList<>());
+            add(monthlyPlan);
+            month = monthlyPlan;
         }else{
             month = actualMonth.get();
         }
 
         //Search for today else create today
-        List<Daily> dailys = new ArrayList<>();
-        dailys.addAll(month.getDays());
+        List<Daily> dailys = new ArrayList<>(month.getDays());
         Daily today = new Daily();
         today.setDay(dateToday);
         boolean match = false;

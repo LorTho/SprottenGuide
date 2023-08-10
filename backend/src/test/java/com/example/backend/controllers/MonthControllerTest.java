@@ -2,7 +2,6 @@ package com.example.backend.controllers;
 
 import com.example.backend.entities.MonthlyPlan;
 import com.example.backend.model.monthly.Daily;
-import com.example.backend.model.monthly.DailyPlan;
 import com.example.backend.service.MonthlyService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -16,7 +15,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +25,6 @@ class MonthControllerTest {
     MockMvc mockMvc;
     @Autowired
     MonthlyService monthlyService;
-
     ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
