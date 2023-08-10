@@ -38,6 +38,18 @@ class ScheduleServiceTest {
 
     @Test
     @DirtiesContext
+    void saveWorkSchedule_whenNonExists(){
+        WorkSchedule newWorkSchedule = new WorkSchedule("SomeId", 30, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+        //When
+        when(scheduleRepo.findAll()).thenReturn(new ArrayList<>());
+        WorkSchedule actualWorkSchedule = scheduleService.addWorkSchedule(newWorkSchedule);
+        //Then
+        verify(scheduleRepo).findAll();
+        Assertions.assertEquals(newWorkSchedule, actualWorkSchedule);
+    }
+    @Test
+    @DirtiesContext
     void saveWorkSchedule_whenAddNewSchedule() {
         //Given
         WorkSchedule newWorkSchedule = new WorkSchedule("SomeId", 30, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
