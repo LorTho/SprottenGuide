@@ -24,20 +24,24 @@ public class MonthlyService {
     private final MonthlyRepo monthlyRepo;
     private final ScheduleService scheduleService;
 
+    public void add(MonthlyPlan newPlan){
+        monthlyRepo.save(newPlan);
+    }
     public Daily getToday(){
         //Choose actual Month from Database else create actual Month
         LocalDate dateToday = LocalDate.now();
-        Optional<MonthlyPlan> actualMonth = monthlyRepo.findByName(LocalDate.from(dateToday.getMonth()));
+        Optional<MonthlyPlan> actualMonth = monthlyRepo.findByMonth(dateToday.getMonth());
         MonthlyPlan month = new MonthlyPlan();
         if(actualMonth.isEmpty()) {
-            monthlyRepo.insert(new MonthlyPlan(IdService.uuid(), Month.from(dateToday.getMonth()), new ArrayList<>()));
+            add(new MonthlyPlan(IdService.uuid(), Month.from(dateToday.getMonth()), new ArrayList<>()));
             getToday();
         }else{
             month = actualMonth.get();
         }
 
         //Search for today else create today
-        List<Daily> dailys = month.getDays();
+        List<Daily> dailys = new ArrayList<>();
+        dailys.addAll(month.getDays());
         Daily today = new Daily();
         today.setDay(dateToday);
         boolean match = false;
@@ -82,5 +86,3 @@ public class MonthlyService {
         return returnList;
     }
 }
-
-

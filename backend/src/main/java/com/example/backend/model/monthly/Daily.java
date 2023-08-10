@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RequiredArgsConstructor
+@AllArgsConstructor
 @Data
 public class Daily {
     LocalDate day;
