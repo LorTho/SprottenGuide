@@ -40,9 +40,10 @@ class ScheduleServiceTest {
     @DirtiesContext
     void saveWorkSchedule_whenNonExists(){
         WorkSchedule newWorkSchedule = new WorkSchedule("SomeId", 30, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        WorkSchedule existingSchedule = new WorkSchedule("SomeOtherId", 30, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
         //When
-        when(scheduleRepo.findAll()).thenReturn(new ArrayList<>());
+        when(scheduleRepo.findAll()).thenReturn(List.of(existingSchedule));
         WorkSchedule actualWorkSchedule = scheduleService.addWorkSchedule(newWorkSchedule);
         //Then
         verify(scheduleRepo).findAll();
