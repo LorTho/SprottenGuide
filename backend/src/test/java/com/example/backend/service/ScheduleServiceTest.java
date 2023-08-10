@@ -38,9 +38,9 @@ class ScheduleServiceTest {
 
     @Test
     @DirtiesContext
-    void saveWorkSchedule_whenNonExists(){
+    void saveWorkSchedule_whenNewScheduleIsNew(){
         WorkSchedule newWorkSchedule = new WorkSchedule("SomeId", 30, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-        WorkSchedule existingSchedule = new WorkSchedule("SomeOtherId", 30, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        WorkSchedule existingSchedule = new WorkSchedule("SomeOtherId", 29, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
         //When
         when(scheduleRepo.findAll()).thenReturn(List.of(existingSchedule));
@@ -51,7 +51,7 @@ class ScheduleServiceTest {
     }
     @Test
     @DirtiesContext
-    void saveWorkSchedule_whenAddNewSchedule() {
+    void saveWorkSchedule_whenNewScheduleExists() {
         //Given
         WorkSchedule newWorkSchedule = new WorkSchedule("SomeId", 30, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         WorkSchedule existingSchedule = new WorkSchedule("SomeOtherId", 30, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
