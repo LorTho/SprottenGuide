@@ -13,6 +13,9 @@ export default function LandingPage() {
                 <Link to={"/schedule/scheduleSite"}>
                     <button>Arbeitsplan</button>
                 </Link>
+                <Link to={"/day"}>
+                    <button>Tagesansicht</button>
+                </Link>
             </main>
         </>
     )

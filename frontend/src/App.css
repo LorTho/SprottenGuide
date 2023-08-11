@@ -60,3 +60,6 @@ button {
   width: min-content;
   background-color: rgba(98, 152, 52, 0.4);
 }
+.WorkerElement{
+  display: flex;
+}
