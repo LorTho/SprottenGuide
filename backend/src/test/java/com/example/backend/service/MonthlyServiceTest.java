@@ -35,13 +35,21 @@ class MonthlyServiceTest {
 
         int weekNumber = LocalDate.now().get(WeekFields.of(Locale.getDefault()).weekOfYear());
         WorkSchedule workSchedule = new WorkSchedule("SomeId", weekNumber,
-                List.of(new ShiftSchedule(LocalDate.now(), List.of(
+                List.of(
+                        new ShiftSchedule(LocalDate.now(), List.of(
+                                new WorkShift("0000", LocalTime.of(11, 0))
+                        )),
+                        new ShiftSchedule(LocalDate.now().minusDays(1), List.of(
                                 new WorkShift("0000", LocalTime.of(11, 0))
                         ))
-                ), List.of(new ShiftSchedule(LocalDate.now(), List.of(
-                        new WorkShift("1234", LocalTime.of(11, 0))
-                ))
-        ), new ArrayList<>());
+                ),
+                List.of(new ShiftSchedule(LocalDate.now(), List.of(
+                                new WorkShift("1234", LocalTime.of(11, 0))
+                        )),
+                        new ShiftSchedule(LocalDate.now().minusDays(1), List.of(
+                                new WorkShift("0000", LocalTime.of(11, 0))
+                        ))
+                ), new ArrayList<>());
 
         //When
         when(scheduleService.getWorkSchedule(weekNumber)).thenReturn(workSchedule);
