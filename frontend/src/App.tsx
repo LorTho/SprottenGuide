@@ -13,6 +13,8 @@ import SchedulePage from "./components/scheduleSites/SchedulePage.tsx";
 import CurrentWeek from "./components/scheduleSites/CurrentWeek.tsx";
 import CreateSchedule from "./components/scheduleSites/CreateSchedule.tsx";
 import {WorkSchedule} from "./model/WorkSchedule.tsx";
+import {Day} from "./model/Day.tsx";
+import DayView from "./components/daySite/DayView.tsx";
 
 export default function App() {
     const [employee, setEmployee] = useState<User>()
@@ -23,6 +25,7 @@ export default function App() {
     const [userList, setUserList] = useState<DtoUser[]>([])
     const [currentWeek, setCurrentWeek] = useState<WorkSchedule>()
     const [nextWeek, setNextWeek] = useState<WorkSchedule>()
+    const [daily, setDaily] = useState<Day>()
 
     const current = getCurrentWeekNumber()
     const next= current + 1
@@ -33,6 +36,7 @@ export default function App() {
     useEffect(getEmployeeShifts, [employeeCode])
     useEffect(getEmployeeWish, [employeeCode])
     useEffect(getUserList, [])
+    useEffect(getDaily,[])
 
     const navigate = useNavigate()
 
@@ -123,6 +127,12 @@ export default function App() {
                 setUserList(response.data)
             })
     }
+    function getDaily(){
+        axios.get("/api/month/today")
+            .then(response=>{
+                setDaily(response.data)
+            })
+    }
 
     if (employee === undefined)
         return <h1>Mitarbeiter wird geladen!</h1>
@@ -134,6 +144,8 @@ export default function App() {
         return <h1>Arbeitsplan wird geladen!</h1>
     if (nextWeek === undefined)
         return <h1>Wunschplan wird geladen!</h1>
+    if(daily === undefined)
+        return <h1>Tagesansicht wird geladen</h1>
 
     return (
         <>
@@ -149,6 +161,7 @@ export default function App() {
                        element={<CurrentWeek schedule={currentWeek} userList={userList}/>}/>
                 <Route path={"/schedule/nextWeek"} element={<CreateSchedule nextWeek={nextWeek} userList={userList}
                                                                             onSubmit={handleSaveCreateSchedule}/>}/>
+                <Route path={"/day"} element={<DayView daily={daily}/>}/>
             </Routes>
         </>
     )

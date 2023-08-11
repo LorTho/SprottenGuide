@@ -2,8 +2,6 @@ export type User = {
     id: string,
     firstName: string,
     lastName: string,
-    thisWeek: Time[],
-    nextWeek: Time[],
 }
 
 export type Time = {
