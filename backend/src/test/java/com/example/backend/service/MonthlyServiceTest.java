@@ -61,6 +61,11 @@ class MonthlyServiceTest {
                         new DailyPlan("0000", null, null, null),
                         new DailyPlan("1234", null, null, null),
                         new DailyPlan("5678", null, null, null)
+                )),
+                new Daily(LocalDate.now().minusDays(1), List.of(
+                        new DailyPlan("0000", null, null, null),
+                        new DailyPlan("1234", null, null, null),
+                        new DailyPlan("5678", null, null, null)
                 ))
         ));
         //When
@@ -68,6 +73,7 @@ class MonthlyServiceTest {
         Daily actual = monthlyService.getToday();
         Assertions.assertEquals(expected, actual);
     }
+
     @Test
     void getToday_whenNonDailyExists() {
         Daily expected = new Daily(LocalDate.now(), List.of(
@@ -97,6 +103,7 @@ class MonthlyServiceTest {
         Daily actual = monthlyService.getToday();
         Assertions.assertEquals(expected, actual);
     }
+
     @Test
     void getToday_whenNonMonthExists() {
         Daily expected = new Daily(LocalDate.now(), List.of(
