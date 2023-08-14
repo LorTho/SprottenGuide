@@ -13,10 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.temporal.WeekFields;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -70,6 +67,7 @@ public class MonthlyService {
                 for (WorkShift workShift : shift.getShifts()) {
                     DailyPlan plan = new DailyPlan();
                     plan.setEmployeeId(workShift.getEmployeeId());
+                    plan.setTime(0.0);
                     returnList.add(plan);
                 }
             }
@@ -79,10 +77,29 @@ public class MonthlyService {
                 for (WorkShift workShift : shift.getShifts()) {
                     DailyPlan plan = new DailyPlan();
                     plan.setEmployeeId(workShift.getEmployeeId());
+                    plan.setTime(0.0);
                     returnList.add(plan);
                 }
             }
         }
         return returnList;
+    }
+
+    public Daily saveDaily(Daily daily) {
+        LocalDate dateToday = LocalDate.now();
+        MonthlyPlan actualMonth = monthlyRepo.findByMonth(dateToday.getMonth())
+                .orElseThrow(()->new NoSuchElementException("Month plan not found!"));
+        List<Daily> dailys = new ArrayList<>();
+        Daily today = new Daily();
+        today.setDay(dateToday);
+        for (Daily findDay : actualMonth.getDays()) {
+            if(findDay.getDay().equals(daily.getDay())){
+                dailys.add(daily);
+            }else
+                dailys.add(findDay);
+        }
+        actualMonth.setDays(dailys);
+        monthlyRepo.save(actualMonth);
+        return daily;
     }
 }

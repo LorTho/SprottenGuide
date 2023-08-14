@@ -100,7 +100,12 @@ export default function App() {
             })
         navigate("/")
     }
-
+    function handleUpdateDay(day: Day){
+        axios.put("/api/month/save", day)
+            .then(response => {
+                setDaily(response.data)
+            })
+    }
     function getEmployee() {
         axios.get("/api/employee/" + employeeCode)
             .then(response => {
@@ -161,7 +166,7 @@ export default function App() {
                        element={<CurrentWeek schedule={currentWeek} userList={userList}/>}/>
                 <Route path={"/schedule/nextWeek"} element={<CreateSchedule nextWeek={nextWeek} userList={userList}
                                                                             onSubmit={handleSaveCreateSchedule}/>}/>
-                <Route path={"/day"} element={<DayView daily={daily}/>}/>
+                <Route path={"/day"} element={<DayView daily={daily} onUpdate={handleUpdateDay}/>}/>
             </Routes>
         </>
     )

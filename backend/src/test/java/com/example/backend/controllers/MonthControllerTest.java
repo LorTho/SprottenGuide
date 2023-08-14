@@ -2,6 +2,7 @@ package com.example.backend.controllers;
 
 import com.example.backend.entities.MonthlyPlan;
 import com.example.backend.model.monthly.Daily;
+import com.example.backend.model.monthly.DailyPlan;
 import com.example.backend.service.MonthlyService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -10,11 +11,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +46,38 @@ class MonthControllerTest {
         String expectedJson = objectMapper.writeValueAsString(expected);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/month/today"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(expectedJson));
+    }
+    @Test
+    void saveDaily() throws Exception {
+        MonthlyPlan newPlan = new MonthlyPlan("SomeID", LocalDate.now().getMonth(), List.of(
+                new Daily(LocalDate.now(), List.of(
+                        new DailyPlan("0000", null, null, null, 0.0),
+                        new DailyPlan("1234", null, null, null, 0.0),
+                        new DailyPlan("5678", null, null, null, 0.0)
+                )),
+                new Daily(LocalDate.now().minusDays(1), List.of(
+                        new DailyPlan("0000", null, null, null, 0.0),
+                        new DailyPlan("1234", null, null, null, 0.0),
+                        new DailyPlan("5678", null, null, null, 0.0)
+                ))
+        ));
+        monthlyService.add(newPlan);
+
+        Daily expected = new Daily(LocalDate.now(), List.of(
+                new DailyPlan("0000", LocalTime.of(11,0), null, null, 0.0),
+                new DailyPlan("1234", null, null, null, 0.0),
+                new DailyPlan("5678", null, null, null, 0.0)
+        ));
+
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        String expectedJson = objectMapper.writeValueAsString(expected);
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/month/save")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(expectedJson))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(expectedJson));
     }

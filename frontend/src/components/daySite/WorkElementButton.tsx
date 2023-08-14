@@ -1,29 +1,45 @@
 import {DailyPlan} from "../../model/Day.tsx";
-import {useState} from "react";
 
 type Props ={
     worker: DailyPlan,
+    state: number,
+    update: (updateWorker: DailyPlan)=>void,
 }
 
 export default function WorkerElementButton(props:Props){
-    const[worker , setWorker] = useState<DailyPlan>(props.worker)
-    const state = 1;
+    const state = props.state
 
     function handleStart(){
         const date = new Date();
-        const showTime = date.getHours()+':'+date.getMinutes();
-        const updateWorker = worker
-        updateWorker.start = showTime
-        setWorker(updateWorker)
+        props.worker.start = date.getHours()+':'+date.getMinutes();
+        props.update(props.worker)
+    }
+    function handleBreakStart(){
+        const date = new Date();
+        props.worker.pause.push({start: date.getHours()+':'+date.getMinutes(), end: ""})
+        props.update(props.worker)
+    }
+    function handleBreakEnd(){
+        const date = new Date();
+        props.worker.pause.forEach(value =>{
+            if(value.end == "")
+                value.end = date.getHours()+':'+date.getMinutes();
+        })
+        props.update(props.worker)
+    }
+    function handleEnd(){
+        const date = new Date();
+        props.worker.end = date.getHours() + ':' + date.getMinutes()
+        props.update(props.worker)
     }
 
     if(state === 1)
-        return <button onClick={handleStart}>Start der Schicht {worker.start}</button>
+        return <button onClick={handleStart}>Start der Schicht</button>
     if(state === 2)
         return <>
-            <button>Pause Anfang</button>
-            <button>Schichtende</button>
+            <button onClick={handleBreakStart}>Pause Anfang</button>
+            <button onClick={handleEnd}>Schichtende</button>
             </>
     if(state === 3)
-        return <button>wieder anfangen</button>
+        return <button onClick={handleBreakEnd}>wieder anfangen</button>
 }

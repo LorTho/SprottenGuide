@@ -2,19 +2,20 @@ import {DailyPlan} from "../../model/Day.tsx";
 import WorkerElementButton from "./WorkElementButton.tsx";
 
 type Props = {
-    worker: DailyPlan
+    worker: DailyPlan,
+    onUpdate: (worker: DailyPlan) => void,
 }
 export default function WorkerElement(props: Props) {
 
-        const date = new Date();
-        const showTime = date.getHours()+':'+date.getMinutes();
-
+    function onUpdate(updateWorker: DailyPlan) {
+        props.onUpdate(updateWorker)
+    }
 
     return <>
         <div className={"WorkerElement"}>
             <p>{props.worker.employeeId}</p>
-            <p>{showTime}</p>
-            <WorkerElementButton worker={props.worker}/>
+            <p>{props.worker.time}</p>
+            <WorkerElementButton worker={props.worker} state={1} update={onUpdate}/>
         </div>
 
     </>
