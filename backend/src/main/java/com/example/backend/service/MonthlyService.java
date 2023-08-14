@@ -9,13 +9,11 @@ import com.example.backend.model.schedule.ShiftSchedule;
 import com.example.backend.model.shift.WorkShift;
 import com.example.backend.repository.MonthlyRepo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.mongodb.core.aggregation.DateOperators;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Month;
-import java.time.temporal.ChronoUnit;
 import java.time.temporal.WeekFields;
 import java.util.*;
 
@@ -97,18 +95,16 @@ public class MonthlyService {
     }
 
     public Daily saveDaily(Daily daily) {
+        Daily updateDaily = new Daily();
         LocalDate dateToday = LocalDate.now();
         MonthlyPlan actualMonth = monthlyRepo.findByMonth(dateToday.getMonth())
                 .orElseThrow(() -> new NoSuchElementException("Month plan not found!"));
         List<Daily> dailys = new ArrayList<>();
         for (Daily findDay : actualMonth.getDays()) {
             if (findDay.getDay().equals(daily.getDay())) {
-                Daily updateDaily = new Daily();
-                DailyPlan planDaily;
                 List<DailyPlan> updateList = new ArrayList<>();
-                for (DailyPlan dailyplan : findDay.getDailyPlanList()) {
-                    planDaily = setTime(dailyplan);
-                    updateList.add(planDaily);
+                for (DailyPlan updateTime : daily.getDailyPlanList()) {
+                    updateList.add(setTime(updateTime));
                 }
                 updateDaily.setDay(daily.getDay());
                 updateDaily.setDailyPlanList(updateList);
@@ -118,7 +114,7 @@ public class MonthlyService {
         }
         actualMonth.setDays(dailys);
         monthlyRepo.save(actualMonth);
-        return daily;
+        return updateDaily;
     }
 
     private DailyPlan setTime(DailyPlan dailyplan) {
@@ -126,11 +122,13 @@ public class MonthlyService {
         long breakTime = 0;
         if (dailyplan.getStart() != null) {
             newTime = MINUTES.between(dailyplan.getStart(), LocalTime.now());
-            for (Pause pause : dailyplan.getPause()) {
-                if (pause.getStart() != null && pause.getEnd() == null)
-                    newTime = MINUTES.between(dailyplan.getStart(), pause.getStart());
-                if (pause.getStart() != null && pause.getEnd() != null)
-                    breakTime += MINUTES.between(pause.getStart(), pause.getEnd());
+            if (dailyplan.getPause() != null) {
+                for (Pause pause : dailyplan.getPause()) {
+                    if (pause.getStart() != null && pause.getEnd() == null)
+                        newTime = MINUTES.between(dailyplan.getStart(), pause.getStart());
+                    if (pause.getStart() != null && pause.getEnd() != null)
+                        breakTime += MINUTES.between(pause.getStart(), pause.getEnd());
+                }
             }
             if (dailyplan.getEnd() != null) {
                 newTime = MINUTES.between(dailyplan.getStart(), dailyplan.getEnd());

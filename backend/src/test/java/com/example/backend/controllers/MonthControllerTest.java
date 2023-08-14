@@ -21,6 +21,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.time.temporal.ChronoUnit.MINUTES;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 class MonthControllerTest {
@@ -53,31 +55,37 @@ class MonthControllerTest {
     void saveDaily() throws Exception {
         MonthlyPlan newPlan = new MonthlyPlan("SomeID", LocalDate.now().getMonth(), List.of(
                 new Daily(LocalDate.now(), List.of(
-                        new DailyPlan("0000", null, null, null, 0.0),
-                        new DailyPlan("1234", null, null, null, 0.0),
-                        new DailyPlan("5678", null, null, null, 0.0)
+                        new DailyPlan("0000", null, null, null, 0),
+                        new DailyPlan("1234", null, null, null, 0),
+                        new DailyPlan("5678", null, null, null, 0)
                 )),
                 new Daily(LocalDate.now().minusDays(1), List.of(
-                        new DailyPlan("0000", null, null, null, 0.0),
-                        new DailyPlan("1234", null, null, null, 0.0),
-                        new DailyPlan("5678", null, null, null, 0.0)
+                        new DailyPlan("0000", null, null, null, 0),
+                        new DailyPlan("1234", null, null, null, 0),
+                        new DailyPlan("5678", null, null, null, 0)
                 ))
         ));
         monthlyService.add(newPlan);
 
         Daily expected = new Daily(LocalDate.now(), List.of(
-                new DailyPlan("0000", LocalTime.of(11,0), null, null, 0.0),
-                new DailyPlan("1234", null, null, null, 0.0),
-                new DailyPlan("5678", null, null, null, 0.0)
+                new DailyPlan("0000", LocalTime.of(11,0), null, null, MINUTES.between(LocalTime.of(11,0), LocalTime.now())),
+                new DailyPlan("1234", null, null, null, 0),
+                new DailyPlan("5678", null, null, null, 0)
+        ));
+        Daily putBody = new Daily(LocalDate.now(), List.of(
+                new DailyPlan("0000", LocalTime.of(11,0), null, null, 0),
+                new DailyPlan("1234", null, null, null, 0),
+                new DailyPlan("5678", null, null, null, 0)
         ));
 
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         String expectedJson = objectMapper.writeValueAsString(expected);
+        String putBodyJson = objectMapper.writeValueAsString(putBody);
 
         mockMvc.perform(MockMvcRequestBuilders.put("/api/month/save")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(expectedJson))
+                .content(putBodyJson))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(expectedJson));
     }
