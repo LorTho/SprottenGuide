@@ -199,8 +199,7 @@ class MonthlyServiceTest {
                 ), 0),
                 //StartTime and Break
                 new DailyPlan("1234", start, null, List.of(
-                        new Pause(time.minusHours(4), time.minusHours(3)),
-                        new Pause()
+                        new Pause(time.minusHours(4), time.minusHours(3))
                 ), 0),
                 //StartTime and Multiple Break und without EndTime
                 new DailyPlan("5678", start, null, List.of(
@@ -219,8 +218,7 @@ class MonthlyServiceTest {
                 ), MINUTES.between(time.minusHours(6), time.minusHours(4))),
                 //StartTime and Break
                 new DailyPlan("1234", start, null, List.of(
-                        new Pause(time.minusHours(4), time.minusHours(3)),
-                        new Pause()
+                        new Pause(time.minusHours(4), time.minusHours(3))
                 ), MINUTES.between(time.minusHours(6), time)-
                         MINUTES.between(time.minusHours(4), time.minusHours(3))),
                 //StartTime and Multiple Break und without EndTime
