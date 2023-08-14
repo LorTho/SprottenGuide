@@ -29,8 +29,8 @@ class MonthlyServiceTest {
     @Test
     void getDailyPlan() {
         List<DailyPlan> expected = List.of(
-                new DailyPlan("0000", null, null, null, 0),
-                new DailyPlan("1234", null, null, null, 0));
+                new DailyPlan("0000", null, null, new ArrayList<>(), 0),
+                new DailyPlan("1234", null, null, new ArrayList<>(), 0));
 
         int weekNumber = LocalDate.now().get(WeekFields.of(Locale.getDefault()).weekOfYear());
         WorkSchedule workSchedule = new WorkSchedule("SomeId", weekNumber,
@@ -58,21 +58,21 @@ class MonthlyServiceTest {
     @Test
     void getToday_WhenExists() {
         Daily expected = new Daily(LocalDate.now(), List.of(
-                new DailyPlan("0000", null, null, null, 0),
-                new DailyPlan("1234", null, null, null, 0),
-                new DailyPlan("5678", null, null, null, 0)
+                new DailyPlan("0000", null, null, new ArrayList<>(), 0),
+                new DailyPlan("1234", null, null, new ArrayList<>(), 0),
+                new DailyPlan("5678", null, null, new ArrayList<>(), 0)
         ));
         Month monat = LocalDate.now().getMonth();
         MonthlyPlan month = new MonthlyPlan("someId", monat, List.of(
                 new Daily(LocalDate.now(), List.of(
-                        new DailyPlan("0000", null, null, null, 0),
-                        new DailyPlan("1234", null, null, null, 0),
-                        new DailyPlan("5678", null, null, null, 0)
+                        new DailyPlan("0000", null, null, new ArrayList<>(), 0),
+                        new DailyPlan("1234", null, null, new ArrayList<>(), 0),
+                        new DailyPlan("5678", null, null, new ArrayList<>(), 0)
                 )),
                 new Daily(LocalDate.now().minusDays(1), List.of(
-                        new DailyPlan("0000", null, null, null, 0),
-                        new DailyPlan("1234", null, null, null, 0),
-                        new DailyPlan("5678", null, null, null, 0)
+                        new DailyPlan("0000", null, null, new ArrayList<>(), 0),
+                        new DailyPlan("1234", null, null, new ArrayList<>(), 0),
+                        new DailyPlan("5678", null, null, new ArrayList<>(), 0)
                 ))
         ));
         //When
@@ -84,8 +84,8 @@ class MonthlyServiceTest {
     @Test
     void getToday_whenNonDailyExists() {
         Daily expected = new Daily(LocalDate.now(), List.of(
-                new DailyPlan("0000", null, null, null, 0),
-                new DailyPlan("1234", null, null, null, 0)
+                new DailyPlan("0000", null, null, new ArrayList<>(), 0),
+                new DailyPlan("1234", null, null, new ArrayList<>(), 0)
         ));
         int weekNumber = LocalDate.now().get(WeekFields.of(Locale.getDefault()).weekOfYear());
         WorkSchedule workSchedule = new WorkSchedule("SomeId", weekNumber,
@@ -99,9 +99,9 @@ class MonthlyServiceTest {
         Month monat = LocalDate.now().getMonth();
         MonthlyPlan month = new MonthlyPlan("someId", monat, List.of(
                 new Daily(LocalDate.now().minusDays(1), List.of(
-                        new DailyPlan("0000", null, null, null, 0),
-                        new DailyPlan("1234", null, null, null, 0),
-                        new DailyPlan("5678", null, null, null, 0)
+                        new DailyPlan("0000", null, null, new ArrayList<>(), 0),
+                        new DailyPlan("1234", null, null, new ArrayList<>(), 0),
+                        new DailyPlan("5678", null, null, new ArrayList<>(), 0)
                 ))
         ));
         //When
@@ -114,8 +114,8 @@ class MonthlyServiceTest {
     @Test
     void getToday_whenNonMonthExists() {
         Daily expected = new Daily(LocalDate.now(), List.of(
-                new DailyPlan("0000", null, null, null, 0),
-                new DailyPlan("1234", null, null, null, 0)
+                new DailyPlan("0000", null, null, new ArrayList<>(), 0),
+                new DailyPlan("1234", null, null, new ArrayList<>(), 0)
         ));
         int weekNumber = LocalDate.now().get(WeekFields.of(Locale.getDefault()).weekOfYear());
         WorkSchedule workSchedule = new WorkSchedule("SomeId", weekNumber,
@@ -137,28 +137,28 @@ class MonthlyServiceTest {
     @Test
     void getToday_whenSave() {
         Daily expected = new Daily(LocalDate.now(), List.of(
-                new DailyPlan("0000", LocalTime.of(11, 0), null, null, MINUTES.between(LocalTime.of(11, 0), LocalTime.now())),
-                new DailyPlan("1234", null, null, null, 0),
-                new DailyPlan("5678", null, null, null, 0)
+                new DailyPlan("0000", LocalTime.of(11, 0), null, new ArrayList<>(), MINUTES.between(LocalTime.of(11, 0), LocalTime.now())),
+                new DailyPlan("1234", null, null, new ArrayList<>(), 0),
+                new DailyPlan("5678", null, null, new ArrayList<>(), 0)
         ));
         Month monat = LocalDate.now().getMonth();
         MonthlyPlan month = new MonthlyPlan("someId", monat, List.of(
                 new Daily(LocalDate.now(), List.of(
-                        new DailyPlan("0000", null, null, null, 0),
-                        new DailyPlan("1234", null, null, null, 0),
-                        new DailyPlan("5678", null, null, null, 0)
+                        new DailyPlan("0000", null, null, new ArrayList<>(), 0),
+                        new DailyPlan("1234", null, null, new ArrayList<>(), 0),
+                        new DailyPlan("5678", null, null, new ArrayList<>(), 0)
                 )),
                 new Daily(LocalDate.now().minusDays(1), List.of(
-                        new DailyPlan("0000", null, null, null, 0),
-                        new DailyPlan("1234", null, null, null, 0),
-                        new DailyPlan("5678", null, null, null, 0)
+                        new DailyPlan("0000", null, null, new ArrayList<>(), 0),
+                        new DailyPlan("1234", null, null, new ArrayList<>(), 0),
+                        new DailyPlan("5678", null, null, new ArrayList<>(), 0)
                 ))
         ));
         //When
         Daily newDaily = new Daily(LocalDate.now(), List.of(
-                new DailyPlan("0000", LocalTime.of(11, 0), null, null, 0),
-                new DailyPlan("1234", null, null, null, 0),
-                new DailyPlan("5678", null, null, null, 0)
+                new DailyPlan("0000", LocalTime.of(11, 0), null, new ArrayList<>(), 0),
+                new DailyPlan("1234", null, null, new ArrayList<>(), 0),
+                new DailyPlan("5678", null, null, new ArrayList<>(), 0)
         ));
         when(monthlyRepo.findByMonth(monat)).thenReturn(Optional.of(month));
         Daily actual = monthlyService.saveDaily(newDaily);
@@ -170,9 +170,9 @@ class MonthlyServiceTest {
         Month monat = LocalDate.now().getMonth();
         //When
         Daily newDaily = new Daily(LocalDate.now(), List.of(
-                new DailyPlan("0000", LocalTime.of(11, 0), null, null, 0),
-                new DailyPlan("1234", null, null, null, 0),
-                new DailyPlan("5678", null, null, null, 0)
+                new DailyPlan("0000", LocalTime.of(11, 0), null, new ArrayList<>(), 0),
+                new DailyPlan("1234", null, null, new ArrayList<>(), 0),
+                new DailyPlan("5678", null, null, new ArrayList<>(), 0)
         ));
         when(monthlyRepo.findByMonth(monat)).thenReturn(Optional.empty());
         //Then
@@ -184,9 +184,9 @@ class MonthlyServiceTest {
         Month monat = LocalDate.now().getMonth();
         MonthlyPlan month = new MonthlyPlan("someId", monat, List.of(
                 new Daily(LocalDate.now(), List.of(
-                        new DailyPlan("0000", null, null, null, 0),
-                        new DailyPlan("1234", null, null, null, 0),
-                        new DailyPlan("5678", null, null, null, 0)
+                        new DailyPlan("0000", null, null, new ArrayList<>(), 0),
+                        new DailyPlan("1234", null, null, new ArrayList<>(), 0),
+                        new DailyPlan("5678", null, null, new ArrayList<>(), 0)
                 ))
         ));
         //When

@@ -71,26 +71,24 @@ public class MonthlyService {
         int weekOfYear = dateToday.get(WeekFields.of(Locale.getDefault()).weekOfYear());
         WorkSchedule weekList = scheduleService.getWorkSchedule(weekOfYear);
         for (ShiftSchedule shift : weekList.getDrivers()) {
-            if (shift.getDay().equals(dateToday)) {
-                for (WorkShift workShift : shift.getShifts()) {
-                    DailyPlan plan = new DailyPlan();
-                    plan.setEmployeeId(workShift.getEmployeeId());
-                    plan.setTime(0);
-                    returnList.add(plan);
-                }
-            }
+            createShift(returnList, dateToday, shift);
         }
         for (ShiftSchedule shift : weekList.getKitchen()) {
-            if (shift.getDay().equals(dateToday)) {
-                for (WorkShift workShift : shift.getShifts()) {
-                    DailyPlan plan = new DailyPlan();
-                    plan.setEmployeeId(workShift.getEmployeeId());
-                    plan.setTime(0);
-                    returnList.add(plan);
-                }
-            }
+            createShift(returnList, dateToday, shift);
         }
         return returnList;
+    }
+
+    private void createShift(List<DailyPlan> returnList, LocalDate dateToday, ShiftSchedule shift) {
+        if (shift.getDay().equals(dateToday)) {
+            for (WorkShift workShift : shift.getShifts()) {
+                DailyPlan plan = new DailyPlan();
+                plan.setEmployeeId(workShift.getEmployeeId());
+                plan.setPause(new ArrayList<>());
+                plan.setTime(0);
+                returnList.add(plan);
+            }
+        }
     }
 
     public Daily saveDaily(Daily daily) {

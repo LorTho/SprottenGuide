@@ -14,7 +14,7 @@ export default function DayView(props: Props) {
     function handleUpdate(updateWorker: DailyPlan) {
         const newDaily = {
             ...daily,
-            shifts: daily.dailyPlanList.map(value => {
+            dailyPlanList: daily.dailyPlanList.map(value => {
                 if (value.employeeId === updateWorker.employeeId) {
                     return updateWorker
                 } else {
@@ -22,6 +22,7 @@ export default function DayView(props: Props) {
                 }
             })
         }
+        console.log(newDaily)
         setDaily(newDaily)
         props.onUpdate(newDaily)
     }

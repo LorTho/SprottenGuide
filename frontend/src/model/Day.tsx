@@ -11,5 +11,5 @@ export type DailyPlan = {
 }
 export type Pause = {
     start: string,
-    end: string,
+    end: string | null,
 }
