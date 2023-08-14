@@ -15,5 +15,5 @@ public class DailyPlan {
     LocalTime start;
     LocalTime end;
     List<Pause> pause;
-    Double time;
+    long time;
 }
