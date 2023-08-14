@@ -41,7 +41,6 @@ public class MonthlyService {
         } else {
             month = actualMonth.get();
         }
-
         //Search for today else create today
         List<Daily> dailys = new ArrayList<>(month.getDays());
         Daily today = new Daily();
@@ -124,9 +123,9 @@ public class MonthlyService {
             newTime = MINUTES.between(dailyplan.getStart(), LocalTime.now());
             if (dailyplan.getPause() != null) {
                 for (Pause pause : dailyplan.getPause()) {
-                    if (pause.getStart() != null && pause.getEnd() == null)
+                    if (pause.getEnd() == null)
                         newTime = MINUTES.between(dailyplan.getStart(), pause.getStart());
-                    if (pause.getStart() != null && pause.getEnd() != null)
+                    else
                         breakTime += MINUTES.between(pause.getStart(), pause.getEnd());
                 }
             }
