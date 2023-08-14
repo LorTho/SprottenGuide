@@ -4,6 +4,7 @@ import com.example.backend.entities.MonthlyPlan;
 import com.example.backend.entities.WorkSchedule;
 import com.example.backend.model.monthly.Daily;
 import com.example.backend.model.monthly.DailyPlan;
+import com.example.backend.model.monthly.Pause;
 import com.example.backend.model.schedule.ShiftSchedule;
 import com.example.backend.model.shift.WorkShift;
 import com.example.backend.repository.MonthlyRepo;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.WeekFields;
 import java.util.*;
 
@@ -132,10 +134,11 @@ class MonthlyServiceTest {
         Daily actual = monthlyService.getToday();
         Assertions.assertEquals(expected, actual);
     }
+
     @Test
     void getToday_whenSave() {
         Daily expected = new Daily(LocalDate.now(), List.of(
-                new DailyPlan("0000", LocalTime.of(11,0), null, null, MINUTES.between(LocalTime.of(11,0), LocalTime.now())),
+                new DailyPlan("0000", LocalTime.of(11, 0), null, null, MINUTES.between(LocalTime.of(11, 0), LocalTime.now())),
                 new DailyPlan("1234", null, null, null, 0),
                 new DailyPlan("5678", null, null, null, 0)
         ));
@@ -154,7 +157,7 @@ class MonthlyServiceTest {
         ));
         //When
         Daily newDaily = new Daily(LocalDate.now(), List.of(
-                new DailyPlan("0000", LocalTime.of(11,0), null, null, 0),
+                new DailyPlan("0000", LocalTime.of(11, 0), null, null, 0),
                 new DailyPlan("1234", null, null, null, 0),
                 new DailyPlan("5678", null, null, null, 0)
         ));
@@ -162,17 +165,77 @@ class MonthlyServiceTest {
         Daily actual = monthlyService.saveDaily(newDaily);
         Assertions.assertEquals(expected, actual);
     }
+
     @Test
     void getException_whenSave() {
         Month monat = LocalDate.now().getMonth();
         //When
         Daily newDaily = new Daily(LocalDate.now(), List.of(
-                new DailyPlan("0000", LocalTime.of(11,0), null, null, 0),
+                new DailyPlan("0000", LocalTime.of(11, 0), null, null, 0),
                 new DailyPlan("1234", null, null, null, 0),
                 new DailyPlan("5678", null, null, null, 0)
         ));
         when(monthlyRepo.findByMonth(monat)).thenReturn(Optional.empty());
         //Then
-        Assertions.assertThrows(NoSuchElementException.class, ()-> monthlyService.saveDaily(newDaily));
+        Assertions.assertThrows(NoSuchElementException.class, () -> monthlyService.saveDaily(newDaily));
+    }
+
+    @Test
+    void saveDailyTime_withDifferentParameters() {
+        Month monat = LocalDate.now().getMonth();
+        MonthlyPlan month = new MonthlyPlan("someId", monat, List.of(
+                new Daily(LocalDate.now(), List.of(
+                        new DailyPlan("0000", null, null, null, 0),
+                        new DailyPlan("1234", null, null, null, 0),
+                        new DailyPlan("5678", null, null, null, 0)
+                ))
+        ));
+        //When
+        LocalTime time = LocalTime.now();
+        LocalTime start = time.minusHours(6);
+        Daily newDaily = new Daily(LocalDate.now(), List.of(
+                //Only StartTime
+                new DailyPlan("0000", start, null, List.of(
+                        new Pause(time.minusHours(4), null)
+                ), 0),
+                //StartTime and Break
+                new DailyPlan("1234", start, null, List.of(
+                        new Pause(time.minusHours(4), time.minusHours(3))
+                ), 0),
+                //StartTime and Multiple Break und without EndTime
+                new DailyPlan("5678", start, null, List.of(
+                        new Pause(time.minusHours(5), time.minusHours(4)),
+                        new Pause(time.minusHours(3), null)
+                ), 0),
+                //Start and EndTime and Break
+                new DailyPlan("1234", start, time.minusHours(1), List.of(
+                        new Pause(time.minusHours(4), time.minusHours(3))
+                ), 0)
+        ));
+        Daily expected = new Daily(LocalDate.now(), List.of(
+                //Only StartTime
+                new DailyPlan("0000", start, null, List.of(
+                        new Pause(time.minusHours(4), null)
+                ), MINUTES.between(time.minusHours(6), time.minusHours(4))),
+                //StartTime and Break
+                new DailyPlan("1234", start, null, List.of(
+                        new Pause(time.minusHours(4), time.minusHours(3))
+                ), MINUTES.between(time.minusHours(6), time)-
+                        MINUTES.between(time.minusHours(4), time.minusHours(3))),
+                //StartTime and Multiple Break und without EndTime
+                new DailyPlan("5678", start, null, List.of(
+                        new Pause(time.minusHours(5), time.minusHours(4)),
+                        new Pause(time.minusHours(3), null)
+                ), MINUTES.between(time.minusHours(6), time.minusHours(3))-
+                        MINUTES.between(time.minusHours(5), time.minusHours(4))),
+                //Start and EndTime and Break
+                new DailyPlan("1234", start, time.minusHours(1), List.of(
+                        new Pause(time.minusHours(4), time.minusHours(3))
+                ), MINUTES.between(time.minusHours(6), time.minusHours(1))-
+                        MINUTES.between(time.minusHours(4), time.minusHours(3)))
+        ));
+        when(monthlyRepo.findByMonth(monat)).thenReturn(Optional.of(month));
+        Daily actual = monthlyService.saveDaily(newDaily);
+        Assertions.assertEquals(expected, actual);
     }
 }
