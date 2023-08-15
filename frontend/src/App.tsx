@@ -67,7 +67,7 @@ export default function App() {
     }
 
     function handleRegister(newUser: DtoUser) {
-        axios.post("/api/employee", newUser)
+        axios.post("/api/user", newUser)
             .then(response => {
                 setEmployee(response.data)
                 setEmployeeCode(newUser.id)
@@ -75,8 +75,15 @@ export default function App() {
         navigate("/")
     }
 
-    function handleLogin(code: string) {
-        setEmployeeCode(() => code)
+    function handleLogin(name: string, password:string) {
+        const LoginData = {
+            username: name,
+            password: password,
+        }
+        axios.post("/api/user/login", LoginData)
+            .then(response =>{
+                setEmployeeCode(response.data)
+            })
         navigate("/")
     }
 
@@ -107,7 +114,7 @@ export default function App() {
             })
     }
     function getEmployee() {
-        axios.get("/api/employee/" + employeeCode)
+        axios.get("/api/user/" + employeeCode)
             .then(response => {
                 setEmployee(response.data)
             })
@@ -127,7 +134,7 @@ export default function App() {
     }
 
     function getUserList() {
-        axios.get("/api/employee")
+        axios.get("/api/user")
             .then(response => {
                 setUserList(response.data)
             })

@@ -6,7 +6,7 @@ import com.example.backend.model.schedule.WishSchedule;
 import com.example.backend.model.schedule.WorkScheduleNoId;
 import com.example.backend.model.shift.Shifts;
 import com.example.backend.model.shift.WorkShift;
-import com.example.backend.service.EmployeeService;
+import com.example.backend.service.UserService;
 import com.example.backend.service.ScheduleService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -26,6 +27,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 class ScheduleControllerTest {
@@ -34,7 +37,7 @@ class ScheduleControllerTest {
     @Autowired
     ScheduleService scheduleService;
     @Autowired
-    EmployeeService employeeService;
+    UserService userService;
     ObjectMapper objectMapper = new ObjectMapper();
     @Test
     @DirtiesContext
@@ -51,6 +54,7 @@ class ScheduleControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void saveWorkSchedule_withNewSchedule() throws Exception {
        WorkScheduleNoId expected = new WorkScheduleNoId(31, List.of(
                 new ShiftSchedule(LocalDate.of(2023,8,1), List.of(

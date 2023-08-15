@@ -3,15 +3,16 @@ import {TextField} from "@mui/material";
 import {useState} from "react";
 
 type Props={
-    onLogin: (data: string) => void;
+    onLogin: (id: string, password: string) => void;
 }
 export default function Login(props:Props){
     const [inputValue, setInputValue] = useState(
         {
             id: "",
+            password: ""
         })
     function handleLogin(){
-        props.onLogin(inputValue.id)
+        props.onLogin(inputValue.id, inputValue.password)
     }
     return(
         <>
@@ -24,6 +25,15 @@ export default function Login(props:Props){
                         id="outlined-basic"
                         color={"success"}
                         label="Mitarbeiter-ID"
+                        variant="outlined"
+                        required
+                    />
+                    <TextField
+                        onChange={e => setInputValue({...inputValue, password: e.target.value})}
+                        value={inputValue?.password}
+                        id="outlined-basic"
+                        color={"success"}
+                        label="Password"
                         variant="outlined"
                         required
                     />
