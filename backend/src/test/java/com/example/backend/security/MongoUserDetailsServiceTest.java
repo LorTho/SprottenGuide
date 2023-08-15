@@ -2,7 +2,6 @@ package com.example.backend.security;
 
 import com.example.backend.entities.MongoUser;
 import com.example.backend.repository.UserRepo;
-import org.apache.catalina.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,7 +9,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class MongoUserDetailsServiceTest {

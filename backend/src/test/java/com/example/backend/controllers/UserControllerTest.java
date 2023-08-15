@@ -5,7 +5,6 @@ import com.example.backend.model.user.UserDTO;
 import com.example.backend.security.UserSecurity;
 import com.example.backend.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.catalina.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

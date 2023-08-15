@@ -3,7 +3,6 @@ package com.example.backend.service;
 import com.example.backend.entities.MongoUser;
 import com.example.backend.model.user.UserDTO;
 import com.example.backend.repository.UserRepo;
-import com.example.backend.security.MongoUserDetailsService;
 import com.example.backend.security.UserSecurity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
