@@ -84,13 +84,15 @@ class ScheduleControllerTest {
                                         }],
                                         "wishes": []
                                     }
-                                """))
+                                """)
+                        .with(csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(expectedSchedule));
     }
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void saveWorkSchedule_withExistingSchedule() throws Exception {
          WorkSchedule expected = new WorkSchedule("SomeId", 30,
                 new ArrayList<>(List.of(
@@ -122,7 +124,8 @@ class ScheduleControllerTest {
                                         }],
                                         "wishes": []
                                     }
-                                """))
+                                """)
+                        .with(csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(expectedSchedule));
     }
@@ -203,6 +206,7 @@ class ScheduleControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void saveEmployeeWish() throws Exception {
         WorkSchedule workSchedule = new WorkSchedule("SomeID", 31,
                 new ArrayList<>(),
@@ -237,7 +241,8 @@ class ScheduleControllerTest {
                                     "startTime": "11:00:00"
                                 }
                             ]
-                        """))
+                        """)
+                        .with(csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(expected));
     }

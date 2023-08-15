@@ -134,7 +134,7 @@ export default function App() {
     }
 
     function getUserList() {
-        axios.get("/api/user")
+        axios.get("/api/user/list")
             .then(response => {
                 setUserList(response.data)
             })
