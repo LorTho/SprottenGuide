@@ -10,7 +10,7 @@ export default function LandingPage(props: Props) {
     console.log(props.user)
 
     useEffect(() => {
-        if (props.user === undefined)
+        if (props.user === undefined || props.user === "anonymousUser")
             navigate("/login")
     })
 
