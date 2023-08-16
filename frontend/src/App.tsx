@@ -31,6 +31,8 @@ export default function App() {
     const current = getCurrentWeekNumber()
     const next = current + 1
 
+    useEffect(isLogged,[])
+
     useEffect(getEmployee, [employeeCode])
     useEffect(getEmployeeShifts, [employeeCode])
     useEffect(getEmployeeWish, [employeeCode])
@@ -73,11 +75,16 @@ export default function App() {
         axios.post("/api/user", newUser)
             .then(response => {
                 setEmployee(response.data)
-                setEmployeeCode(newUser.memberCode)
             })
         navigate("/")
     }
 
+    function isLogged(){
+        axios.get("/api/user")
+            .then(response => {
+                setEmployeeCode(() => response.data)
+            })
+    }
     function handleLogin(name: string, password: string) {
         const LoginData = {
             username: name,
@@ -88,12 +95,15 @@ export default function App() {
                 setEmployeeCode(response.data)
                 navigate("/")
             })
-
     }
 
     function handleLogout() {
-        setEmployeeCode(() => undefined)
-        navigate("/")
+        axios.post("/api/user/logout")
+            .then(()=>{
+                setEmployeeCode(() => undefined)
+                setEmployee(()=>undefined)
+                navigate("/")
+            })
     }
 
     function handleWishTime(wishTime: Time[]) {
@@ -154,6 +164,7 @@ export default function App() {
             })
     }
 
+    /*
     if (employee === undefined)
         return <h1>Mitarbeiter wird geladen!</h1>
     if (employeeShifts === undefined)
@@ -166,6 +177,7 @@ export default function App() {
         return <h1>Wunschplan wird geladen!</h1>
     if (daily === undefined)
         return <h1>Tagesansicht wird geladen</h1>
+     */
 
     return (
         <>

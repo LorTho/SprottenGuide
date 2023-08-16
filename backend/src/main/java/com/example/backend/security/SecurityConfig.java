@@ -29,11 +29,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(httpRequests ->
                         httpRequests
                                 .requestMatchers("/api/user").permitAll()
-                                .requestMatchers("/api/user/**").permitAll()
-                                .requestMatchers("/api/month/**").permitAll()
-                                .requestMatchers("/api/schedule/**").permitAll()
-                                .anyRequest().permitAll()
+                                .requestMatchers("/api/user/login").permitAll()
+                                .requestMatchers("/api/user/**").authenticated()
+                                .requestMatchers("/api/month/**").authenticated()
+                                .requestMatchers("/api/schedule/**").authenticated()
+                                .anyRequest().authenticated()
                 )
+                .logout(logout -> logout.logoutUrl("/api/user/logout").logoutSuccessUrl("/api/user"))
                 .build();
     }
     @Bean

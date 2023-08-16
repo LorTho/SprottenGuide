@@ -15,7 +15,7 @@ type Props = {
 }
 export default function PlanCardShow(props: Props) {
     function getUserName(id: string) {
-        const getUser = props.userList.find(user => user.id === id)
+        const getUser = props.userList.find(user => user.memberCode === id)
         if(getUser === undefined)
             return "--"
         return getUser.firstName
