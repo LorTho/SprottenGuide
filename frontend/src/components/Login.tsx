@@ -2,14 +2,17 @@ import HeadElement from "./StyleElements.tsx";
 import {FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput} from "@mui/material";
 import {FormEvent, useState} from "react";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
+import {UserHook} from "../hooks/UserHook.tsx";
+import {useNavigate} from "react-router-dom";
 
-type Props={
-    onLogin: (id: string, password: string) => void;
-}
-export default function Login(props:Props){
+export default function Login(){
     const [showPassword, setShowPassword] = useState(false);
     const [username, setUsername] = useState<string>("")
     const [password, setPassword] = useState<string>("")
+    const navigate = useNavigate();
+
+    const login = UserHook((UserState) => UserState.login)
+
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
@@ -17,7 +20,7 @@ export default function Login(props:Props){
 
     function onSubmit(event: FormEvent) {
         event.preventDefault()
-        props.onLogin(username, password)
+        login(username, password, navigate)
     }
     return(
         <>

@@ -1,22 +1,36 @@
 import {Link} from "react-router-dom";
-import {User} from "../../model/User.tsx";
 import HeadElement from "../StyleElements.tsx";
+import {UserHook} from "../../hooks/UserHook.tsx";
+import {useEffect} from "react";
+import {HelperHook} from "../../hooks/Helper.tsx";
 
-type Props ={
-    user: User,
-    onLogout: () => void
-}
-export default function UserPage(props:Props){
+export default function UserPage() {
+    const memberCode = UserHook((UserState) => UserState.memberCode)
+    const employee = UserHook((UserState) => UserState.employee)
+    const logout = UserHook((UserState) => UserState.logout)
+    const getWishes = UserHook((UserState) => UserState.getEmployeeWish)
+    const currentWeek = HelperHook((State) => State.currentWeekNumber)
+
+    const getEmployee = UserHook(((UserState) => UserState.getEmployee))
+
+    useEffect(() => {
+        getEmployee(memberCode);
+        getWishes(memberCode, currentWeek+1)
+    },[])
+
     return (
         <>
             <main>
                 <HeadElement title={"UserSide"}/>
-                <h2>{props.user.firstName}</h2>
-                <button onClick={props.onLogout}>Logout</button>
+                <h2>{employee.firstName}</h2>
+                <button onClick={logout}>Logout</button>
                 <Link to={"/user/actualWeek"}>
-                    <button>Arbeitsschichten</button>
+                    <button>Diese Woche</button>
                 </Link>
                 <Link to={"/user/nextWeek"}>
+                    <button>Nächste Woche</button>
+                </Link>
+                <Link to={"/user/wishPlan"}>
                     <button>Dienstplanwunsch</button>
                 </Link>
             </main>

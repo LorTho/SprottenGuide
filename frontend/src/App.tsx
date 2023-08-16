@@ -1,61 +1,50 @@
 import './App.css'
-import axios from "axios";
 import {useEffect, useState} from "react";
-import {DtoUser, Time, User} from "./model/User.tsx";
-import ActualWeek from "./components/userSites/ActualWeek.tsx";
-import Register from "./components/Register.tsx";
-import {Route, Routes, useNavigate} from "react-router-dom";
+import Week from "./components/userSites/Week.tsx";
+import {Route, Routes} from "react-router-dom";
 import LandingPage from "./components/LandingPage.tsx";
 import Login from "./components/Login.tsx";
-import NextWeek from "./components/userSites/NextWeek.tsx";
+import WishNextWeek from "./components/userSites/WishNextWeek.tsx";
 import UserPage from "./components/userSites/UserPage.tsx";
-import SchedulePage from "./components/scheduleSites/SchedulePage.tsx";
-import CurrentWeek from "./components/scheduleSites/CurrentWeek.tsx";
-import CreateSchedule from "./components/scheduleSites/CreateSchedule.tsx";
-import {WorkSchedule} from "./model/WorkSchedule.tsx";
-import {Day} from "./model/Day.tsx";
-import DayView from "./components/daySite/DayView.tsx";
 import ProtectedRoutes from "./ProtectedRoutes.tsx";
+import {UserHook} from "./hooks/UserHook.tsx";
+import {HelperHook} from "./hooks/Helper.tsx";
 
 export default function App() {
-    const [employee, setEmployee] = useState<User>()
-    const [employeeShifts, setEmployeeShifts] = useState<Time[]>()
-    const [employeeWish, setEmployeeWish] = useState<Time[]>()
-    const [employeeCode, setEmployeeCode] = useState<string>()
+    const userCode = UserHook((UserState) => UserState.memberCode);
+    const isLogged = UserHook((UserState) => UserState.isLogged);
+    const [initialLoad, setInitialLoad] = useState(true);
 
+    const getWeekNumber = HelperHook((State)=> State.getCurrentWeekNumber);
+
+    useEffect(()=>{
+        try{
+            getWeekNumber();
+            isLogged();
+        } catch(e){
+            console.log(e);
+        } finally {
+            setInitialLoad(false)
+        }
+    }, [isLogged])
+
+    if(initialLoad) return null;
+
+    /*
     const [userList, setUserList] = useState<DtoUser[]>([])
     const [currentWeek, setCurrentWeek] = useState<WorkSchedule>()
     const [nextWeek, setNextWeek] = useState<WorkSchedule>()
-    const [daily, setDaily] = useState<Day>()
 
     const current = getCurrentWeekNumber()
     const next = current + 1
 
-    useEffect(isLogged,[])
-
-    useEffect(getEmployee, [employeeCode])
-    useEffect(getEmployeeShifts, [employeeCode])
-    useEffect(getEmployeeWish, [employeeCode])
-
     useEffect(getCurrentWeekSchedule, [])
     useEffect(getNextWeekSchedule, [])
     useEffect(getUserList, [])
-    useEffect(getDaily, [])
 
     const navigate = useNavigate()
 
-    function getCurrentWeekNumber() {
-        const now = new Date();
-        const startOfYear = new Date(now.getFullYear(), 0, 1);
-        const startOfWeek = new Date(
-            startOfYear.setDate(startOfYear.getDate() - startOfYear.getDay())
-        );
 
-        const diffInTime = now.getTime() - startOfWeek.getTime();
-        const diffInWeeks = Math.floor(diffInTime / (1000 * 3600 * 24 * 7));
-
-        return diffInWeeks + 1; // Add 1 to account for the first week
-    }
 
     function getCurrentWeekSchedule() {
         axios.get("/api/schedule/" + current)
@@ -74,45 +63,11 @@ export default function App() {
     function handleRegister(newUser: DtoUser) {
         axios.post("/api/user", newUser)
             .then(response => {
-                setEmployee(response.data)
+                console.log(response.data)
             })
         navigate("/")
     }
 
-    function isLogged(){
-        axios.get("/api/user")
-            .then(response => {
-                setEmployeeCode(() => response.data)
-            })
-    }
-    function handleLogin(name: string, password: string) {
-        const LoginData = {
-            username: name,
-            password: password,
-        }
-        axios.post("/api/user/login", undefined, {auth: LoginData})
-            .then(response => {
-                setEmployeeCode(response.data)
-                navigate("/")
-            })
-    }
-
-    function handleLogout() {
-        axios.post("/api/user/logout")
-            .then(()=>{
-                setEmployeeCode(() => undefined)
-                setEmployee(()=>undefined)
-                navigate("/")
-            })
-    }
-
-    function handleWishTime(wishTime: Time[]) {
-        axios.put("/api/schedule/" + employeeCode + "/" + next, wishTime)
-            .then(response => {
-                setEmployeeWish(response.data)
-            })
-        navigate("/")
-    }
 
     function handleSaveCreateSchedule(workSchedule: WorkSchedule) {
         axios.put("/api/schedule", workSchedule)
@@ -122,34 +77,6 @@ export default function App() {
         navigate("/")
     }
 
-    function handleUpdateDay(day: Day) {
-        axios.put("/api/month/save", day)
-            .then(response => {
-                setDaily(response.data)
-            })
-    }
-
-    function getEmployee() {
-        axios.get("/api/user/" + employeeCode)
-            .then(response => {
-                setEmployee(response.data)
-            })
-    }
-
-    function getEmployeeShifts() {
-        axios.get("/api/schedule/" + employeeCode + "/" + current)
-            .then(response => {
-                setEmployeeShifts(response.data)
-            })
-    }
-
-    function getEmployeeWish() {
-        axios.get("/api/schedule/" + employeeCode + "/" + next + "/wish")
-            .then(response => {
-                setEmployeeWish(response.data)
-            })
-    }
-
     function getUserList() {
         axios.get("/api/user/list")
             .then(response => {
@@ -157,14 +84,6 @@ export default function App() {
             })
     }
 
-    function getDaily() {
-        axios.get("/api/month/today")
-            .then(response => {
-                setDaily(response.data)
-            })
-    }
-
-    /*
     if (employee === undefined)
         return <h1>Mitarbeiter wird geladen!</h1>
     if (employeeShifts === undefined)
@@ -182,20 +101,14 @@ export default function App() {
     return (
         <>
             <Routes>
-                <Route path={"/"} element={<LandingPage user={employeeCode}/>}/>
-                <Route path={"/login"} element={<Login onLogin={handleLogin}/>}/>
-                <Route element={<ProtectedRoutes user={employeeCode}/>}>
-                    <Route path={"/user/userSpace"} element={<UserPage user={employee} onLogout={handleLogout}/>}/>
-                    <Route path={"/user/actualWeek"} element={<ActualWeek shifts={employeeShifts}/>}/>
-                    <Route path={"/user/nextWeek"}
-                           element={<NextWeek user={employee} wishes={employeeWish} onChangeTimes={handleWishTime}/>}/>
-                    <Route path={"/register"} element={<Register onRegister={handleRegister}/>}/>
-                    <Route path={"/schedule/scheduleSite"} element={<SchedulePage/>}/>
-                    <Route path={"/schedule/actualWeek"}
-                           element={<CurrentWeek schedule={currentWeek} userList={userList}/>}/>
-                    <Route path={"/schedule/nextWeek"} element={<CreateSchedule nextWeek={nextWeek} userList={userList}
-                                                                                onSubmit={handleSaveCreateSchedule}/>}/>
-                    <Route path={"/day"} element={<DayView daily={daily} onUpdate={handleUpdateDay}/>}/>
+                <Route path={"/"} element={<LandingPage/>}/>
+                <Route path={"/login"} element={<Login/>}/>
+                <Route element={<ProtectedRoutes user={userCode}/>}>
+                    <Route path={"/user/userSpace"} element={<UserPage/>}/>
+                    <Route path={"/user/actualWeek"} element={<Week select={0}/>}/>
+                    <Route path={"/user/nextWeek"} element={<Week select={1}/>}/>
+                    <Route path={"/user/wishPlan"}
+                           element={<WishNextWeek/>}/>
                 </Route>
             </Routes>
         </>

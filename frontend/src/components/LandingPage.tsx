@@ -1,16 +1,13 @@
 import {Link, useNavigate} from "react-router-dom";
 import HeadElement from "./StyleElements.tsx";
 import {useEffect} from "react";
+import {UserHook} from "../hooks/UserHook.tsx";
 
-type Props = {
-    user: string | undefined
-}
-export default function LandingPage(props: Props) {
+export default function LandingPage() {
     const navigate = useNavigate()
-    console.log(props.user)
-
+    const memberCode = UserHook((UserState) => UserState.memberCode)
     useEffect(() => {
-        if (props.user === undefined || props.user === "anonymousUser")
+        if (memberCode === undefined || memberCode === "anonymousUser")
             navigate("/login")
     })
 
