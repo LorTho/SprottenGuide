@@ -29,12 +29,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(httpRequests ->
                         httpRequests
                                 .requestMatchers("/api/user").permitAll()
-                                .requestMatchers("/api/user/**").authenticated()
+                                .requestMatchers("/api/user/**").permitAll()
                                 .requestMatchers("/api/month/**").permitAll()
                                 .requestMatchers("/api/schedule/**").permitAll()
                                 .anyRequest().permitAll()
                 )
-                .formLogin(Customizer.withDefaults())
                 .build();
     }
     @Bean

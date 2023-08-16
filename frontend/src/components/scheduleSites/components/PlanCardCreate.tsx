@@ -50,10 +50,10 @@ export default function PlanCardCreate(props: Props) {
         const getUser = props.userList.find(user => user.firstName === name)
         if(getUser === undefined)
             return "--"
-        return getUser.id
+        return getUser.memberCode
     }
     function getUserName(id: string) {
-        const getUser = props.userList.find(user => user.id === id)
+        const getUser = props.userList.find(user => user.memberCode === id)
         if(getUser === undefined)
             return "--"
         return getUser.firstName

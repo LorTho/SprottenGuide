@@ -1,7 +1,18 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import HeadElement from "./StyleElements.tsx";
+import {useEffect} from "react";
 
-export default function LandingPage() {
+type Props = {
+    user: string | undefined
+}
+export default function LandingPage(props: Props) {
+    const navigate = useNavigate()
+    console.log(props.user)
+
+    useEffect(() => {
+        if (props.user === undefined)
+            navigate("/login")
+    })
 
     return (
         <>
