@@ -7,6 +7,8 @@ import com.example.backend.security.Role;
 import com.example.backend.security.UserSecurity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,18 +18,19 @@ import static org.mockito.Mockito.*;
 
 class MongoUserServiceTest {
     UserRepo userRepo = mock(UserRepo.class);
-    UserService userService = new UserService(userRepo);
+    PasswordEncoder passwordEncoder =Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
+    UserService userService = new UserService(userRepo, passwordEncoder);
 
     @Test
-    void getEmployee_whenAddNewEmployee(){
+    void getTrue_whenAddNewEmployee(){
         //Given
         UserSecurity newMongoUser = new UserSecurity("NoId", "test", "test", "1234", Role.USER);
         MongoUser expectedUser = new MongoUser("NoId", "test", "test", "1234", Role.USER);
 
         //When
-        MongoUser actualMongoUser = userService.addUser(newMongoUser);
+        Boolean boolReturn = userService.addUser(newMongoUser);
         //Then
-        Assertions.assertEquals(expectedUser, actualMongoUser);
+        Assertions.assertEquals(true, boolReturn);
     }
 
     @Test

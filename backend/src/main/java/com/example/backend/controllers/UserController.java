@@ -1,6 +1,5 @@
 package com.example.backend.controllers;
 
-import com.example.backend.entities.MongoUser;
 import com.example.backend.model.user.UserDTO;
 import com.example.backend.security.jwt.JwtService;
 import com.example.backend.security.LoginData;
@@ -37,7 +36,7 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public MongoUser addUser(@RequestBody UserSecurity newUser){
+    public Boolean addUser(@RequestBody UserSecurity newUser){
         return userService.addUser(newUser);
     }
     @GetMapping

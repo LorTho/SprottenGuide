@@ -3,11 +3,14 @@ import HeadElement from "./StyleElements.tsx";
 import {useEffect} from "react";
 
 export default function LandingPage() {
+
     const navigate = useNavigate()
 
     useEffect(() => {
         if (localStorage.getItem('token') === null)
             navigate("/login")
+
+
     })
 
     return (

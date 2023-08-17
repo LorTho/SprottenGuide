@@ -14,11 +14,18 @@ export default function Register() {
             firstName: "",
             lastName: "",
             password: "",
-            role: role.USER,
+            role: role.USER
         })
 
     function handleRegister() {
         register(inputValue, navigate)
+    }
+
+    function getValue(value: unknown): role {
+        if(value==="2")
+            return role.ADMIN
+        else
+            return role.USER
     }
 
     return <>
@@ -75,10 +82,10 @@ export default function Register() {
                         id="demo-select-small"
                         value={inputValue.role}
                         label="Role"
-                        onChange={e => setInputValue({...inputValue, role: e.target.value})}
+                        onChange={e => setInputValue({...inputValue, role: getValue(e.target.value)})}
                     >
-                        <MenuItem value={role.USER}>User</MenuItem>
-                        <MenuItem value={role.ADMIN}>Manager</MenuItem>
+                        <MenuItem value={1}>User</MenuItem>
+                        <MenuItem value={2}>Manager</MenuItem>
                     </Select>
                 </div>
 

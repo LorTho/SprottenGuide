@@ -88,7 +88,7 @@ export const UserHook = create<UserState>((set, get) => ({
     isLogged: () => {
         const {jwtToken} = get()
         axios.get("/api/user", {headers: {
-            Authorization: "Bearer "+ jwtToken
+                Authorization: "Bearer "+ jwtToken
             }})
             .then(response => response.data)
             .then((data) => {
@@ -96,11 +96,7 @@ export const UserHook = create<UserState>((set, get) => ({
             })
     },
     logout: () => {
-        axios.post("/api/user/logout")
-            .then(() => {
-                set({memberCode: undefined})
-                set({employee: undefined})
-            })
+        localStorage.clear();
     },
     register: (newUser: DtoUser, navigate: NavigateFunction)=>{
         const {jwtToken} = get()

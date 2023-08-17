@@ -29,7 +29,7 @@ public class UserService {
         }
         return returnList;
     }
-    public MongoUser addUser(UserSecurity newUser){
+    public Boolean addUser(UserSecurity newUser){
         MongoUser newMongoUser = new MongoUser(
                 newUser.memberCode(),
                 newUser.firstName(),
@@ -37,6 +37,6 @@ public class UserService {
                 passwordEncoder.encode(newUser.password()),
                 newUser.role());
         userRepo.insert(newMongoUser);
-        return newMongoUser;
+        return true;
     }
 }

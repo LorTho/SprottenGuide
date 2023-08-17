@@ -25,6 +25,7 @@ public class SecurityConfig {
                 .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(httpRequests ->
                         httpRequests
+                                .requestMatchers("/api/user").permitAll()
                                 .requestMatchers("/api/user/add").authenticated()
                                 .requestMatchers("/api/user/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/month/today").authenticated()
