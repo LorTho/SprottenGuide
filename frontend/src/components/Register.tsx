@@ -2,20 +2,21 @@ import {TextField} from "@mui/material";
 import {useState} from "react";
 import {DtoUser} from "../model/User.tsx";
 import HeadElement from "./StyleElements.tsx";
+import {UserHook} from "../hooks/UserHook.tsx";
+import {useNavigate} from "react-router-dom";
 
-type Props = {
-    onRegister: (data: DtoUser) => void;
-}
-export default function Register(props: Props) {
+export default function Register() {
+    const register = UserHook((UserState)=> UserState.register)
+    const navigate = useNavigate()
     const [inputValue, setInputValue] = useState<DtoUser>(
         {
-            id: "",
+            memberCode: "",
             firstName: "",
             lastName: ""
         })
 
     function handleRegister() {
-        props.onRegister(inputValue)
+        register(inputValue, navigate)
     }
 
     return <>
@@ -24,8 +25,8 @@ export default function Register(props: Props) {
             <form onSubmit={handleRegister}>
                 <div className={"text-field"}>
                     <TextField
-                        onChange={e => setInputValue({...inputValue, id: e.target.value})}
-                        value={inputValue?.id}
+                        onChange={e => setInputValue({...inputValue, memberCode: e.target.value})}
+                        value={inputValue?.memberCode}
                         id="outlined-basic"
                         color={"success"}
                         label="Mitarbeiter-ID"

@@ -10,7 +10,7 @@ export type Time = {
 }
 
 export type DtoUser = {
-    id: string,
+    memberCode: string,
     firstName: string,
     lastName: string,
 }

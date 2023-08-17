@@ -1,5 +1,3 @@
-import {Time} from "../../model/User.tsx";
-
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -9,13 +7,24 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import HeadElement from "../StyleElements.tsx";
 import {nanoid} from "nanoid";
+import {UserHook} from "../../hooks/UserHook.tsx";
+import {useEffect} from "react";
+import {HelperHook} from "../../hooks/Helper.tsx";
 
-
-type Props = {
-    shifts: Time[],
+type Props ={
+    select: number,
 }
+export default function Week(props: Props) {
+    const memberCode = UserHook((UserState) => UserState.memberCode)
+    const shifts = UserHook((UserState)=>UserState.employeeShifts)
+    const getShifts = UserHook((UserState)=>UserState.getEmployeeShifts)
 
-export default function ActualWeek(props: Props) {
+    const currentWeek = HelperHook((State)=>State.currentWeekNumber)
+
+    useEffect(()=>{
+        getShifts(memberCode, currentWeek+props.select);
+    }, [])
+
     return <>
         <HeadElement title={"Zeiten"}/>
         <TableContainer component={Paper}>
@@ -27,7 +36,7 @@ export default function ActualWeek(props: Props) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {props.shifts.map(shift => (
+                    {shifts.map(shift => (
                         <TableRow
                             key={nanoid()}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

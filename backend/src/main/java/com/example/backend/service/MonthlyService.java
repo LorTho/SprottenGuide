@@ -50,7 +50,8 @@ public class MonthlyService {
             if (findDay.getDay().equals(dateToday)) {
                 List<DailyPlan> dailyPlans = new ArrayList<>();
                 for (DailyPlan timeplan : findDay.getDailyPlanList()) {
-                    dailyPlans.add(setTime(timeplan));
+                    if (!Objects.equals(timeplan.getEmployeeId(), "null"))
+                        dailyPlans.add(setTime(timeplan));
                 }
                 today.setDailyPlanList(dailyPlans);
                 match = true;
@@ -82,11 +83,13 @@ public class MonthlyService {
     private void createShift(List<DailyPlan> returnList, LocalDate dateToday, ShiftSchedule shift) {
         if (shift.getDay().equals(dateToday)) {
             for (WorkShift workShift : shift.getShifts()) {
-                DailyPlan plan = new DailyPlan();
-                plan.setEmployeeId(workShift.getEmployeeId());
-                plan.setPause(new ArrayList<>());
-                plan.setTime(0);
-                returnList.add(plan);
+                if(!Objects.equals(workShift.getEmployeeId(), "null")) {
+                    DailyPlan plan = new DailyPlan();
+                    plan.setEmployeeId(workShift.getEmployeeId());
+                    plan.setPause(new ArrayList<>());
+                    plan.setTime(0);
+                    returnList.add(plan);
+                }
             }
         }
     }
