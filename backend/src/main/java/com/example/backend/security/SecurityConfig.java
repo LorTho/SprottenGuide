@@ -3,7 +3,7 @@ package com.example.backend.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -25,12 +25,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                         .csrfTokenRequestHandler(requestHandler))
-                .httpBasic(basic -> basic.authenticationEntryPoint(
-                        (request, response, authException) ->
-                                response.sendError(
-                                        HttpStatus.UNAUTHORIZED.value(),
-                                        HttpStatus.UNAUTHORIZED.getReasonPhrase()
-                                )))
+                .httpBasic(Customizer.withDefaults())
                 .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
                 .authorizeHttpRequests(httpRequests ->
                         httpRequests
@@ -45,6 +40,7 @@ public class SecurityConfig {
                 .logout(logout -> logout.logoutUrl("/api/user/logout").logoutSuccessUrl("/api/user"))
                 .build();
     }
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         return Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
