@@ -35,42 +35,6 @@ export default function App() {
 
     if (initialLoad) return null;
 
-    /*
-    useEffect(getCurrentWeekSchedule, [])
-    useEffect(getNextWeekSchedule, [])
-
-    function getCurrentWeekSchedule() {
-        axios.get("/api/schedule/" + current)
-            .then(response => {
-                setCurrentWeek(response.data)
-            })
-    }
-
-    function getNextWeekSchedule() {
-        axios.get("/api/schedule/" + next)
-            .then(response => {
-                setNextWeek(response.data)
-            })
-    }
-
-    function handleRegister(newUser: DtoUser) {
-        axios.post("/api/user", newUser)
-            .then(response => {
-                console.log(response.data)
-            })
-        navigate("/")
-    }
-
-
-    function handleSaveCreateSchedule(workSchedule: WorkSchedule) {
-        axios.put("/api/schedule", workSchedule)
-            .then(response => {
-                setNextWeek(response.data)
-            })
-        navigate("/")
-    }
-*/
-
     return (
         <>
             <Routes>
@@ -84,12 +48,11 @@ export default function App() {
                            element={<WishNextWeek/>}/>
 
                     //Schichtleitung
-                    <Route path={"/register"} element={<Register onRegister={handleRegister}/>}/>
+                    <Route path={"/register"} element={<Register/>}/>
                     <Route path={"/schedule/scheduleSite"} element={<SchedulePage/>}/>
                     <Route path={"/schedule/actualWeek"}
-                           element={<CurrentWeek schedule={currentWeek} userList={userList}/>}/>
-                    <Route path={"/schedule/nextWeek"} element={<CreateSchedule nextWeek={nextWeek} userList={userList}
-                                                                                onSubmit={handleSaveCreateSchedule}/>}/>
+                           element={<CurrentWeek/>}/>
+                    <Route path={"/schedule/nextWeek"} element={<CreateSchedule/>}/>
                     <Route path={"/day"} element={<DayView/>}/>
                 </Route>
             </Routes>

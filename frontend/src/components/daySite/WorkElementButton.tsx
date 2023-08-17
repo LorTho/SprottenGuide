@@ -18,7 +18,6 @@ export default function WorkerElementButton(props: Props) {
     function handleBreakStart() {
         const date = new Date();
         props.worker.pause.push({start: date.getHours() + ':' + date.getMinutes(), end: null})
-        console.log(props.worker)
         props.update(props.worker)
     }
 

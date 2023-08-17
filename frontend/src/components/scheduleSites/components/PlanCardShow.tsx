@@ -7,19 +7,13 @@ import {ShiftSchedule} from "../../../model/WorkSchedule.tsx";
 import Paper from "@mui/material/Paper";
 import TableBody from "@mui/material/TableBody";
 import { nanoid } from 'nanoid'
-import {DtoUser} from "../../../model/User.tsx";
+import {HelperHook} from "../../../hooks/Helper.tsx";
 
 type Props = {
     shift: ShiftSchedule[],
-    userList: DtoUser[],
 }
 export default function PlanCardShow(props: Props) {
-    function getUserName(id: string) {
-        const getUser = props.userList.find(user => user.memberCode === id)
-        if(getUser === undefined)
-            return "--"
-        return getUser.firstName
-    }
+    const getUserName = HelperHook((State)=>State.getUserName)
 
     return <>
         {props.shift.map(value => (

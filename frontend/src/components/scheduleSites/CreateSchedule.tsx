@@ -3,16 +3,17 @@ import PlanCardCreate from "./components/PlanCardCreate.tsx";
 import {useState} from "react";
 import {ShiftSchedule, WorkSchedule, WorkShift} from "../../model/WorkSchedule.tsx";
 import {nanoid} from "nanoid";
-import {DtoUser} from "../../model/User.tsx";
+import {ScheduleHook} from "../../hooks/ScheduleHook.tsx";
+import {useNavigate} from "react-router-dom";
 
-type Props ={
-    nextWeek: WorkSchedule,
-    userList: DtoUser[],
-    onSubmit: (workSchedule: WorkSchedule)=>void,
-}
-export default function CreateSchedule(props: Props) {
-    const [workSchedule, setWorkSchedule] = useState<WorkSchedule>(props.nextWeek)
-    const wishList = props.nextWeek.wishes
+export default function CreateSchedule() {
+    const week = ScheduleHook((State)=>State.nextWeek)
+    const saveSchedule = ScheduleHook((State)=>State.saveSchedule)
+    const navigate = useNavigate()
+
+
+    const [workSchedule, setWorkSchedule] = useState<WorkSchedule>(week)
+    const wishList = week.wishes
     function handleUpdateShift(kind: string, nextWeekShift: ShiftSchedule) {
         let newWorkSchedule = workSchedule
         if (kind === "drivers") {
@@ -39,7 +40,7 @@ export default function CreateSchedule(props: Props) {
     }
 
     function handelSubmit() {
-        props.onSubmit(workSchedule)
+        saveSchedule(workSchedule, navigate)
     }
     function userWishes(day: string){
         const userWishesDaily: WorkShift[] = []
@@ -57,7 +58,7 @@ export default function CreateSchedule(props: Props) {
         <h3>Driver</h3>
         <div className={"plan"}>
             {workSchedule.drivers.map(shift => {
-                return <PlanCardCreate key={nanoid()} day={shift} userList={props.userList} wishList={userWishes(shift.day)}
+                return <PlanCardCreate key={nanoid()} day={shift} wishList={userWishes(shift.day)}
                                        onUpdate={(nextWeekShift) => handleUpdateShift("drivers", nextWeekShift)}/>
             })}
         </div>
@@ -65,7 +66,7 @@ export default function CreateSchedule(props: Props) {
         <h3>Kitchen</h3>
         <div className={"plan"}>
             {workSchedule.kitchen.map(shift => {
-                return <PlanCardCreate key={nanoid()} day={shift} userList={props.userList} wishList={userWishes(shift.day)}
+                return <PlanCardCreate key={nanoid()} day={shift} wishList={userWishes(shift.day)}
                                        onUpdate={(nextWeekShift) => handleUpdateShift("kitchen", nextWeekShift)}/>
             })}
         </div>

@@ -9,29 +9,31 @@ import SelectButton from "./SelectButton.tsx";
 import TableContainer from "@mui/material/TableContainer";
 import {useState} from "react";
 import {ShiftSchedule, WorkShift} from "../../../model/WorkSchedule.tsx";
-import {DtoUser} from "../../../model/User.tsx";
+import {HelperHook} from "../../../hooks/Helper.tsx";
 
 type Props = {
     day: ShiftSchedule,
     wishList: WorkShift[],
-    userList: DtoUser[],
     onUpdate: (nextWeekShift: ShiftSchedule) => void;
 }
 export default function PlanCardCreate(props: Props) {
+    const userList = HelperHook((State)=> State.userList)
+    const getUserName = HelperHook((State)=> State.getUserName)
+    const getUserCode = HelperHook((State)=> State.getUserCode)
     const [targetDay, setTargetDay] = useState<ShiftSchedule>(props.day)
-    const userNames = getUserAtributes()
+    const userNames = getUserAttributes()
     const wishList = getWishList()
 
-    function getUserAtributes(): string[] {
-        const getUserNames: string[] = []
-        props.userList.forEach(user => {
-            getUserNames.push(user.firstName)
+    function getUserAttributes(): string[] {
+        const userNamesList: string[] = []
+        userList.forEach(user => {
+            userNamesList.push(user.firstName)
         })
-        return getUserNames
+        return userNamesList
     }
 
     function setEmployee(name: string, shiftNumber: number) {
-        const userId = getUserId(name)
+        const userId = getUserCode(name)
         const newTargetDay = {
             ...targetDay,
             shifts: targetDay.shifts.map((value, index) => {
@@ -46,18 +48,6 @@ export default function PlanCardCreate(props: Props) {
         props.onUpdate(newTargetDay)
     }
 
-    function getUserId(name: string) {
-        const getUser = props.userList.find(user => user.firstName === name)
-        if(getUser === undefined)
-            return "--"
-        return getUser.memberCode
-    }
-    function getUserName(id: string) {
-        const getUser = props.userList.find(user => user.memberCode === id)
-        if(getUser === undefined)
-            return "--"
-        return getUser.firstName
-    }
     function getWishList(){
         const returnList: {
             name: string,

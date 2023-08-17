@@ -1,4 +1,4 @@
-import {Time, User} from "../model/User.tsx";
+import {DtoUser, Time, User} from "../model/User.tsx";
 import {create} from "zustand";
 import axios from "axios";
 import {NavigateFunction} from "react-router-dom";
@@ -17,6 +17,8 @@ type UserState = {
     login: (memberCode: string, password: string, navigate: NavigateFunction) => void,
     isLogged: () => void,
     logout: () => void,
+
+    register: (newUser: DtoUser, navigate: NavigateFunction)=>void,
 }
 
 export const UserHook = create<UserState>((set) => ({
@@ -80,6 +82,16 @@ export const UserHook = create<UserState>((set) => ({
             .then(() => {
                 set({memberCode: undefined})
                 set({employee: undefined})
+            })
+    },
+    register: (newUser: DtoUser, navigate: NavigateFunction)=>{
+        axios.post("/api/user/add", newUser)
+            .then(response => {
+                console.log(response)
+                navigate("/")
+            })
+            .catch((error)=>{
+                console.error(error)
             })
     },
 }))

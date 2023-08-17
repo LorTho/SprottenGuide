@@ -3,24 +3,27 @@ import WorkerElement from "./WorkerElement.tsx";
 import {nanoid} from "nanoid";
 import HeadElement from "../StyleElements.tsx";
 import {useEffect, useState} from "react";
-import axios from "axios";
+import {DailyHook} from "../../hooks/DailyHook.tsx";
 
 export default function DayView() {
-    const [daily, setDaily] = useState<Day>()
+    const currentDaily = DailyHook((State)=>State.daily)
+    const getDaily = DailyHook((State)=>State.getDaily)
+    const saveDaily = DailyHook((State)=>State.setDaily)
 
-    useEffect(getDaily)
+    const [daily, setDaily] = useState<Day>(currentDaily)
 
-    function getDaily() {
-        axios.get("/api/month/today")
-            .then(response => {
-                setDaily(response.data)
-            })
-    }
+    useEffect(()=>{
+        getDaily();
+    }, [])
+
+
     function planList(): JSX.Element{
-        if(daily !== undefined) {
+        if(daily.dailyPlanList.length === 0)
+            return <p> Keine Arbeiter gefunden </p>
+        if(daily) {
             return <>
-                {daily.dailyPlanList.map(work => {
-                    return <WorkerElement key={nanoid()} worker={work} onUpdate={handleUpdate}/>
+                {daily.dailyPlanList.map(employee => {
+                    return <WorkerElement key={nanoid()} worker={employee} onUpdate={handleUpdate}/>
             })}
             </>
         }else{
@@ -41,10 +44,7 @@ export default function DayView() {
                 })
             }
             setDaily(newDaily)
-            axios.put("/api/month/save", newDaily)
-                .then(response => {
-                    setDaily(response.data)
-                })
+            saveDaily(newDaily)
         }
     }
 

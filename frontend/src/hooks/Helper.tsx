@@ -8,9 +8,12 @@ type State = {
 
     getCurrentWeekNumber: () => void,
     getUserList: () => void,
+
+    getUserName:(code: string)=>string,
+    getUserCode:(name: string)=>string,
 }
 
-export const HelperHook = create<State>((set) => ({
+export const HelperHook = create<State>((set, get) => ({
     currentWeekNumber: 999,
     userList: [],
 
@@ -33,5 +36,18 @@ export const HelperHook = create<State>((set) => ({
                 set({userList:data})
             })
     },
-
+    getUserName: (code: string) =>{
+        const {userList} = get()
+        const getUser = userList.find(user => user.memberCode === code)
+        if(getUser === undefined)
+            return "--"
+        return getUser.firstName
+    },
+    getUserCode: (name: string) =>{
+        const {userList} = get()
+        const getUser = userList.find(user => user.firstName === name)
+        if(getUser === undefined)
+            return "--"
+        return getUser.memberCode
+    },
 }))
