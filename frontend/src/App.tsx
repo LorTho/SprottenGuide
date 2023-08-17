@@ -9,42 +9,35 @@ import UserPage from "./components/userSites/UserPage.tsx";
 import ProtectedRoutes from "./ProtectedRoutes.tsx";
 import {UserHook} from "./hooks/UserHook.tsx";
 import {HelperHook} from "./hooks/Helper.tsx";
+import CurrentWeek from "./components/scheduleSites/CurrentWeek.tsx";
+import CreateSchedule from "./components/scheduleSites/CreateSchedule.tsx";
+import DayView from "./components/daySite/DayView.tsx";
+import SchedulePage from "./components/scheduleSites/SchedulePage.tsx";
+import Register from "./components/Register.tsx";
 
 export default function App() {
     const userCode = UserHook((UserState) => UserState.memberCode);
     const isLogged = UserHook((UserState) => UserState.isLogged);
     const [initialLoad, setInitialLoad] = useState(true);
 
-    const getWeekNumber = HelperHook((State)=> State.getCurrentWeekNumber);
+    const getWeekNumber = HelperHook((State) => State.getCurrentWeekNumber);
 
-    useEffect(()=>{
-        try{
+    useEffect(() => {
+        try {
             getWeekNumber();
             isLogged();
-        } catch(e){
+        } catch (e) {
             console.log(e);
         } finally {
             setInitialLoad(false)
         }
     }, [isLogged])
 
-    if(initialLoad) return null;
+    if (initialLoad) return null;
 
     /*
-    const [userList, setUserList] = useState<DtoUser[]>([])
-    const [currentWeek, setCurrentWeek] = useState<WorkSchedule>()
-    const [nextWeek, setNextWeek] = useState<WorkSchedule>()
-
-    const current = getCurrentWeekNumber()
-    const next = current + 1
-
     useEffect(getCurrentWeekSchedule, [])
     useEffect(getNextWeekSchedule, [])
-    useEffect(getUserList, [])
-
-    const navigate = useNavigate()
-
-
 
     function getCurrentWeekSchedule() {
         axios.get("/api/schedule/" + current)
@@ -76,27 +69,7 @@ export default function App() {
             })
         navigate("/")
     }
-
-    function getUserList() {
-        axios.get("/api/user/list")
-            .then(response => {
-                setUserList(response.data)
-            })
-    }
-
-    if (employee === undefined)
-        return <h1>Mitarbeiter wird geladen!</h1>
-    if (employeeShifts === undefined)
-        return <h1>Arbeitszeiten werden geladen!</h1>
-    if (employeeWish === undefined)
-        return <h1>Wunschliste wird geladen!</h1>
-    if (currentWeek === undefined)
-        return <h1>Arbeitsplan wird geladen!</h1>
-    if (nextWeek === undefined)
-        return <h1>Wunschplan wird geladen!</h1>
-    if (daily === undefined)
-        return <h1>Tagesansicht wird geladen</h1>
-     */
+*/
 
     return (
         <>
@@ -109,6 +82,15 @@ export default function App() {
                     <Route path={"/user/nextWeek"} element={<Week select={1}/>}/>
                     <Route path={"/user/wishPlan"}
                            element={<WishNextWeek/>}/>
+
+                    //Schichtleitung
+                    <Route path={"/register"} element={<Register onRegister={handleRegister}/>}/>
+                    <Route path={"/schedule/scheduleSite"} element={<SchedulePage/>}/>
+                    <Route path={"/schedule/actualWeek"}
+                           element={<CurrentWeek schedule={currentWeek} userList={userList}/>}/>
+                    <Route path={"/schedule/nextWeek"} element={<CreateSchedule nextWeek={nextWeek} userList={userList}
+                                                                                onSubmit={handleSaveCreateSchedule}/>}/>
+                    <Route path={"/day"} element={<DayView/>}/>
                 </Route>
             </Routes>
         </>
