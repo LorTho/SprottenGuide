@@ -14,7 +14,7 @@ export default function DayView() {
 
     useEffect(()=>{
         getDaily();
-    }, [])
+    }, [getDaily])
 
 
     function planList(): JSX.Element{
