@@ -25,8 +25,6 @@ class MongoUserServiceTest {
     void getTrue_whenAddNewEmployee(){
         //Given
         UserSecurity newMongoUser = new UserSecurity("NoId", "test", "test", "1234", Role.USER);
-        MongoUser expectedUser = new MongoUser("NoId", "test", "test", "1234", Role.USER);
-
         //When
         Boolean boolReturn = userService.addUser(newMongoUser);
         //Then

@@ -1,6 +1,5 @@
 package com.example.backend.controllers;
 
-import com.example.backend.entities.MongoUser;
 import com.example.backend.model.user.UserDTO;
 import com.example.backend.security.LoginData;
 import com.example.backend.security.Role;
@@ -15,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
@@ -37,9 +35,6 @@ class UserControllerTest {
     AuthenticationManager authenticationManager;
     @Autowired
     JwtService jwtService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
 
     ObjectMapper objectMapper = new ObjectMapper();
 
