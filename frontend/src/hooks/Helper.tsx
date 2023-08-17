@@ -5,6 +5,7 @@ import axios from "axios";
 type State = {
     currentWeekNumber: number,
     userList: DtoUser[],
+    jwtToken: string | null,
 
     getCurrentWeekNumber: () => void,
     getUserList: () => void,
@@ -14,6 +15,7 @@ type State = {
 }
 
 export const HelperHook = create<State>((set, get) => ({
+    jwtToken: localStorage.getItem('token'),
     currentWeekNumber: 999,
     userList: [],
 
@@ -30,7 +32,10 @@ export const HelperHook = create<State>((set, get) => ({
         set({currentWeekNumber:diffInWeeks + 1}); // Add 1 to account for the first week
     },
     getUserList: () =>{
-        axios.get("/api/user/list")
+        const {jwtToken} = get()
+        axios.get("/api/user/list",{headers: {
+                Authorization: "Bearer "+ jwtToken
+            }})
             .then(response => response.data)
             .then((data) =>{
                 set({userList:data})

@@ -2,8 +2,12 @@ package com.example.backend.controllers;
 
 import com.example.backend.entities.MongoUser;
 import com.example.backend.model.user.UserDTO;
+import com.example.backend.security.jwt.JwtService;
+import com.example.backend.security.LoginData;
 import com.example.backend.security.UserSecurity;
 import com.example.backend.service.UserService;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,9 +17,13 @@ import java.util.List;
 @RequestMapping("/api/user")
 public class UserController {
     private final UserService userService;
+    private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, AuthenticationManager authenticationManager, JwtService jwtService) {
         this.userService = userService;
+        this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
     }
 
     @GetMapping("/list")
@@ -37,7 +45,8 @@ public class UserController {
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }
     @PostMapping("/login")
-    public String login() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
+    public String login(@RequestBody LoginData loginData) {
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginData.userCode(), loginData.password()));
+        return jwtService.createToken(loginData.userCode());
     }
 }

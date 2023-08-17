@@ -6,12 +6,13 @@ import {NavigateFunction} from "react-router-dom";
 type State = {
     currentWeek: WorkSchedule,
     nextWeek: WorkSchedule,
+    jwtToken: string | null,
 
     getWeekSchedules: (weekNumber: number) => void,
     saveSchedule:(workSchedule: WorkSchedule, navigate: NavigateFunction) => void,
 }
 
-export const ScheduleHook = create<State>((set) => ({
+export const ScheduleHook = create<State>((set, get) => ({
     currentWeek: {
         name: "12345",
         drivers: [],
@@ -24,21 +25,30 @@ export const ScheduleHook = create<State>((set) => ({
         kitchen: [],
         wishes: []
     },
+    jwtToken: localStorage.getItem('token'),
 
     getWeekSchedules: (weekNumber: number) => {
-        axios.get("/api/schedule/" + weekNumber)
+        const {jwtToken} = get()
+        axios.get("/api/schedule/" + weekNumber,{headers: {
+                Authorization: "Bearer "+ jwtToken
+            }})
             .then(response => response.data)
             .then((data) =>{
                 set({currentWeek: data})
             })
-        axios.get("/api/schedule/" + (weekNumber+1))
+        axios.get("/api/schedule/" + (weekNumber+1),{headers: {
+                Authorization: "Bearer "+ jwtToken
+            }})
             .then(response => response.data)
             .then((data) =>{
                 set({nextWeek: data})
             })
     },
     saveSchedule: (workSchedule: WorkSchedule, navigate: NavigateFunction) =>{
-        axios.put("/api/schedule", workSchedule)
+        const {jwtToken} = get()
+        axios.put("/api/schedule", workSchedule,{headers: {
+                Authorization: "Bearer "+ jwtToken
+            }})
             .then(response => response.data)
             .then((data) =>{
                 set({nextWeek: data})

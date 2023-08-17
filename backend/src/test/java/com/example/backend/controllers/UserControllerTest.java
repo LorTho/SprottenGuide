@@ -2,6 +2,7 @@ package com.example.backend.controllers;
 
 import com.example.backend.entities.MongoUser;
 import com.example.backend.model.user.UserDTO;
+import com.example.backend.security.Role;
 import com.example.backend.security.UserSecurity;
 import com.example.backend.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,7 +37,7 @@ class UserControllerTest {
     @DirtiesContext
     @WithMockUser
     void postNewEmployee() throws Exception {
-        MongoUser newMongoUser = new MongoUser("1111", "test", "test", "");
+        MongoUser newMongoUser = new MongoUser("1111", "test", "test", "", Role.USER);
         String expectedEmployee = objectMapper.writeValueAsString(newMongoUser);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/user/add")
@@ -45,7 +46,8 @@ class UserControllerTest {
                                     "memberCode": "1111",
                                     "firstName": "test",
                                     "lastName": "test",
-                                    "password": ""
+                                    "password": "",
+                                    "role": "USER"
                                 }
                                 """)
                         .with(csrf()))
@@ -57,8 +59,8 @@ class UserControllerTest {
     @DirtiesContext
     @WithMockUser
     void getEmployee() throws Exception {
-        UserSecurity newMongoUser = new UserSecurity("1111", "test", "test", "1111");
-        UserDTO userDTO = new UserDTO(newMongoUser.memberCode(), newMongoUser.firstName(), newMongoUser.lastName());
+        UserSecurity newMongoUser = new UserSecurity("1111", "test", "test", "1111", Role.USER);
+        UserDTO userDTO = new UserDTO(newMongoUser.memberCode(), newMongoUser.firstName(), newMongoUser.lastName(), newMongoUser.role());
         String expected = objectMapper.writeValueAsString(userDTO);
         userService.addUser(newMongoUser);
         mockMvc.perform(MockMvcRequestBuilders.get("/api/user/"+"1111")
@@ -70,15 +72,15 @@ class UserControllerTest {
     @DirtiesContext
     @WithMockUser
     void getListOfEmployees() throws Exception {
-        UserSecurity newMongoUser1 = new UserSecurity("1111", "test", "test", "");
-        UserSecurity newMongoUser2 = new UserSecurity("2222", "test", "test", "");
+        UserSecurity newMongoUser1 = new UserSecurity("1111", "test", "test", "", Role.USER);
+        UserSecurity newMongoUser2 = new UserSecurity("2222", "test", "test", "", Role.ADMIN);
         userService.addUser(newMongoUser1);
         userService.addUser(newMongoUser2);
 
 
         List<UserDTO> expectedList = new ArrayList<>(List.of(
-                new UserDTO(newMongoUser1.memberCode(), newMongoUser1.firstName(), newMongoUser1.lastName()),
-                new UserDTO(newMongoUser2.memberCode(), newMongoUser2.firstName(), newMongoUser2.lastName())));
+                new UserDTO(newMongoUser1.memberCode(), newMongoUser1.firstName(), newMongoUser1.lastName(), newMongoUser1.role()),
+                new UserDTO(newMongoUser2.memberCode(), newMongoUser2.firstName(), newMongoUser2.lastName(), newMongoUser2.role())));
         String expected = objectMapper.writeValueAsString(expectedList);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/user/list")

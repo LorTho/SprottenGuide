@@ -17,7 +17,7 @@ class MongoUserDetailsServiceTest {
     @Test
     void loadUserByUsername() {
         String givenUserName = "0000";
-        MongoUser expectedUser = new MongoUser("0000", "Hans", "Hausmeister","hans1");
+        MongoUser expectedUser = new MongoUser("0000", "Hans", "Hausmeister","hans1", Role.USER);
         when(userRepo.findById(givenUserName)).thenReturn(Optional.of(expectedUser));
         UserDetails actualUser = mongoUserDetailsService.loadUserByUsername(givenUserName);
         verify(userRepo).findById(givenUserName);
