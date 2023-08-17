@@ -111,4 +111,17 @@ class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string(
                         "hans"));
     }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "SomeName", password = "SomePassword")
+    void expectAnonymous_whenGettingUserInfoAfterLogout() throws Exception {
+        String expected = "anonymousUser";
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/logout").with(csrf()));
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/user"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(expected));
+    }
 }
