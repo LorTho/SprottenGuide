@@ -18,7 +18,7 @@ export default function SchedulePage(){
     <>
         <main>
             <HeadElement title={"Plans"}/>
-
+            <hr/>
             <Link to={"/schedule/actualWeek"}>
                 <button>Aktueller Plan</button>
             </Link>

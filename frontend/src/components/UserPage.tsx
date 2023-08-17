@@ -1,8 +1,8 @@
 import {Link} from "react-router-dom";
-import HeadElement from "../StyleElements.tsx";
-import {UserHook} from "../../hooks/UserHook.tsx";
+import HeadElement from "./StyleElements.tsx";
+import {UserHook} from "../hooks/UserHook.tsx";
 import {useEffect} from "react";
-import {HelperHook} from "../../hooks/Helper.tsx";
+import {HelperHook} from "../hooks/Helper.tsx";
 
 export default function UserPage() {
     const memberCode = UserHook((UserState) => UserState.memberCode)
@@ -23,7 +23,6 @@ export default function UserPage() {
             <main>
                 <HeadElement title={"UserSide"}/>
                 <h2>{employee.firstName}</h2>
-                <button onClick={logout}>Logout</button>
                 <Link to={"/user/actualWeek"}>
                     <button>Diese Woche</button>
                 </Link>
@@ -33,6 +32,8 @@ export default function UserPage() {
                 <Link to={"/user/wishPlan"}>
                     <button>Dienstplanwunsch</button>
                 </Link>
+                <hr/>
+                <button onClick={logout}>Logout</button>
             </main>
         </>
     )

@@ -5,7 +5,7 @@ import {Route, Routes} from "react-router-dom";
 import LandingPage from "./components/LandingPage.tsx";
 import Login from "./components/Login.tsx";
 import WishNextWeek from "./components/userSites/WishNextWeek.tsx";
-import UserPage from "./components/userSites/UserPage.tsx";
+import UserPage from "./components/UserPage.tsx";
 import ProtectedRoutes from "./ProtectedRoutes.tsx";
 import {UserHook} from "./hooks/UserHook.tsx";
 import {HelperHook} from "./hooks/Helper.tsx";
@@ -14,6 +14,7 @@ import CreateSchedule from "./components/scheduleSites/CreateSchedule.tsx";
 import DayView from "./components/daySite/DayView.tsx";
 import SchedulePage from "./components/scheduleSites/SchedulePage.tsx";
 import Register from "./components/Register.tsx";
+import Management from "./components/Management.tsx";
 
 export default function App() {
     const userCode = UserHook((UserState) => UserState.memberCode);
@@ -46,7 +47,8 @@ export default function App() {
                     <Route path={"/user/nextWeek"} element={<Week select={1}/>}/>
                     <Route path={"/user/wishPlan"}
                            element={<WishNextWeek/>}/>
-                    
+
+                    <Route path={"/management"} element={<Management/>}/>
                     <Route path={"/register"} element={<Register/>}/>
                     <Route path={"/schedule/scheduleSite"} element={<SchedulePage/>}/>
                     <Route path={"/schedule/actualWeek"}
