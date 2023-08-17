@@ -67,6 +67,7 @@ class MonthlyServiceTest {
                 new Daily(LocalDate.now(), List.of(
                         new DailyPlan("0000", null, null, new ArrayList<>(), 0),
                         new DailyPlan("1234", null, null, new ArrayList<>(), 0),
+                        new DailyPlan("null", null, null, new ArrayList<>(), 0),
                         new DailyPlan("5678", null, null, new ArrayList<>(), 0)
                 )),
                 new Daily(LocalDate.now().minusDays(1), List.of(
@@ -101,6 +102,7 @@ class MonthlyServiceTest {
                 new Daily(LocalDate.now().minusDays(1), List.of(
                         new DailyPlan("0000", null, null, new ArrayList<>(), 0),
                         new DailyPlan("1234", null, null, new ArrayList<>(), 0),
+                        new DailyPlan("null", null, null, new ArrayList<>(), 0),
                         new DailyPlan("5678", null, null, new ArrayList<>(), 0)
                 ))
         ));
@@ -120,15 +122,17 @@ class MonthlyServiceTest {
         int weekNumber = LocalDate.now().get(WeekFields.of(Locale.getDefault()).weekOfYear());
         WorkSchedule workSchedule = new WorkSchedule("SomeId", weekNumber,
                 List.of(new ShiftSchedule(LocalDate.now(), List.of(
-                                new WorkShift("0000", LocalTime.of(11, 0))
+                                new WorkShift("0000", LocalTime.of(11, 0)),
+                                new WorkShift("null", LocalTime.of(11, 0))
                         ))
                 ), List.of(new ShiftSchedule(LocalDate.now(), List.of(
-                        new WorkShift("1234", LocalTime.of(11, 0))
+                        new WorkShift("1234", LocalTime.of(11, 0)),
+                        new WorkShift("null", LocalTime.of(11, 0))
                 ))
         ), new ArrayList<>());
-        Month monat = LocalDate.now().getMonth();
+        Month month = LocalDate.now().getMonth();
         //When
-        when(monthlyRepo.findByMonth(monat)).thenReturn(Optional.empty());
+        when(monthlyRepo.findByMonth(month)).thenReturn(Optional.empty());
         when(scheduleService.getWorkSchedule(weekNumber)).thenReturn(workSchedule);
         Daily actual = monthlyService.getToday();
         Assertions.assertEquals(expected, actual);
@@ -181,8 +185,8 @@ class MonthlyServiceTest {
 
     @Test
     void saveDailyTime_withDifferentParameters() {
-        Month monat = LocalDate.now().getMonth();
-        MonthlyPlan month = new MonthlyPlan("someId", monat, List.of(
+        Month currentMonth = LocalDate.now().getMonth();
+        MonthlyPlan month = new MonthlyPlan("someId", currentMonth, List.of(
                 new Daily(LocalDate.now(), List.of(
                         new DailyPlan("0000", null, null, new ArrayList<>(), 0),
                         new DailyPlan("1234", null, null, new ArrayList<>(), 0),
@@ -233,7 +237,7 @@ class MonthlyServiceTest {
                 ), MINUTES.between(time.minusHours(6), time.minusHours(1))-
                         MINUTES.between(time.minusHours(4), time.minusHours(3)))
         ));
-        when(monthlyRepo.findByMonth(monat)).thenReturn(Optional.of(month));
+        when(monthlyRepo.findByMonth(currentMonth)).thenReturn(Optional.of(month));
         Daily actual = monthlyService.saveDaily(newDaily);
         Assertions.assertEquals(expected, actual);
     }

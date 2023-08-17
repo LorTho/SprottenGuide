@@ -46,8 +46,7 @@ export default function App() {
                     <Route path={"/user/nextWeek"} element={<Week select={1}/>}/>
                     <Route path={"/user/wishPlan"}
                            element={<WishNextWeek/>}/>
-
-                    //Schichtleitung
+                    
                     <Route path={"/register"} element={<Register/>}/>
                     <Route path={"/schedule/scheduleSite"} element={<SchedulePage/>}/>
                     <Route path={"/schedule/actualWeek"}
