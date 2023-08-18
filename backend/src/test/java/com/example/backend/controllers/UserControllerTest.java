@@ -1,6 +1,7 @@
 package com.example.backend.controllers;
 
 import com.example.backend.model.user.UserDTO;
+import com.example.backend.model.user.UserObject;
 import com.example.backend.security.LoginData;
 import com.example.backend.security.Role;
 import com.example.backend.security.UserSecurity;
@@ -86,21 +87,6 @@ class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(expected));
     }
-    @Test
-    @WithMockUser(username = "0000")
-    void getUsername_whenEndpointIsCalled() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/user"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(
-                        "0000"));
-    }
-    @Test
-    void getAnonymousUser_whenEndpointIsCalled() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/user"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(
-                        "anonymousUser"));
-    }
 
     @Test
     @DirtiesContext
@@ -121,12 +107,14 @@ class UserControllerTest {
 
     void expectHeader_whenFetchMe() throws Exception {
         // GIVEN
+        UserObject expectedObject = new UserObject("testId", Role.USER);
+        String expected = objectMapper.writeValueAsString(expectedObject);
         // WHEN
         mockMvc.perform(MockMvcRequestBuilders.get("/api/user")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + getToken()))
                 // THEN
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("testId"));
+                .andExpect(MockMvcResultMatchers.content().string(expected));
     }
     private String getToken() throws Exception {
         userService.addUser(new UserSecurity("testId", "testUser", "testUser", "testPassword", Role.USER));
@@ -142,10 +130,22 @@ class UserControllerTest {
     @Test
     @DirtiesContext
     void expectAnonymous_whenGettingUserInfo() throws Exception {
-        String expected = "anonymousUser";
+        UserObject expectedObject = new UserObject("anonymousUser", Role.USER);
+        String expected = objectMapper.writeValueAsString(expectedObject);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/user"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string(expected));
+    }
+    @Test
+    @WithMockUser(username = "0000")
+    void getUsername_whenEndpointIsCalled() throws Exception {
+        UserObject expectedObject = new UserObject("0000", Role.USER);
+        String expected = objectMapper.writeValueAsString(expectedObject);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/user"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(
+                        expected));
     }
 }
