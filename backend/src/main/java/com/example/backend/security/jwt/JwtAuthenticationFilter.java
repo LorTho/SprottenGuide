@@ -30,17 +30,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (authHeader != null) {
             String token = authHeader.substring(6).trim();
 
-            if (token.length() >= 7) {
-                try {
-                    Claims claims = jwtService.validateToken(token);
+            Claims claims = jwtService.validateToken(token);
 
-                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(claims.getSubject(), "", List.of());
-                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-                } catch (Exception e) {
-                    response.setStatus(403);
-                    return;
-                }
-            }
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(claims.getSubject(), "", List.of());
+            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
         }
         filterChain.doFilter(request, response);
     }
