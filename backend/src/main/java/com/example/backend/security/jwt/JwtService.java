@@ -11,7 +11,7 @@ import java.sql.Date;
 @Service
 public class JwtService {
 
-    @Value("${jwt.secret}")
+    @Value(value = "password")
     private String secret;
 
     public String createToken(String userCode) {

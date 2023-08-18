@@ -1,12 +1,12 @@
-import {MenuItem, Select, TextField} from "@mui/material";
-import {useState} from "react";
+import {FormControlLabel, Radio, RadioGroup, TextField} from "@mui/material";
+import React, {useState} from "react";
 import {RegisterUser, role} from "../model/User.tsx";
 import HeadElement from "./StyleElements.tsx";
 import {UserHook} from "../hooks/UserHook.tsx";
 import {useNavigate} from "react-router-dom";
 
 export default function Register() {
-    const register = UserHook((UserState)=> UserState.register)
+    const register = UserHook((UserState) => UserState.register)
     const navigate = useNavigate()
     const [inputValue, setInputValue] = useState<RegisterUser>(
         {
@@ -21,11 +21,11 @@ export default function Register() {
         register(inputValue, navigate)
     }
 
-    function getValue(value: unknown): role {
-        if(value==="2")
-            return role.ADMIN
-        else
-            return role.USER
+    function setRole(event: React.ChangeEvent<HTMLInputElement>) {
+        if (event.target.value === "user")
+            setInputValue({...inputValue, role: role.USER})
+        if (event.target.value === "admin")
+            setInputValue({...inputValue, role: role.ADMIN})
     }
 
     return <>
@@ -77,16 +77,15 @@ export default function Register() {
                     />
                 </div>
                 <div className={"text-field"}>
-                    <Select
-                        labelId="demo-select-small-label"
-                        id="demo-select-small"
-                        value={inputValue.role}
-                        label="Role"
-                        onChange={e => setInputValue({...inputValue, role: getValue(e.target.value)})}
+                    <RadioGroup
+                        row
+                        aria-labelledby="demo-row-radio-buttons-group-label"
+                        name="row-radio-buttons-group"
+                        onChange={setRole}
                     >
-                        <MenuItem value={1}>User</MenuItem>
-                        <MenuItem value={2}>Manager</MenuItem>
-                    </Select>
+                        <FormControlLabel value="user" control={<Radio/>} label="User"/>
+                        <FormControlLabel value="admin" control={<Radio/>} label="Manager"/>
+                    </RadioGroup>
                 </div>
 
                 <section>

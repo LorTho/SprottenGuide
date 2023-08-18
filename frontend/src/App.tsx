@@ -19,16 +19,18 @@ import Management from "./components/Management.tsx";
 export default function App() {
     const userCode = UserHook((UserState) => UserState.memberCode);
     const isLogged = UserHook((UserState) => UserState.isLogged);
+    const checkToken = HelperHook((State) => State.checkToken);
     const [initialLoad, setInitialLoad] = useState(true);
 
     const getWeekNumber = HelperHook((State) => State.getCurrentWeekNumber);
 
     useEffect(() => {
         try {
+            checkToken();
             getWeekNumber();
             isLogged();
         } catch (e) {
-            console.log(e);
+            localStorage.clear()
         } finally {
             setInitialLoad(false)
         }

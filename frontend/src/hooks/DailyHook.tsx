@@ -16,7 +16,6 @@ export const DailyHook = create<State>((set, get) => ({
 
     getDaily: () =>{
         const {jwtToken} = get()
-        console.log(jwtToken)
         axios.get("/api/month/today",{headers: {
                 Authorization: "Bearer "+ jwtToken
             }})

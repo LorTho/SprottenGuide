@@ -1,6 +1,6 @@
 import HeadElement from "./StyleElements.tsx";
 import {FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput} from "@mui/material";
-import {FormEvent, useState} from "react";
+import React, {FormEvent, useState} from "react";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {UserHook} from "../hooks/UserHook.tsx";
 import {useNavigate} from "react-router-dom";

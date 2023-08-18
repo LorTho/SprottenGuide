@@ -1,6 +1,8 @@
 import {create} from "zustand";
 import {DtoUser} from "../model/User.tsx";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
+import {MyToken} from "../model/MyToken.tsx";
 
 type State = {
     currentWeekNumber: number,
@@ -12,6 +14,8 @@ type State = {
 
     getUserName:(code: string)=>string,
     getUserCode:(name: string)=>string,
+
+    checkToken: ()=>void,
 }
 
 export const HelperHook = create<State>((set, get) => ({
@@ -54,5 +58,15 @@ export const HelperHook = create<State>((set, get) => ({
         if(getUser === undefined)
             return "--"
         return getUser.memberCode
+    },
+    checkToken: () =>{
+        const token = localStorage.getItem('token')
+        if(token !== null){
+            const decoded = jwt_decode<MyToken>(token);
+            const time = new Date()
+            if(decoded.exp <= time.getMilliseconds()){
+                localStorage.clear()
+            }
+        }
     },
 }))

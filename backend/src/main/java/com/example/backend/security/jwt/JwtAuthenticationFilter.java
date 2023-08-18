@@ -18,6 +18,7 @@ import java.util.List;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
+
     public JwtAuthenticationFilter(JwtService jwtService) {
         this.jwtService = jwtService;
     }
@@ -26,14 +27,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        if(authHeader != null){
-            String token = authHeader.substring(7).trim();
-            Claims claims = jwtService.validateToken(token);
+        if (authHeader != null) {
+            String token = authHeader.substring(6).trim();
 
-            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(claims.getSubject(), "", List.of());
-            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            if (token.length() >= 7) {
+                try {
+                    Claims claims = jwtService.validateToken(token);
+
+                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(claims.getSubject(), "", List.of());
+                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                } catch (Exception e) {
+                    response.setStatus(403);
+                    return;
+                }
+            }
         }
-
         filterChain.doFilter(request, response);
     }
 }
