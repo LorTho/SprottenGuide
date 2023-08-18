@@ -26,12 +26,18 @@ export default function WorkerElement(props: Props) {
             return 2
         return 1
     }
+    function timeToday(timeInMinutes: number){
+        const hours = Math.floor(timeInMinutes/60);
+        const minutes = timeInMinutes%60;
+
+        return hours+":"+('0'+ minutes).slice(-2)
+    }
 
     return <>
         <div className={"WorkerElement"}>
             <div className={"WorkerElementName"}>
                 <p>{getUserName(props.worker.employeeId)}</p>
-                <p>{props.worker.time}</p>
+                <p>{timeToday(props.worker.time)}</p>
             </div>
             <div className={"WorkerElementButton"}>
                 <WorkerElementButton worker={props.worker} state={getStatus()} update={onUpdate}/>

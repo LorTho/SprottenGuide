@@ -11,13 +11,13 @@ export default function WorkerElementButton(props: Props) {
 
     function handleStart() {
         const date = new Date();
-        props.worker.start = date.getHours() + ':' + date.getMinutes();
+        props.worker.start = date.getHours() + ':' + ('0' + date.getMinutes()).slice(-2);
         props.update(props.worker)
     }
 
     function handleBreakStart() {
         const date = new Date();
-        props.worker.pause.push({start: date.getHours() + ':' + date.getMinutes(), end: null})
+        props.worker.pause.push({start: date.getHours() + ':' + ('0' + date.getMinutes()).slice(-2), end: null})
         props.update(props.worker)
     }
 
@@ -25,26 +25,28 @@ export default function WorkerElementButton(props: Props) {
         const date = new Date();
         props.worker.pause.forEach(value => {
             if (value.end == null)
-                value.end = date.getHours() + ':' + date.getMinutes();
+                value.end = date.getHours() + ':' + ('0' + date.getMinutes()).slice(-2);
         })
         props.update(props.worker)
     }
 
     function handleEnd() {
         const date = new Date();
-        props.worker.end = date.getHours() + ':' + date.getMinutes()
+        props.worker.end = date.getHours() + ':' + ('0' + date.getMinutes()).slice(-2)
         props.update(props.worker)
     }
 
     if (state === 1)
-        return <button onClick={handleStart}>Start der Schicht</button>
+        return <button className={"button-dayView"} onClick={handleStart}>Start der Schicht</button>
     if (state === 2)
         return <>
-            <button onClick={handleBreakStart}>Pause Anfang</button>
-            <button onClick={handleEnd}>Schichtende</button>
+            <button className={"button-dayView"} onClick={handleBreakStart}>Pause Anfang</button>
+            <button className={"button-dayView"} onClick={handleEnd}>Schichtende</button>
         </>
     if (state === 3)
-        return <button onClick={handleBreakEnd}>wieder anfangen</button>
+        return <button className={"button-dayView"} onClick={handleBreakEnd}>wieder anfangen</button>
     if (state === 4)
-        return <p>FEIERABEND</p>
+        return <div className={"div-dayView"}>
+            <h5>Schicht zu Ende </h5>
+        </div>
 }
