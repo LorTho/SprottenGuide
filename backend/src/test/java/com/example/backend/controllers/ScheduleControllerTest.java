@@ -41,6 +41,7 @@ class ScheduleControllerTest {
     ObjectMapper objectMapper = new ObjectMapper();
     @Test
     @DirtiesContext
+    @WithMockUser
     void getWorkSchedule() throws Exception {
         WorkSchedule workSchedule = new WorkSchedule("SomeID", 30, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         WorkScheduleNoId workScheduleNoId = new WorkScheduleNoId(30, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
@@ -132,6 +133,7 @@ class ScheduleControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void getEmployeeWish_whenWishesExist() throws Exception {
         WorkSchedule workSchedule = new WorkSchedule("SomeID", 31,
                 new ArrayList<>(),
@@ -163,6 +165,7 @@ class ScheduleControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void getEmployeeWish_whenNoWishesExist() throws Exception {
         WorkSchedule workSchedule = new WorkSchedule("SomeID", 99,
                 new ArrayList<>(),
@@ -181,6 +184,7 @@ class ScheduleControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void getEmployeeShifts_whenShiftsExist() throws Exception {
         WorkSchedule workSchedule = new WorkSchedule("SomeID", 30,
                 new ArrayList<>(List.of(
