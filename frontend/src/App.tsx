@@ -16,6 +16,7 @@ import SchedulePage from "./components/scheduleSites/SchedulePage.tsx";
 import Register from "./components/Register.tsx";
 import Management from "./components/Management.tsx";
 import ViewAll from "./components/allUser/ViewAll.tsx";
+import ProtectedRoutesRole from "./ProtectedRoutesRole.tsx";
 
 export default function App() {
     const userCode = UserHook((UserState) => UserState.memberCode);
@@ -51,14 +52,16 @@ export default function App() {
                     <Route path={"/user/wishPlan"}
                            element={<WishNextWeek/>}/>
 
-                    <Route path={"/management"} element={<Management/>}/>
-                    <Route path={"/register"} element={<Register/>}/>
-                    <Route path={"/viewAll"} element={<ViewAll/>}/>
-                    <Route path={"/schedule/scheduleSite"} element={<SchedulePage/>}/>
-                    <Route path={"/schedule/actualWeek"}
-                           element={<CurrentWeek/>}/>
-                    <Route path={"/schedule/nextWeek"} element={<CreateSchedule/>}/>
-                    <Route path={"/day"} element={<DayView/>}/>
+                    <Route element={<ProtectedRoutesRole/>}>
+                        <Route path={"/management"} element={<Management/>}/>
+                        <Route path={"/register"} element={<Register/>}/>
+                        <Route path={"/viewAll"} element={<ViewAll/>}/>
+                        <Route path={"/schedule/scheduleSite"} element={<SchedulePage/>}/>
+                        <Route path={"/schedule/actualWeek"}
+                               element={<CurrentWeek/>}/>
+                        <Route path={"/schedule/nextWeek"} element={<CreateSchedule/>}/>
+                        <Route path={"/day"} element={<DayView/>}/>
+                    </Route>
                 </Route>
             </Routes>
         </>
