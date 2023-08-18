@@ -1,19 +1,25 @@
 import {create} from "zustand";
 import {DtoUser} from "../model/User.tsx";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
+import {MyToken} from "../model/MyToken.tsx";
 
 type State = {
     currentWeekNumber: number,
     userList: DtoUser[],
+    jwtToken: string | null,
 
     getCurrentWeekNumber: () => void,
     getUserList: () => void,
 
     getUserName:(code: string)=>string,
     getUserCode:(name: string)=>string,
+
+    checkToken: ()=>void,
 }
 
 export const HelperHook = create<State>((set, get) => ({
+    jwtToken: localStorage.getItem('token'),
     currentWeekNumber: 999,
     userList: [],
 
@@ -30,7 +36,10 @@ export const HelperHook = create<State>((set, get) => ({
         set({currentWeekNumber:diffInWeeks + 1}); // Add 1 to account for the first week
     },
     getUserList: () =>{
-        axios.get("/api/user/list")
+        const {jwtToken} = get()
+        axios.get("/api/user/list",{headers: {
+                Authorization: "Bearer "+ jwtToken
+            }})
             .then(response => response.data)
             .then((data) =>{
                 set({userList:data})
@@ -49,5 +58,15 @@ export const HelperHook = create<State>((set, get) => ({
         if(getUser === undefined)
             return "--"
         return getUser.memberCode
+    },
+    checkToken: () =>{
+        const token = localStorage.getItem('token')
+        if(token !== null){
+            const decoded = jwt_decode<MyToken>(token);
+            const time = new Date()
+            if(decoded.exp <= Math.floor(time.getTime()/1000)){
+                localStorage.clear()
+            }
+        }
     },
 }))

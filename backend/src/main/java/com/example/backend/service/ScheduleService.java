@@ -48,8 +48,6 @@ public class ScheduleService {
             counter++;
             createKitchen.add(kitchen);
         }
-
-
         workSchedule.setName(weekNumber);
         workSchedule.setDrivers(createDriver);
         workSchedule.setKitchen(createKitchen);

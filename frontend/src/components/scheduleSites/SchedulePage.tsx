@@ -26,6 +26,9 @@ export default function SchedulePage(){
                 <button>nächste Woche</button>
             </Link>
         </main>
+        <Link to={"/management"}>
+            <button className={"back"}> ⬅️ </button>
+        </Link>
     </>
     )
 }

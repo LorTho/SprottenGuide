@@ -78,3 +78,10 @@ button {
   margin-left: 2px;
   width: 50%;
 }
+.back{
+  width: min-content;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+
+}

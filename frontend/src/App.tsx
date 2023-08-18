@@ -15,20 +15,24 @@ import DayView from "./components/daySite/DayView.tsx";
 import SchedulePage from "./components/scheduleSites/SchedulePage.tsx";
 import Register from "./components/Register.tsx";
 import Management from "./components/Management.tsx";
+import ViewAll from "./components/allUser/ViewAll.tsx";
+import ProtectedRoutesRole from "./ProtectedRoutesRole.tsx";
 
 export default function App() {
     const userCode = UserHook((UserState) => UserState.memberCode);
     const isLogged = UserHook((UserState) => UserState.isLogged);
+    const checkToken = HelperHook((State) => State.checkToken);
     const [initialLoad, setInitialLoad] = useState(true);
 
     const getWeekNumber = HelperHook((State) => State.getCurrentWeekNumber);
 
     useEffect(() => {
         try {
+            checkToken();
             getWeekNumber();
             isLogged();
         } catch (e) {
-            console.log(e);
+            localStorage.clear()
         } finally {
             setInitialLoad(false)
         }
@@ -48,13 +52,16 @@ export default function App() {
                     <Route path={"/user/wishPlan"}
                            element={<WishNextWeek/>}/>
 
-                    <Route path={"/management"} element={<Management/>}/>
-                    <Route path={"/register"} element={<Register/>}/>
-                    <Route path={"/schedule/scheduleSite"} element={<SchedulePage/>}/>
-                    <Route path={"/schedule/actualWeek"}
-                           element={<CurrentWeek/>}/>
-                    <Route path={"/schedule/nextWeek"} element={<CreateSchedule/>}/>
-                    <Route path={"/day"} element={<DayView/>}/>
+                    <Route element={<ProtectedRoutesRole/>}>
+                        <Route path={"/management"} element={<Management/>}/>
+                        <Route path={"/register"} element={<Register/>}/>
+                        <Route path={"/viewAll"} element={<ViewAll/>}/>
+                        <Route path={"/schedule/scheduleSite"} element={<SchedulePage/>}/>
+                        <Route path={"/schedule/actualWeek"}
+                               element={<CurrentWeek/>}/>
+                        <Route path={"/schedule/nextWeek"} element={<CreateSchedule/>}/>
+                        <Route path={"/day"} element={<DayView/>}/>
+                    </Route>
                 </Route>
             </Routes>
         </>

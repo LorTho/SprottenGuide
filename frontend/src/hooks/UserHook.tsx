@@ -1,10 +1,12 @@
-import {DtoUser, Time, User} from "../model/User.tsx";
+import {RegisterUser, Role, Time, User, UserObject} from "../model/User.tsx";
 import {create} from "zustand";
 import axios from "axios";
 import {NavigateFunction} from "react-router-dom";
 
 type UserState = {
     memberCode: string,
+    role: Role,
+    jwtToken: string | null,
     employee: User,
     employeeShifts: Time[],
     employeeWish: Time[],
@@ -18,17 +20,22 @@ type UserState = {
     isLogged: () => void,
     logout: () => void,
 
-    register: (newUser: DtoUser, navigate: NavigateFunction)=>void,
+    register: (newUser: RegisterUser, navigate: NavigateFunction)=>void,
 }
 
-export const UserHook = create<UserState>((set) => ({
+export const UserHook = create<UserState>((set, get) => ({
     memberCode: "",
+    role: Role.USER,
+    jwtToken: localStorage.getItem('token'),
     employee: {} as User,
     employeeShifts: [],
     employeeWish: [],
 
     getEmployee: (memberCode: string) => {
-        axios.get("/api/user/" + memberCode)
+        const {jwtToken} = get()
+        axios.get("/api/user/" + memberCode, {headers: {
+                Authorization: "Bearer "+ jwtToken
+            }})
             .then(response => response.data)
             .then((data) => {
                 set({employee: data});
@@ -36,7 +43,10 @@ export const UserHook = create<UserState>((set) => ({
             .catch(console.error)
     },
     getEmployeeShifts: (memberCode: string, weekNumber: number) => {
-        axios.get("/api/schedule/" + memberCode + "/" + weekNumber)
+        const {jwtToken} = get()
+        axios.get("/api/schedule/" + memberCode + "/" + weekNumber, {headers: {
+                Authorization: "Bearer "+ jwtToken
+            }})
             .then(response => response.data)
             .then((data) => {
                 set({employeeShifts: data})
@@ -44,14 +54,20 @@ export const UserHook = create<UserState>((set) => ({
             .catch(console.error)
     },
     getEmployeeWish: (memberCode: string, weekNumber: number) => {
-        axios.get("/api/schedule/" + memberCode + "/" + weekNumber + "/wish")
+        const {jwtToken} = get()
+        axios.get("/api/schedule/" + memberCode + "/" + weekNumber + "/wish", {headers: {
+                Authorization: "Bearer "+ jwtToken
+            }})
             .then(response => response.data)
             .then((data) => {
                 set({employeeWish: data})
             })
     },
     setEmployeeWish: (memberCode: string, weekNumber: number, wishTime: Time[], navigate: NavigateFunction) => {
-        axios.put("/api/schedule/" + memberCode + "/" + weekNumber, wishTime)
+        const {jwtToken} = get()
+        axios.put("/api/schedule/" + memberCode + "/" + weekNumber, wishTime, {headers: {
+                Authorization: "Bearer "+ jwtToken
+            }})
             .then(response => response.data)
             .then((data) => {
                 set({employeeWish: data})
@@ -59,35 +75,48 @@ export const UserHook = create<UserState>((set) => ({
             })
     },
     login: (memberCode: string, password: string, navigate: NavigateFunction) => {
-        const LoginData = {
-            username: memberCode,
+        const loginData = {
+            userCode: memberCode,
             password: password,
         }
-        axios.post("/api/user/login", undefined, {auth: LoginData})
+        axios.post("/api/user/login", loginData)
             .then(response => response.data)
             .then((data) => {
-                set({memberCode: data})
+                localStorage.setItem('token', data)
+                set({jwtToken: data})
                 navigate("/")
             })
     },
     isLogged: () => {
-        axios.get("/api/user")
+        const {jwtToken} = get()
+        if(jwtToken != null){
+        axios.get("/api/user", {headers: {
+                Authorization: "Bearer "+ jwtToken
+            }})
             .then(response => response.data)
             .then((data) => {
-                set({memberCode: data})
+                const userObj: UserObject = data
+                set({memberCode: userObj.memberCode})
+                set({role: userObj.role})
             })
+            .catch((error) =>{
+                console.error(error)
+            })
+        }
     },
     logout: () => {
-        axios.post("/api/user/logout")
-            .then(() => {
-                set({memberCode: undefined})
-                set({employee: undefined})
-            })
+        localStorage.clear();
+        set({memberCode: undefined})
+        set({employee: {} as User})
+        set({employeeWish: []})
+        set({employeeShifts: []})
     },
-    register: (newUser: DtoUser, navigate: NavigateFunction)=>{
-        axios.post("/api/user/add", newUser)
-            .then(response => {
-                console.log(response)
+    register: (newUser: RegisterUser, navigate: NavigateFunction)=>{
+        const {jwtToken} = get()
+        axios.post("/api/user/add", newUser, {headers: {
+                Authorization: "Bearer "+ jwtToken
+            }})
+            .then(()=>{
                 navigate("/")
             })
             .catch((error)=>{

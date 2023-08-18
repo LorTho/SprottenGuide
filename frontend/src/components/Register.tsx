@@ -1,22 +1,31 @@
-import {TextField} from "@mui/material";
-import {useState} from "react";
-import {DtoUser} from "../model/User.tsx";
+import {FormControlLabel, Radio, RadioGroup, TextField} from "@mui/material";
+import React, {useState} from "react";
+import {RegisterUser, Role} from "../model/User.tsx";
 import HeadElement from "./StyleElements.tsx";
 import {UserHook} from "../hooks/UserHook.tsx";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 export default function Register() {
-    const register = UserHook((UserState)=> UserState.register)
+    const register = UserHook((UserState) => UserState.register)
     const navigate = useNavigate()
-    const [inputValue, setInputValue] = useState<DtoUser>(
+    const [inputValue, setInputValue] = useState<RegisterUser>(
         {
             memberCode: "",
             firstName: "",
-            lastName: ""
+            lastName: "",
+            password: "",
+            role: Role.USER
         })
 
     function handleRegister() {
         register(inputValue, navigate)
+    }
+
+    function setRole(event: React.ChangeEvent<HTMLInputElement>) {
+        if (event.target.value === "user")
+            setInputValue({...inputValue, role: Role.USER})
+        if (event.target.value === "admin")
+            setInputValue({...inputValue, role: Role.ADMIN})
     }
 
     return <>
@@ -56,11 +65,36 @@ export default function Register() {
                         required
                     />
                 </div>
+                <div className={"text-field"}>
+                    <TextField
+                        onChange={e => setInputValue({...inputValue, password: e.target.value})}
+                        value={inputValue?.password}
+                        id="outlined-basic"
+                        color={"success"}
+                        label="password"
+                        variant="outlined"
+                        required
+                    />
+                </div>
+                <div className={"text-field"}>
+                    <RadioGroup
+                        row
+                        aria-labelledby="demo-row-radio-buttons-group-label"
+                        name="row-radio-buttons-group"
+                        onChange={setRole}
+                    >
+                        <FormControlLabel value="user" control={<Radio/>} label="User"/>
+                        <FormControlLabel value="admin" control={<Radio/>} label="Manager"/>
+                    </RadioGroup>
+                </div>
 
                 <section>
                     <button>Neuen Mitarbeiter anlegen!</button>
                 </section>
             </form>
         </div>
+        <Link to={"/management"}>
+            <button className={"back"}> ⬅️</button>
+        </Link>
     </>
 }

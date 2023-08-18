@@ -4,7 +4,7 @@ import {useState} from "react";
 import {ShiftSchedule, WorkSchedule, WorkShift} from "../../model/WorkSchedule.tsx";
 import {nanoid} from "nanoid";
 import {ScheduleHook} from "../../hooks/ScheduleHook.tsx";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 export default function CreateSchedule() {
     const week = ScheduleHook((State)=>State.nextWeek)
@@ -71,5 +71,8 @@ export default function CreateSchedule() {
             })}
         </div>
         <button onClick={handelSubmit}> Submit </button>
+        <Link to={"/schedule/scheduleSite"}>
+            <button className={"back"}> ⬅️ </button>
+        </Link>
     </>
 }

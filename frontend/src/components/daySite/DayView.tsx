@@ -4,6 +4,7 @@ import {nanoid} from "nanoid";
 import HeadElement from "../StyleElements.tsx";
 import {useEffect, useState} from "react";
 import {DailyHook} from "../../hooks/DailyHook.tsx";
+import {Link} from "react-router-dom";
 
 export default function DayView() {
     const currentDaily = DailyHook((State)=>State.daily)
@@ -51,5 +52,9 @@ export default function DayView() {
     return <>
         <HeadElement title={"Tagesansicht"}/>
         {planList()}
+
+        <Link to={"/management"}>
+            <button className={"back"}> ⬅️ </button>
+        </Link>
     </>
 }

@@ -27,7 +27,14 @@ export default function Management(){
                 <Link to={"/register"}>
                     <button>neuer Angestellter</button>
                 </Link>
+                <Link to={"/viewAll"}>
+                    <button>Angestellte</button>
+                </Link>
             </main>
+
+            <Link to={"/"}>
+                <button className={"back"}> ⬅️ </button>
+            </Link>
         </>
     )
 }

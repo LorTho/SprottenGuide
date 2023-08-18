@@ -11,7 +11,7 @@ import {useEffect, useState} from "react";
 import {MenuItem, Select} from "@mui/material";
 import {UserHook} from "../../hooks/UserHook.tsx";
 import {HelperHook} from "../../hooks/Helper.tsx";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 export default function WishNextWeek() {
     const userWishes = UserHook((UserState) => UserState.employeeWish)
@@ -125,6 +125,10 @@ export default function WishNextWeek() {
                 </Table>
             </TableContainer>
             <button onClick={handleWishTime}>Submit</button>
+
+            <Link to={"/user/userSpace"}>
+                <button> ⬅️ </button>
+            </Link>
         </>
     )
 }

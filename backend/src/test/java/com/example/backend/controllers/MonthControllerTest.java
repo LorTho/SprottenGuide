@@ -35,6 +35,7 @@ class MonthControllerTest {
     ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
+    @WithMockUser
     void getToday() throws Exception {
         MonthlyPlan newPlan = new MonthlyPlan("SomeID", LocalDate.now().getMonth(), List.of(
                 new Daily(LocalDate.now(), new ArrayList<>())
