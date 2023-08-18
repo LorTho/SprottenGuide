@@ -27,11 +27,8 @@ export default function WorkerElement(props: Props) {
         return 1
     }
     function timeToday(timeInMinutes: number){
-        let hours:number = 0;
-        let minutes: number = 0;
-
-        hours = Math.floor(timeInMinutes/60);
-        minutes = timeInMinutes%60;
+        const hours = Math.floor(timeInMinutes/60);
+        const minutes = timeInMinutes%60;
 
         return hours+":"+('0'+ minutes).slice(-2)
     }
