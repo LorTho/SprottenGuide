@@ -2,7 +2,7 @@ export type User = {
     id: string,
     firstName: string,
     lastName: string,
-    role: role,
+    role: Role,
 }
 
 export type Time = {
@@ -20,9 +20,14 @@ export type RegisterUser = {
     firstName: string,
     lastName: string,
     password: string,
-    role: role,
+    role: Role,
 }
-export enum role {
-    USER,
-    ADMIN
+export enum Role {
+    USER = "USER",
+    ADMIN = "ADMIN",
+}
+
+export type UserObject = {
+    memberCode: string,
+    role: Role,
 }

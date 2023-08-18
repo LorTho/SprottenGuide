@@ -1,10 +1,11 @@
-import {RegisterUser, Time, User} from "../model/User.tsx";
+import {RegisterUser, Role, Time, User, UserObject} from "../model/User.tsx";
 import {create} from "zustand";
 import axios from "axios";
 import {NavigateFunction} from "react-router-dom";
 
 type UserState = {
     memberCode: string,
+    role: Role,
     jwtToken: string | null,
     employee: User,
     employeeShifts: Time[],
@@ -24,6 +25,7 @@ type UserState = {
 
 export const UserHook = create<UserState>((set, get) => ({
     memberCode: "",
+    role: Role.USER,
     jwtToken: localStorage.getItem('token'),
     employee: {} as User,
     employeeShifts: [],
@@ -87,16 +89,20 @@ export const UserHook = create<UserState>((set, get) => ({
     },
     isLogged: () => {
         const {jwtToken} = get()
+        if(jwtToken != null){
         axios.get("/api/user", {headers: {
                 Authorization: "Bearer "+ jwtToken
             }})
             .then(response => response.data)
             .then((data) => {
-                set({memberCode: data})
+                const userObj: UserObject = data
+                set({memberCode: userObj.memberCode})
+                set({role: userObj.role})
             })
             .catch((error) =>{
                 console.error(error)
             })
+        }
     },
     logout: () => {
         localStorage.clear();

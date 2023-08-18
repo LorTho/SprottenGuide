@@ -1,6 +1,7 @@
 package com.example.backend.controllers;
 
 import com.example.backend.model.user.UserDTO;
+import com.example.backend.model.user.UserObject;
 import com.example.backend.security.jwt.JwtService;
 import com.example.backend.security.LoginData;
 import com.example.backend.security.UserSecurity;
@@ -40,8 +41,10 @@ public class UserController {
         return userService.addUser(newUser);
     }
     @GetMapping
-    public String getUserInfo(){
-        return SecurityContextHolder.getContext().getAuthentication().getName();
+    public UserObject getUserInfo(){
+        String memberCode = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserDTO user = userService.getUser(memberCode);
+        return new UserObject(memberCode, user.getRole());
     }
     @PostMapping("/login")
     public String login(@RequestBody LoginData loginData) {

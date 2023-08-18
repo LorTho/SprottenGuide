@@ -1,6 +1,6 @@
 import {FormControlLabel, Radio, RadioGroup, TextField} from "@mui/material";
 import React, {useState} from "react";
-import {RegisterUser, role} from "../model/User.tsx";
+import {RegisterUser, Role} from "../model/User.tsx";
 import HeadElement from "./StyleElements.tsx";
 import {UserHook} from "../hooks/UserHook.tsx";
 import {Link, useNavigate} from "react-router-dom";
@@ -14,7 +14,7 @@ export default function Register() {
             firstName: "",
             lastName: "",
             password: "",
-            role: role.USER
+            role: Role.USER
         })
 
     function handleRegister() {
@@ -23,9 +23,9 @@ export default function Register() {
 
     function setRole(event: React.ChangeEvent<HTMLInputElement>) {
         if (event.target.value === "user")
-            setInputValue({...inputValue, role: role.USER})
+            setInputValue({...inputValue, role: Role.USER})
         if (event.target.value === "admin")
-            setInputValue({...inputValue, role: role.ADMIN})
+            setInputValue({...inputValue, role: Role.ADMIN})
     }
 
     return <>
