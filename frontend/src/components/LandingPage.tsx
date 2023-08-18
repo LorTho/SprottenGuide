@@ -23,7 +23,6 @@ export default function LandingPage() {
             return <Link to={"/management"}>
                 <button>Management</button>
             </Link>
-        return <hr/>
     }
 
     return (

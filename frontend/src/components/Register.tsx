@@ -76,7 +76,7 @@ export default function Register() {
                         required
                     />
                 </div>
-                <div className={"text-field"}>
+                <div className={"radio-button"}>
                     <RadioGroup
                         row
                         aria-labelledby="demo-row-radio-buttons-group-label"

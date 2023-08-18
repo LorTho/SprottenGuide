@@ -36,6 +36,9 @@
 .text-field {
   margin: 10px;
 }
+.radio-button{
+  margin-left: 41%;
+}
 
 button {
   background-color: rgba(255, 255, 255, 0.53);
