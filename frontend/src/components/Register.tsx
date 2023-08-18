@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import {RegisterUser, role} from "../model/User.tsx";
 import HeadElement from "./StyleElements.tsx";
 import {UserHook} from "../hooks/UserHook.tsx";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 export default function Register() {
     const register = UserHook((UserState) => UserState.register)
@@ -93,5 +93,8 @@ export default function Register() {
                 </section>
             </form>
         </div>
+        <Link to={"/management"}>
+            <button className={"back"}> ⬅️</button>
+        </Link>
     </>
 }

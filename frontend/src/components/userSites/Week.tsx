@@ -10,6 +10,7 @@ import {nanoid} from "nanoid";
 import {UserHook} from "../../hooks/UserHook.tsx";
 import {useEffect} from "react";
 import {HelperHook} from "../../hooks/Helper.tsx";
+import {Link} from "react-router-dom";
 
 type Props ={
     select: number,
@@ -50,5 +51,9 @@ export default function Week(props: Props) {
                 </TableBody>
             </Table>
         </TableContainer>
+
+        <Link to={"/user/userSpace"}>
+            <button className={"back"}> ⬅️ </button>
+        </Link>
     </>
 }

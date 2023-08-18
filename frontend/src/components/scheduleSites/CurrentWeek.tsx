@@ -1,6 +1,7 @@
 import HeadElement from "../StyleElements.tsx";
 import PlanCardShow from "./components/PlanCardShow.tsx";
 import {ScheduleHook} from "../../hooks/ScheduleHook.tsx";
+import {Link} from "react-router-dom";
 
 export default function CurrentWeek() {
     const currentWeek = ScheduleHook((State)=>State.currentWeek)
@@ -15,5 +16,9 @@ export default function CurrentWeek() {
         <div className={"plan"}>
             <PlanCardShow key={2} shift={currentWeek.kitchen}/>
         </div>
+
+        <Link to={"/schedule/scheduleSite"}>
+            <button className={"back"}> ⬅️ </button>
+        </Link>
     </>
 }

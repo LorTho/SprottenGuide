@@ -64,7 +64,7 @@ export const HelperHook = create<State>((set, get) => ({
         if(token !== null){
             const decoded = jwt_decode<MyToken>(token);
             const time = new Date()
-            if(decoded.exp <= time.getMilliseconds()){
+            if(decoded.exp <= Math.floor(time.getTime()/1000)){
                 localStorage.clear()
             }
         }

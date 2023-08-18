@@ -35,6 +35,9 @@ export default function UserPage() {
                 <hr/>
                 <button onClick={logout}>Logout</button>
             </main>
+            <Link to={"/"}>
+                <button className={"back"}> ⬅️ </button>
+            </Link>
         </>
     )
 }

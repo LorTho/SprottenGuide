@@ -15,6 +15,7 @@ import DayView from "./components/daySite/DayView.tsx";
 import SchedulePage from "./components/scheduleSites/SchedulePage.tsx";
 import Register from "./components/Register.tsx";
 import Management from "./components/Management.tsx";
+import ViewAll from "./components/allUser/ViewAll.tsx";
 
 export default function App() {
     const userCode = UserHook((UserState) => UserState.memberCode);
@@ -52,6 +53,7 @@ export default function App() {
 
                     <Route path={"/management"} element={<Management/>}/>
                     <Route path={"/register"} element={<Register/>}/>
+                    <Route path={"/viewAll"} element={<ViewAll/>}/>
                     <Route path={"/schedule/scheduleSite"} element={<SchedulePage/>}/>
                     <Route path={"/schedule/actualWeek"}
                            element={<CurrentWeek/>}/>
