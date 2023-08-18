@@ -48,6 +48,15 @@ button {
   border-radius: 5px;
   margin-top: 5px;
 }
+.button-dayView {
+  border: 1px solid black;
+  margin-right: 1px;
+  margin-left: 1px;
+}
+.div-dayView{
+  justify-content: right;
+  background-color: #9ece65;
+}
  .plan{
    display: flex;
  }
@@ -67,24 +76,25 @@ button {
   display: flex;
   width: 100%;
   margin-top: 5px;
+  justify-content: space-evenly;
 
 }
 .WorkerElementName{
   display: flex;
   justify-content: space-evenly;
-  width: 50%;
+  width: 40%;
   border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.37);
 }
 .WorkerElementButton{
   display: flex;
+  justify-content: center;
   margin-left: 2px;
-  width: 50%;
+  width: 40%;
 }
 .back{
   width: min-content;
   position: absolute;
   bottom: 10px;
   left: 10px;
-
 }
