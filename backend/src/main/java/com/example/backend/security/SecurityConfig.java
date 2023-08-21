@@ -39,7 +39,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/month/today").authenticated()
                                 .requestMatchers("/api/month/**").authenticated()
                                 .requestMatchers("/api/schedule/**").authenticated()
-                                .anyRequest().authenticated()
+                                .anyRequest().permitAll()
                 )
                 .build();
     }
