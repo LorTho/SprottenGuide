@@ -1,11 +1,7 @@
 # SprottenGuide
 
 Sprottenguide helps your with **working time measurement**.
-As a normal user you can place your wish-Times and see how you should work.
-
-On the managment side you can set the employees to the shift-plan.
-
-The Daily planer allows you to manage the working-Time, with start and end-time and to handle pause.
+This Applicatin bases on weekly Schedules with a given template saved in our MongoDB
 
 fell free to discover my application
 ## Features
@@ -50,6 +46,7 @@ Also you see weekly schedule for this and next week (picture 2).
 - Vite
 - AWS
 - Docker
+- MongoDB
 - Axios
 - CI/CD with GitHub Actions
 
