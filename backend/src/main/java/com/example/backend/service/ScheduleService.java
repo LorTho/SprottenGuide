@@ -75,8 +75,7 @@ public class ScheduleService {
 
     public List<Shifts> getEmployeeShifts(String employeeId, int name) {
         List<Shifts> getList = new ArrayList<>();
-        WorkSchedule schedule = scheduleRepo.findByName(name)
-                .orElseThrow(() -> new NoSuchElementException("WorkSchedule for Employees not found!"));
+        WorkSchedule schedule = getWorkSchedule(name);
         for (ShiftSchedule shiftSchedule : schedule.getDrivers()) {
             for (WorkShift workShift : shiftSchedule.getShifts()) {
                 if (workShift.getEmployeeId().equals(employeeId)) {
@@ -95,8 +94,7 @@ public class ScheduleService {
     }
 
     public List<ShiftsWithDayString> getEmployeeWishes(String employeeId, int name) {
-        WorkSchedule schedule = scheduleRepo.findByName(name)
-                .orElseThrow(() -> new NoSuchElementException("WorkSchedule for Wishes not found!"));
+        WorkSchedule schedule = getWorkSchedule(name);
         for (WishSchedule wish : schedule.getWishes()) {
             if (wish.getEmployeeId().equals(employeeId)) {
                 List<ShiftsWithDayString> listToReturn = new ArrayList<>();
@@ -110,8 +108,7 @@ public class ScheduleService {
     }
 
     public List<Shifts> saveEmployeeWishes(String employeeId, int name, List<ShiftsWithDayString> newWishList) {
-        WorkSchedule schedule = scheduleRepo.findByName(name)
-                .orElseThrow(() -> new NoSuchElementException("WorkSchedule not found!"));
+        WorkSchedule schedule = getWorkSchedule(name);
         List<Shifts> newList = new ArrayList<>();
 
         LocalDate monday = getFirstDayOfWeek(2023, name);

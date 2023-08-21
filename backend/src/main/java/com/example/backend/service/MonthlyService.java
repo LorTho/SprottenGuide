@@ -8,7 +8,7 @@ import com.example.backend.model.monthly.Pause;
 import com.example.backend.model.schedule.ShiftSchedule;
 import com.example.backend.model.shift.WorkShift;
 import com.example.backend.repository.MonthlyRepo;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -20,7 +20,7 @@ import java.util.*;
 import static java.time.temporal.ChronoUnit.MINUTES;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class MonthlyService {
     private final MonthlyRepo monthlyRepo;
     private final ScheduleService scheduleService;
