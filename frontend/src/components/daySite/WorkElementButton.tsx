@@ -11,13 +11,13 @@ export default function WorkerElementButton(props: Props) {
 
     function handleStart() {
         const date = new Date();
-        props.worker.start = date.getHours() + ':' + ('0' + date.getMinutes()).slice(-2);
+        props.worker.start = ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2);
         props.update(props.worker)
     }
 
     function handleBreakStart() {
         const date = new Date();
-        props.worker.pause.push({start: date.getHours() + ':' + ('0' + date.getMinutes()).slice(-2), end: null})
+        props.worker.pause.push({start: ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2), end: null})
         props.update(props.worker)
     }
 
@@ -25,14 +25,14 @@ export default function WorkerElementButton(props: Props) {
         const date = new Date();
         props.worker.pause.forEach(value => {
             if (value.end == null)
-                value.end = date.getHours() + ':' + ('0' + date.getMinutes()).slice(-2);
+                value.end = ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2);
         })
         props.update(props.worker)
     }
 
     function handleEnd() {
         const date = new Date();
-        props.worker.end = date.getHours() + ':' + ('0' + date.getMinutes()).slice(-2)
+        props.worker.end = ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2)
         props.update(props.worker)
     }
 
