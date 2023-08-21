@@ -3,7 +3,8 @@
 Sprottenguide helps your with **working time measurement**.
 This Applicatin bases on weekly Schedules with a given template saved in our MongoDB
 
-fell free to discover my application
+feel free to discover my application
+
 ## Features
 ### Employee
 As an Employee you can place your deired times to let your advisor know when you are able to work and when you want to be off from work (picture 1).
