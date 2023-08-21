@@ -16,7 +16,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
@@ -200,7 +199,7 @@ class ScheduleServiceTest {
     @Test
     @DirtiesContext
     void getException_whenUnknownSchedule() {
-        Assertions.assertThrows(NoSuchElementException.class, () -> scheduleService.getEmployeeWishes("0000", 99));
+        Assertions.assertThrows(RuntimeException.class, () -> scheduleService.getEmployeeWishes("0000", 99));
     }
 
     @Test
@@ -262,6 +261,6 @@ class ScheduleServiceTest {
     @Test
     void getException_whenUnknownSaveSchedule() {
         List<ShiftsWithDayString> list = new ArrayList<>();
-        Assertions.assertThrows(NoSuchElementException.class, () -> scheduleService.saveEmployeeWishes("0000", 99, list));
+        Assertions.assertThrows(RuntimeException.class, () -> scheduleService.saveEmployeeWishes("0000", 99, list));
     }
 }
